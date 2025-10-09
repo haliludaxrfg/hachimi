@@ -37,7 +37,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.10.0_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;network;widgets;sql;networkauth</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
@@ -65,7 +65,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\desk\ecommerceRemake\hachimi\hachimi\nlohmann\json.hpp;D:\Program Files\MySQL\MySQL Server 8.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Qt\6.10.0\msvc2022_64\include\QtGui;D:\Qt\6.10.0\msvc2022_64\include\QtNetwork;D:\Qt\6.10.0\msvc2022_64\include\QtCore;D:\Qt\6.10.0\msvc2022_64\include;D:\desk\ecommerceRemake\hachimi\hachimi\nlohmann\json.hpp;D:\Program Files\MySQL\MySQL Server 8.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -101,14 +101,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="databaseManager.cpp" />
     <ClCompile Include="logger.cpp" />
+    <ClCompile Include="LoginDialog.cpp" />
+    <ClCompile Include="order.cpp" />
     <ClCompile Include="promotion.cpp" />
-    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="Server.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="user.cpp" />
     <ClCompile Include="good.cpp" />
+    <ClCompile Include="userManager.cpp" />
     <QtRcc Include="hachimi.qrc" />
     <QtUic Include="hachimi.ui" />
-    <ClCompile Include="databaseMa.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +128,8 @@
     <ClInclude Include="order.h" />
     <ClInclude Include="orderItem.h" />
     <ClInclude Include="promotion.h" />
+    <QtMoc Include="LoginDialog.h" />
+    <QtMoc Include="QtServer.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="TemporaryCart.h" />
     <ClInclude Include="user.h" />

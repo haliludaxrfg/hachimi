@@ -38,14 +38,9 @@ public:
     bool initialize();
     bool isConnected() const;
 
-    // 促销策略
-    bool savePromotionStrategy(const std::string& name, const std::string& type,
-        const std::string& config, const std::string& conditions = "");
-    bool updatePromotionStrategy(const std::string& name, bool is_active);
-    std::map<std::string, std::string> loadPromotionStrategy(const std::string& name);
-    std::vector<std::map<std::string, std::string>> loadAllPromotionStrategies(bool active_only = true);
-
+    
     // 用户管理
+	bool addUser(const User& u); // 新增用户
     bool saveUser(const User& u);
     bool updateUser(const User& u);
     bool loadUser(const std::string& phone, User& u);
@@ -90,10 +85,10 @@ public:
     bool deleteAllCartItems(const std::string& cart_id);
     std::vector<CartItem> loadCartItems(const std::string& cart_id);
 
-    // 统计和报表
-    int getTotalUserCount();
-    int getTotalOrderCount();
-    double getTotalRevenue();
-    std::map<std::string, double> getSalesByCategory();
-    std::vector<std::map<std::string, std::string>> getTopSellingGoods(int limit = 10);
+    // 促销策略
+    bool savePromotionStrategy(const std::string& name, const std::string& type,
+        const std::string& config, const std::string& conditions = "");
+    bool updatePromotionStrategy(const std::string& name, bool is_active);
+    std::map<std::string, std::string> loadPromotionStrategy(const std::string& name);
+    std::vector<std::map<std::string, std::string>> loadAllPromotionStrategies(bool active_only = true);
 };

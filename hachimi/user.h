@@ -19,9 +19,9 @@ class User {
 public:
 	User(std::string phone, std::string password, std::string address);
 	// 基本信息
-	std::string getPhone();
-	std::string getPassword();
-	std::string getAddress();
+	std::string getPhone()const;
+	std::string getPassword()const;
+	std::string getAddress()const;
 	void setPassword(std::string newpassword);
 	void setAddress(std::string newaddress);
 

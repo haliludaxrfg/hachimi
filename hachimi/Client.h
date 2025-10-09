@@ -10,12 +10,17 @@
 #include "orderItem.h"
 #include "promotion.h"
 #include "TemporaryCart.h"
+#include <QTcpSocket>
+#include <QHostAddress>
+#include <QMutexLocker>
+#include <QString>
+#include <QByteArray>
 
 class TCPClient {
 private:
     class Impl;
     Impl* pImpl;
-    std::mutex requestMutex;
+    std::recursive_mutex requestMutex;
 
 public:
     TCPClient(const std::string& ip = "127.0.0.1", int port = 8888);

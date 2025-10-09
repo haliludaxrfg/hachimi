@@ -9,13 +9,24 @@
 #include "databaseManager.h"
 #include "promotion.h"
 #include "logger.h"
+
 #include <string>
 #include <vector>
 #include <iostream>
+#include <sstream>
+
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QHostAddress>
+#include <QThread>
+#include <QObject>
+#include <QCoreApplication>
+#include <QDebug>
 // 简化版C++ TCP服务器头文件，专门用于MySQL业务管理
 class Server {
 	DatabaseManager* dbManager;
     int port;
+	QTcpServer* server;
 public:
     Server(int port);
     ~Server();
