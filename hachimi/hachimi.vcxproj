@@ -108,7 +108,6 @@
     <ClCompile Include="good.cpp" />
     <QtRcc Include="hachimi.qrc" />
     <QtUic Include="hachimi.ui" />
-    <ClCompile Include="databaseMa.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
