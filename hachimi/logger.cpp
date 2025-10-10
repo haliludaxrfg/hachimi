@@ -1,64 +1,79 @@
 #include "logger.h"
+#include <QTextCursor>
+#include <QDateTime>
 #include <iostream>
-#include <ctime>
-#include <iomanip>
-
-Logger::Logger() {
-    logFile.open("server.log", std::ios::app);
-    if (!logFile.is_open()) {
-        std::cerr << "Failed to open log file!" << std::endl;
-    }
-}
-
-Logger::~Logger() {
-    if (logFile.is_open()) {
-        logFile.close();
-    }
-}
 
 Logger& Logger::instance() {
     static Logger logger;
     return logger;
 }
 
+Logger::Logger() {
+    logFile.open("log.txt", std::ios::app);
+}
+
+Logger::~Logger() {
+    restoreCout();
+    if (logFile.is_open()) logFile.close();
+}
+
+void Logger::setLogEdit(QPlainTextEdit* edit) {
+    logEdit = edit;
+    if (!qtLogStream) {
+        qtLogStream = new QtLogStream(this);
+    }
+}
+
+void Logger::log(Level level, const std::string& message) {
+    std::lock_guard<std::mutex> lock(mtx);
+    std::string time = getCurrentTime();
+    std::string levelStr = levelToString(level);
+    std::string logMsg = "[" + time + "][" + levelStr + "] " + message + "\n";
+    if (logFile.is_open()) logFile << logMsg;
+    if (logEdit) {
+        emit logAppended(QString::fromStdString(logMsg));
+    }
+}
+
 std::string Logger::getCurrentTime() {
-    std::time_t now = std::time(nullptr);
-    std::tm tm;
-
-#ifdef _WIN32
-    localtime_s(&tm, &now);
-#else
-    localtime_r(&now, &tm);
-#endif
-
-    char buffer[80];
-    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &tm);
-    return std::string(buffer);
+    return QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss").toStdString();
 }
 
 std::string Logger::levelToString(Level level) {
     switch (level) {
     case Level::INFO: return "INFO";
     case Level::WARN: return "WARN";
-    case Level::FAIL: return "FAIL"; // 替换ERROR为FAIL
+    case Level::FAIL: return "FAIL";
     case Level::DEBUG: return "DEBUG";
-    default: return "UNKNOWN";
     }
+    return "UNKNOWN";
 }
 
-void Logger::log(Level level, const std::string& message) {
-    std::lock_guard<std::mutex> lock(mtx);
+// QtLogStream实现
+Logger::QtLogStream::QtLogStream(Logger* logger) : logger(logger) {}
 
-    if (!logFile.is_open()) {
-        std::cerr << "Log file is not open!" << std::endl;
-        return;
+int Logger::QtLogStream::overflow(int c) {
+    if (c != EOF) {
+        buffer += static_cast<char>(c);
+        if (c == '\n') {
+            logger->info(buffer); // 这里用info级别
+            buffer.clear();
+        }
     }
+    return c;
+}
+int Logger::QtLogStream::sync() {
+    if (!buffer.empty()) {
+        logger->info(buffer);
+        buffer.clear();
+    }
+    return 0;
+}
 
-    std::string timeStr = getCurrentTime();
-    std::string levelStr = levelToString(level);
-
-    logFile << "[" << timeStr << "][" << levelStr << "] " << message << std::endl;
-    logFile.flush();
-
-    std::cout << "[" << timeStr << "][" << levelStr << "] " << message << std::endl;
+void Logger::redirectCout() {
+    if (!qtLogStream) qtLogStream = new QtLogStream(this);
+    oldCout = std::cout.rdbuf(qtLogStream);
+}
+void Logger::restoreCout() {
+    if (oldCout) std::cout.rdbuf(oldCout);
 }

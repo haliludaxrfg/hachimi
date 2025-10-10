@@ -11,9 +11,14 @@ public:
     double price;
     int quantity;
     double subtotal;         // 直接存储小计，便于结算
-    // 构造函数、getter/setter 可补充
-    CartItem(const Good& good, int qty):
-        good_id(good.getId()), good_name(good.getName()), price(good.getPrice()), quantity(qty) {
+
+    // 默认构造函数
+    CartItem()
+        : good_id(0), good_name(""), price(0.0), quantity(0), subtotal(0.0) {}
+
+    // 通过 Good 构造
+    CartItem(const Good& good, int qty)
+        : good_id(good.getId()), good_name(good.getName()), price(good.getPrice()), quantity(qty) {
         subtotal = price * quantity;
-	}
+    }
 };

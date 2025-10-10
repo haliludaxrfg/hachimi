@@ -17,9 +17,13 @@ private:
     double total_amount;           // 总金额
     double discount_amount;        // 优惠金额
     double final_amount;           // 实付金额
-    std::vector<OrderItem> items;       // 订单项列表
+    std::vector<OrderItem> items;  // 订单项列表
 public:
-	// 构造函数 从购物车生成订单
+    // 添加默认构造函数
+    Order() : order_id(""), user_phone(""), shipping_address(""), status(0), discount_policy(""),
+              total_amount(0.0), discount_amount(0.0), final_amount(0.0), items() {}
+
+    // 构造函数 从购物车生成订单
     Order(const TemporaryCart& cart, const std::string& new_order_id, int order_status = 1);
 	// 显示订单详情
 	void showOrder() const;

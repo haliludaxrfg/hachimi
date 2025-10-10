@@ -8,12 +8,12 @@
 #include <QtWidgets/QPlainTextEdit>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QTimer>
+#include <QEventLoop>
+#include <QCoreApplication>
 #include <mysql.h>
 #include <iostream>
-//#include "hachimi.h"
-//ccbccbccbc4nmb
 #include "admin.h"
-#include "AdminWindow.h"
 #include "AdminWindow.h"
 #include "cartItem.h"
 #include "Client.h"
@@ -28,126 +28,111 @@
 #include "user.h"
 #include "userManager.h"
 #include "UserWindow.h"
-#include "LoginDialog.h"
+#include "LoginWindow.h"
+#include "LogWindow.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
+using nlohmann::json;
 
 
-
-// 自定义streambuf，将cout输出重定向到QPlainTextEdit
-class QtLogStream : public std::streambuf {
-public:
-    QtLogStream(QPlainTextEdit* edit) : edit(edit) {}
-protected:
-    virtual int overflow(int c) override {
-        if (c != EOF) {
-            buffer += static_cast<char>(c);
-            if (c == '\n') {
-                // 每行输出时用UTF-8解码
-                edit->moveCursor(QTextCursor::End);
-                edit->insertPlainText(QString::fromUtf8(buffer.c_str()));
-                buffer.clear();
-            }
-        }
-        return c;
-    }
-    virtual int sync() override {
-        if (!buffer.empty()) {
-            edit->moveCursor(QTextCursor::End);
-            edit->insertPlainText(QString::fromUtf8(buffer.c_str()));
-            buffer.clear();
-        }
-        return 0;
-    }
-private:
-    QPlainTextEdit* edit;
-    std::string buffer;
-};
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    QWidget window;
-    window.setWindowTitle("测试信息窗口");
-    QVBoxLayout* layout = new QVBoxLayout(&window);
-    QPlainTextEdit* logEdit = new QPlainTextEdit(&window);
-    logEdit->setReadOnly(true);
-    logEdit->setFont(QFont("方正FW珍珠体 简繁"));
-    layout->addWidget(logEdit);
-    window.resize(600, 400);
-    window.show();
+    // 启动 Logger（确保先于窗口）
+    Logger::instance().info("应用启动");
 
-    // 重定向cout
-    QtLogStream logStream(logEdit);
-    std::streambuf* oldCout = std::cout.rdbuf(&logStream);
-
-    // 1. 测试数据库连接
-    DatabaseManager db("localhost", "root", "a5B3#eF7hJ", "remake", 3306);
-    if (db.DTBinitialize()) {
-        std::cout << "数据库连接成功！" << std::endl;
-    }
-    else {
-        std::cout << "数据库连接失败！" << std::endl;
-        return app.exec();
-    }
-
-    // 2. 启动服务器
+    // 启动 Server（监听本地端口）
     Server server(8888);
-    server.start();
-    std::cout << "服务器已启动。" << std::endl;
+    server.SERstart();
+    Logger::instance().info("本地 Server 已启动 (127.0.0.1:8888)");
 
-    // 3. 启动客户端并连接服务器
-    TCPClient client("127.0.0.1", 8888);
-    if (client.connectToServer()) {
-        std::cout << "客户端连接服务器成功！" << std::endl;
-        std::string response = client.sendRequest("GET_ALL_GOODS");
-        std::cout << "服务器响应: " << response << std::endl;
+    // 启动 Client 并连接到本地 Server
+    Client client; // 使用默认参数 127.0.0.1:8888
+    if (!client.CLTconnectToServer()) {
+        Logger::instance().warn("Client 无法连接到 Server，继续启动 UI（部分功能不可用）");
     }
     else {
-        std::cout << "客户端连接服务器失败！" << std::endl;
+        Logger::instance().info("Client 已连接到 Server");
     }
 
-    // ===== 新增：身份选择 =====
-    QStringList roles;
-    roles << "管理员" << "用户";
-    bool ok = false;
-    QString role = QInputDialog::getItem(nullptr, "选择身份", "请选择登录身份：", roles, 0, false, &ok);
-    if (!ok) return 0;
+    // 显示日志窗口（独立窗口）
+    LogWindow* logWin = new LogWindow();
+    logWin->setWindowTitle("运行日志");
+    logWin->resize(800, 400);
+    logWin->show();
 
-    if (role == "管理员") {
-        bool ok = false;
-        QString inputPwd = QInputDialog::getText(
-            nullptr, "管理员登录", "请输入管理员密码：", QLineEdit::Password, "", &ok);
-        if (!ok) return 0;
-        if (inputPwd.toStdString() != Admin::password) {
-            QMessageBox::warning(nullptr, "登录失败", "管理员密码错误！");
-            return 0;
-        }
-        AdminWindow* adminWin = new AdminWindow();
-        adminWin->show();
-    } else {
-        // 用户注册和登录
-        std::vector<User> users;
-        users = db.DTBloadAllUsers();
+    // 准备 DatabaseManager 与 本地用户列表（LoginWindow 现在需要这些参数）
+    DatabaseManager* db = new DatabaseManager("127.0.0.1", "root", "a5B3#eF7hJ", "remake",3306); // 根据实际情况替换连接参数
+    if (!db->DTBinitialize()) {
+        Logger::instance().warn("数据库连接失败，注册/登录功能可能受限");
+    }
+    std::vector<User> users;
+    if (db->DTBisConnected()) {
+        users = db->DTBloadAllUsers();
+    }
 
-        LoginDialog loginDlg(users, &db);
-        if (loginDlg.exec() == QDialog::Accepted) {
-            std::cout << "用户登录成功，索引: " << loginDlg.getLoginIndex() << std::endl;
-            UserWindow* userWin = new UserWindow();
-            userWin->show();
+    // 弹出登录窗口（LoginWindow 的构造需要 users 引用和 DatabaseManager*）
+    LoginWindow* loginDlg = new LoginWindow(users, db, nullptr);
+    // 允许在登录对话框出现时与其它窗口交互（非模态）
+    loginDlg->setModal(false);
+    loginDlg->setWindowModality(Qt::NonModal);
+
+    // 登录成功后的处理（accepted）
+    QObject::connect(loginDlg, &QDialog::accepted, [&app, &client, db, loginDlg]() {
+        bool isAdmin = loginDlg->isAdmin();
+        QString phone = loginDlg->getPhone();
+
+        if (isAdmin) {
+            Logger::instance().info("管理员登录成功，打开管理员窗口");
+            AdminWindow* aw = new AdminWindow(&client);
+            aw->setWindowTitle("管理员面板");
+            aw->resize(1024, 768);
+            aw->show();
         } else {
-            std::cout << "用户未登录，程序退出。" << std::endl;
-            return 0;
+            Logger::instance().info(std::string("用户登录成功，手机号: ") + phone.toStdString());
+            UserWindow* uw = nullptr;
+            try {
+                uw = new UserWindow(phone.toStdString(), &client);
+            } catch (...) {
+                uw = new UserWindow();
+            }
+            uw->setWindowTitle("用户面板");
+            uw->resize(1024, 768);
+            uw->show();
         }
+
+        // 可选择在此删除 loginDlg 或在窗口关闭时 deleteLater
+        loginDlg->deleteLater();
+    });
+
+    // 用户取消或关闭登录（rejected） -> 退出应用
+    QObject::connect(loginDlg, &QDialog::rejected, [db]() {
+        Logger::instance().info("用户取消登录，退出应用");
+        // 清理 db 后退出主事件循环
+        delete db;
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+    });
+
+    loginDlg->show();
+
+    // 启动 Qt 事件循环
+    int ret = app.exec();
+
+    // 退出流程：优雅断开客户端、停止服务器
+    try {
+        if (client.CLTisConnectionActive()) client.CLTdisconnect();
     }
+    catch (...) {}
+    try {
+        server.SERstop();
+    }
+    catch (...) {}
 
-    // 5. 停止服务器
-    server.stop();
-    std::cout << "服务器已停止。" << std::endl;
+    // 清理 DatabaseManager
+    delete db;
 
-    std::cout << "ccbc4nmb" << std::endl;
-
-    // 恢复cout
-    std::cout.rdbuf(oldCout);
-
-    return app.exec();
+    Logger::instance().info("应用退出\n");
+    return ret;
 }

@@ -2,14 +2,24 @@
 #include <QWidget>
 #include <QTabWidget>
 #include <QPushButton>
+#include <QTableWidget>
+#include <QString>
+#include "Client.h"
 
 class UserWindow : public QWidget {
     Q_OBJECT
 public:
-    UserWindow(QWidget* parent = nullptr);
+    // 支持按手机号与 Client 操作
+    UserWindow(const std::string& phone = "", Client* client = nullptr, QWidget* parent = nullptr);
 
 signals:
     void backRequested(); // 返回上一级信号
+
+private slots:
+    void refreshGoods();
+    void onAddToCart();
+    void refreshCart();
+    void onCheckout();
 
 private:
     QTabWidget* tabWidget;
@@ -17,5 +27,15 @@ private:
     QWidget* goodsTab;  // 商品浏览与购物车
     QWidget* orderTab;  // 订单查看
     QPushButton* backBtn;
-    // 你可以在这里添加更多控件成员，如商品表、购物车表、订单表等
+
+    // 内部状态
+    std::string phone_;
+    Client* client_;
+    QTableWidget* goodsTable;
+    QPushButton* refreshGoodsBtn;
+    QPushButton* addToCartBtn;
+
+    QTableWidget* cartTable;
+    QPushButton* refreshCartBtn;
+    QPushButton* checkoutBtn;
 };

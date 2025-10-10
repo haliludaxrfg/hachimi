@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "测试商品A",
+        "price": 9.99,
+        "stock": 100,
+        "category": "测试分类"
+    },
+    {
+        "id": 2,
+        "name": "测试商品B",
+        "price": 19.99,
+        "stock": 50,
+        "category": "测试分类"
+    }
+]

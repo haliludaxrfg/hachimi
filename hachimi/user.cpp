@@ -1,5 +1,9 @@
 #include "user.h"
 
+// 实现默认构造函数
+User::User()
+    : phone(""), password(""), address(""), cart(), orders(), orderItems() {
+}
 
 // 正确实现构造函数
 User::User(std::string phone, std::string password, std::string address)

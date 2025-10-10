@@ -15,58 +15,36 @@ bool Admin::addUser(const User& user) {
 	return false;
 }
 
+// 非交互式：使用传入的 user 对象直接更新数据库与内存缓存
 bool Admin::updateUser(const User& user) {
     User* u = findUser(user.getPhone());
     if (!u) {
-        std::cout << "未找到该用户！" << std::endl;
+        std::cout << "未找到该用户: " << user.getPhone() << std::endl;
         return false;
     }
-    std::string newPhone = u->getPhone();
-    std::string newPassword = u->getPassword();
-    std::string newAddress = u->getAddress();
-    std::string input;
-    std::cout << "当前手机号: " << newPhone << "，输入新手机号(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") newPhone = input;
-    std::cout << "当前密码: " << newPassword << "，输入新密码(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") newPassword = input;
-    std::cout << "当前地址: " << newAddress << "，输入新地址(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") newAddress = input;
-    std::cout << "确认修改？(y/n): ";
-    std::getline(std::cin, input);
-    if (input != "y" && input != "Y") {
-        std::cout << "操作已取消。" << std::endl;
+    if (!db->DTBupdateUser(user)) {
+        std::cout << "数据库更新失败: " << user.getPhone() << std::endl;
         return false;
     }
-    User newUser(newPhone, newPassword, newAddress);
-    if (db->DTBupdateUser(newUser)) {
-        *u = newUser;
-        std::cout << "用户信息已更新！" << std::endl;
-        return true;
-    } else {
-        std::cout << "数据库更新失败！" << std::endl;
-        return false;
-    }
+    *u = user; // 更新内存缓存
+    return true;
 }
 
+// 非交互式：直接删除指定手机号的用户
 bool Admin::removeUser(const std::string& phone) {
-    std::cout << "确定要删除手机号为 " << phone << " 的用户吗？(y/n): ";
-    char confirm;
-    std::cin >> confirm;
-    if (confirm != 'y' && confirm != 'Y') {
-        std::cout << "操作已取消。" << std::endl;
-        return false;
-    }
     auto it = std::remove_if(users.begin(), users.end(),
         [&phone](const User& u) { return u.getPhone() == phone; });
     if (it != users.end()) {
         if (db->DTBdeleteUser(phone)) {
             users.erase(it, users.end());
             return true;
+        } else {
+            std::cout << "数据库删除失败: " << phone << std::endl;
+            return false;
         }
     }
+    // 若内存中不存在仍尝试删除数据库记录
+    if (db->DTBdeleteUser(phone)) return true;
     return false;
 }
 
@@ -92,6 +70,7 @@ bool Admin::addGood(const Good& good) {
     return false;
 }
 
+// 非交互式：更新指定 Good（以 good.getId() 为主键）
 bool Admin::updateGood(const Good& good) {
     Good* g = nullptr;
     for (auto& item : goods) {
@@ -101,71 +80,32 @@ bool Admin::updateGood(const Good& good) {
         }
     }
     if (!g) {
-        std::cout << "未找到该商品！" << std::endl;
+        std::cout << "未找到该商品 id=" << good.getId() << std::endl;
         return false;
     }
-    std::string newName = g->getName();
-    double newPrice = g->getPrice();
-    int newStock = g->getStock();
-    std::string newCategory = g->getCategory();
-    std::string input;
-    std::cout << "当前商品名: " << newName << "，输入新商品名(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") newName = input;
-    std::cout << "当前价格: " << newPrice << "，输入新价格(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") {
-        try {
-            newPrice = std::stod(input);
-        } catch (...) {
-            std::cout << "价格输入无效，保持原价。" << std::endl;
-        }
-    }
-    std::cout << "当前库存: " << newStock << "，输入新库存(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") {
-        try {
-            newStock = std::stoi(input);
-        } catch (...) {
-            std::cout << "库存输入无效，保持原库存。" << std::endl;
-        }
-    }
-    std::cout << "当前分类: " << newCategory << "，输入新分类(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") newCategory = input;
-    std::cout << "确认修改？(y/n): ";
-    std::getline(std::cin, input);
-    if (input != "y" && input != "Y") {
-        std::cout << "操作已取消。" << std::endl;
+    if (!db->DTBupdateGood(good)) {
+        std::cout << "数据库更新失败: good id=" << good.getId() << std::endl;
         return false;
     }
-    Good newGood(g->getId(), newName, newPrice, newStock, newCategory);
-    if (db->DTBupdateGood(newGood)) {
-        *g = newGood;
-        std::cout << "商品信息已更新！" << std::endl;
-        return true;
-    } else {
-        std::cout << "数据库更新失败！" << std::endl;
-        return false;
-    }
+    *g = good;
+    return true;
 }
 
+// 非交互式：删除商品
 bool Admin::removeGood(int good_id) {
-    std::cout << "确定要删除商品ID为 " << good_id << " 的商品吗？(y/n): ";
-    char confirm;
-    std::cin >> confirm;
-    if (confirm != 'y' && confirm != 'Y') {
-        std::cout << "操作已取消。" << std::endl;
-        return false;
-    }
     auto it = std::remove_if(goods.begin(), goods.end(),
         [good_id](const Good& g) { return g.getId() == good_id; });
     if (it != goods.end()) {
         if (db->DTBdeleteGood(good_id)) {
             goods.erase(it, goods.end());
             return true;
+        } else {
+            std::cout << "数据库删除失败: good id=" << good_id << std::endl;
+            return false;
         }
     }
+    // 若内存中不存在仍尝试删除数据库记录
+    if (db->DTBdeleteGood(good_id)) return true;
     return false;
 }
 
@@ -191,6 +131,7 @@ bool Admin::addOrder(const Order& order) {
     return false;
 }
 
+// 非交互式：以传入 order 覆盖更新
 bool Admin::updateOrder(const Order& order) {
     Order* o = nullptr;
     for (auto& item : orders) {
@@ -200,62 +141,32 @@ bool Admin::updateOrder(const Order& order) {
         }
     }
     if (!o) {
-        std::cout << "未找到该订单！" << std::endl;
+        std::cout << "未找到该订单 id=" << order.getOrderId() << std::endl;
         return false;
     }
-    int newStatus = o->getStatus();
-    std::string newShippingAddress = o->getShippingAddress();
-    std::string newDiscountPolicy = o->getDiscountPolicy();
-    std::string input;
-    std::cout << "当前订单状态: " << newStatus << "，输入新状态(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") {
-        try {
-            newStatus = std::stoi(input);
-        } catch (...) {
-            std::cout << "状态输入无效，保持原状态。" << std::endl;
-        }
-    }
-    std::cout << "当前收货地址: " << newShippingAddress << "，输入新地址(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") newShippingAddress = input;
-    std::cout << "当前优惠策略: " << newDiscountPolicy << "，输入新策略(或q跳过): ";
-    std::getline(std::cin, input);
-    if (!input.empty() && input != "q") newDiscountPolicy = input;
-    std::cout << "确认修改？(y/n): ";
-    std::getline(std::cin, input);
-    if (input != "y" && input != "Y") {
-        std::cout << "操作已取消。" << std::endl;
+    if (!db->DTBupdateOrder(order)) {
+        std::cout << "数据库更新失败: order id=" << order.getOrderId() << std::endl;
         return false;
     }
-    o->setStatus(newStatus);
-    o->setShippingAddress(newShippingAddress);
-    o->setDiscountPolicy(newDiscountPolicy);
-    if (db->DTBupdateOrder(*o)) {
-        std::cout << "订单信息已更新！" << std::endl;
-        return true;
-    } else {
-        std::cout << "数据库更新失败！" << std::endl;
-        return false;
-    }
+    *o = order;
+    return true;
 }
 
+// 非交互式：删除订单
 bool Admin::removeOrder(const std::string& order_id) {
-    std::cout << "确定要删除订单ID为 " << order_id << " 的订单吗？(y/n): ";
-    char confirm;
-    std::cin >> confirm;
-    if (confirm != 'y' && confirm != 'Y') {
-        std::cout << "操作已取消。" << std::endl;
-        return false;
-    }
     auto it = std::remove_if(orders.begin(), orders.end(),
         [&order_id](const Order& o) { return o.getOrderId() == order_id; });
     if (it != orders.end()) {
         if (db->DTBdeleteOrder(order_id)) {
             orders.erase(it, orders.end());
             return true;
+        } else {
+            std::cout << "数据库删除失败: order id=" << order_id << std::endl;
+            return false;
         }
     }
+    // 若内存中不存在仍尝试删除数据库记录
+    if (db->DTBdeleteOrder(order_id)) return true;
     return false;
 }
 

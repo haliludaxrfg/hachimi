@@ -10,56 +10,99 @@
 #include "orderItem.h"
 #include "promotion.h"
 #include "TemporaryCart.h"
+#include "logger.h"
+#include "admin.h"
 #include <QTcpSocket>
 #include <QHostAddress>
 #include <QMutexLocker>
 #include <QString>
 #include <QByteArray>
 
-class TCPClient {
+class Client {
 private:
     class Impl;
     Impl* pImpl;
     std::recursive_mutex requestMutex;
 
 public:
-    TCPClient(const std::string& ip = "127.0.0.1", int port = 8888);
-    ~TCPClient();
+    Client(const std::string& ip = "127.0.0.1", int port = 8888);
+    ~Client();
 
-    TCPClient(const TCPClient&) = delete;
-    TCPClient& operator=(const TCPClient&) = delete;
-    TCPClient(TCPClient&&) = delete;
-    TCPClient& operator=(TCPClient&&) = delete;
+    Client(const Client&) = delete;
+    Client& operator=(const Client&) = delete;
+    Client(Client&&) = delete;
+    Client& operator=(Client&&) = delete;
 
-    bool connectToServer();
-    void disconnect();
-    bool isConnectionActive() const;
+    bool CLTconnectToServer();
+	bool CLTreconnect();
+    void CLTdisconnect();
+    bool CLTisConnectionActive() const;
 
-    std::string sendRequest(const std::string& request);
+    std::string CLTsendRequest(const std::string& request);
 
-    // 商品相关
-    std::vector<Good> getAllGoods();
-    bool updateGood(int id, const std::string& name, double price, int stock, const std::string& category);
+    // ---------------- 商品相关（对应 Server 的商品 API） ----------------
+    // 对应 SERgetAllGoods
+    std::vector<Good> CLTgetAllGoods();
+    // 对应 SERupdateGood
+    bool CLTupdateGood(int id, const std::string& name, double price, int stock, const std::string& category);
+    // 对应 SERaddGood
+    bool CLTaddGood(const std::string& name, double price, int stock, const std::string& category);
+    // 对应 SERgetGoodById
+    bool CLTgetGoodById(int id, Good& outGood); // 返回是否成功并通过 outGood 输出
+    // 对应 SERdeleteGood
+    bool CLTdeleteGood(int id);
+    // 对应 SERsearchGoodsByCategory
+    std::vector<Good> CLTsearchGoodsByCategory(const std::string& category);
 
-    // 用户相关
-    std::vector<User> getAllUsers();
-    bool addUser(const std::string& phone, const std::string& password);
+    // ---------------- 用户相关（对应 Server 的用户 API） ----------------
+    // 对应 SERgetAllAccounts
+    std::vector<User> CLTgetAllAccounts();
+    // 对应 SERlogin
+    bool CLTlogin(const std::string& phone, const std::string& password);
+    // 对应 SERupdateAccountPassword
+    bool CLTupdateAccountPassword(const std::string& userId, const std::string& oldPassword, const std::string& newPassword);
+    // 对应 SERdeleteAccount
+    bool CLTdeleteAccount(const std::string& phone, const std::string& password);
+    // 对应 SERaddAccount
+    bool CLTaddAccount(const std::string& phone, const std::string& password,const std::string& address);
+    // 对应 UPDATE_USER (server-side update of phone/password/address)
+    bool CLTupdateUser(const std::string& phone, const std::string& password, const std::string& address);
 
-    // 购物车相关（推荐：一次性保存/加载整个购物车）
-    TemporaryCart getCartForUser(const std::string& userPhone);
-    bool saveCartForUser(const TemporaryCart& cart);
-    bool updateCartForPromotions(const std::string& userPhone);
+    // ---------------- 购物车相关（对应 Server 的购物车 API） ----------------
+    // 对应 SERgetCart
+    TemporaryCart CLTgetCartForUser(const std::string& userPhone);
+    // 对应 SERsaveCart
+    bool CLTsaveCartForUser(const TemporaryCart& cart);
+    // 对应 SERaddToCart
+    bool CLTaddToCart(const std::string& userPhone, int productId, const std::string& productName, double price, int quantity);
+    // 对应 SERupdateCartItem
+    bool CLTupdateCartItem(const std::string& userPhone, int productId, int quantity);
+    // 对应 SERremoveFromCart
+    bool CLTremoveFromCart(const std::string& userPhone, int productId);
+    // 对应 SERupdateCartForPromotions
+    bool CLTupdateCartForPromotions(const std::string& userPhone);
 
-    // 订单相关
-    bool addSettledOrder(const Order& order);
-    std::vector<Order> getSettledOrders(const std::string& userPhone = "");
-    std::vector<Order> getSettledOrdersByStatus(int status);
-    std::vector<Order> getCompletedOrdersForUser(const std::string& userPhone);
-    bool deleteSettledOrder(const std::string& orderId, const std::string& userPhone);
-    bool returnSettledOrder(const std::string& orderId, const std::string& userPhone);
-    bool repairSettledOrder(const std::string& orderId, const std::string& userPhone);
+    // ---------------- 订单相关（对应 Server 的订单 API） ----------------
+    // 对应 SERgetAllOrders
+    std::vector<Order> CLTgetAllOrders(const std::string& userPhone = "");
+    // 对应 SERgetOrderDetail
+    bool CLTgetOrderDetail(const std::string& orderId, const std::string& userPhone, Order& outOrder);
+    // 对应 SERupdateOrderStatus
+    bool CLTupdateOrderStatus(const std::string& orderId, const std::string& userPhone, int newStatus);
+    // 对应 SERaddSettledOrder （保留两种便捷方式）
+    bool CLTaddSettledOrder(const Order& order); // 使用 Order 对象
+    bool CLTaddSettledOrderRaw(const std::string& orderId, const std::string& productName, int productId,
+                               int quantity, const std::string& userPhone, int status, const std::string& discountPolicy = "");
+    // 对应 SERreturnSettledOrder
+    bool CLTreturnSettledOrder(const std::string& orderId, const std::string& userPhone);
+    // 对应 SERrepairSettledOrder
+    bool CLTrepairSettledOrder(const std::string& orderId, const std::string& userPhone);
+    // 对应 SERdeleteSettledOrder
+    bool CLTdeleteSettledOrder(const std::string& orderId, const std::string& userPhone);
 
-    // 促销相关
-    std::vector<PromotionStrategy> getPromotions();
-    std::vector<PromotionStrategy> getProductPromotions(int productId);
+
+    // ---------------- 促销相关（对应 Server 的促销 API；暂可返回空 / 未实现） ----------------
+    std::vector<PromotionStrategy> CLTgetAllPromotions();
+    std::vector<PromotionStrategy> CLTgetPromotionsByProductId(int productId);
+
 };

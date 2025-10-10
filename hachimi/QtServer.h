@@ -18,7 +18,7 @@ protected:
         QObject::connect(clientSocket, &QTcpSocket::readyRead, [this, clientSocket]() {
             QByteArray data = clientSocket->readAll();
             std::string req(data.constData(), data.size());
-            std::string resp = logic->processRequest(req);
+            std::string resp = logic->SERprocessRequest(req);
             clientSocket->write(QByteArray::fromStdString(resp));
             });
         QObject::connect(clientSocket, &QTcpSocket::disconnected, clientSocket, &QTcpSocket::deleteLater);

@@ -38,11 +38,23 @@ bool DatabaseManager::DTBexecuteQuery(const std::string& query) {
 
 MYSQL_RES* DatabaseManager::DTBexecuteSelect(const std::string& query) {
 	if (!connection_) return nullptr;
+	// 运行查询
 	if (mysql_query(connection_, query.c_str()) != 0) {
-		std::cerr << "MySQL select query error: " << mysql_error(connection_) << std::endl;
+		std::cerr << "MySQL select query error: " << mysql_error(connection_) << " | Query: " << query << std::endl;
 		return nullptr;
 	}
-	return mysql_store_result(connection_);
+	// 获取结果集
+	MYSQL_RES* result = mysql_store_result(connection_);
+	if (!result) {
+		// 如果没有字段，说明该语句没有返回结果集（如 INSERT/UPDATE），否则说明是错误
+		if (mysql_field_count(connection_) == 0) {
+			return nullptr;
+		} else {
+			std::cerr << "MySQL store result failed: " << mysql_error(connection_) << " (errno: " << mysql_errno(connection_) << ") | Query: " << query << std::endl;
+			return nullptr;
+		}
+	}
+	return result;
 }
 
 //-----
@@ -51,13 +63,13 @@ MYSQL_RES* DatabaseManager::DTBexecuteSelect(const std::string& query) {
 DatabaseManager::DatabaseManager(const std::string& host, const std::string& user,
 	const std::string& password, const std::string& database, unsigned int port)
 	: host_(host), user_(user), password_(password), database_(database), port_(port), connection_(nullptr) {
+	// 注：原代码强制使用127.0.0.1和3306，这里改为使用传入参数以避免连接到错误实例
 }
 DatabaseManager::~DatabaseManager() {
 	DTBdisconnect();
 }
 
 bool DatabaseManager::DTBinitialize() {
-	DTBdisconnect();
 	return DTBconnect();
 }
 
@@ -89,9 +101,21 @@ bool DatabaseManager::DTBsaveUser(const User& u) {
 
 bool DatabaseManager::DTBupdateUser(const User& u) {
 	if (!connection_) return false;
-	std::string query = "UPDATE users SET password='" + u.getPassword() +
+	// 统一使用表名 user（project 中其他地方也使用 user）
+	std::string query = "UPDATE user SET password='" + u.getPassword() +
 		"', address='" + u.getAddress() + "' WHERE phone='" + u.getPhone() + "'";
-	return DTBexecuteQuery(query);
+	if (mysql_query(connection_, query.c_str()) == 0) {
+		// 可选：检查受影响行数，0 表示未找到匹配行
+		my_ulonglong affected = mysql_affected_rows(connection_);
+		if (affected == 0) {
+			std::cerr << "DTBupdateUser: 未找到匹配用户 phone=" << u.getPhone() << std::endl;
+			return false;
+		}
+		return true;
+	} else {
+		std::cerr << "MySQL update error: " << mysql_error(connection_) << " | Query: " << query << std::endl;
+		return false;
+	}
 }
 
 bool DatabaseManager::DTBloadUser(const std::string& phone, User& u) {
@@ -111,8 +135,19 @@ bool DatabaseManager::DTBloadUser(const std::string& phone, User& u) {
 
 bool DatabaseManager::DTBdeleteUser(const std::string& phone) {
 	if (!connection_) return false;
-	std::string query = "DELETE FROM users WHERE phone='" + phone + "'";
-	return DTBexecuteQuery(query);
+	// 统一使用表名 user
+	std::string query = "DELETE FROM user WHERE phone='" + phone + "'";
+	if (mysql_query(connection_, query.c_str()) == 0) {
+		my_ulonglong affected = mysql_affected_rows(connection_);
+		if (affected == 0) {
+			std::cerr << "DTBdeleteUser: 未找到匹配用户 phone=" << phone << std::endl;
+			return false;
+		}
+		return true;
+	} else {
+		std::cerr << "MySQL delete error: " << mysql_error(connection_) << " | Query: " << query << std::endl;
+		return false;
+	}
 }
 
 std::vector<User> DatabaseManager::DTBloadAllUsers() {
@@ -174,9 +209,40 @@ bool DatabaseManager::DTBdeleteGood(int id) {
 std::vector<Good> DatabaseManager::DTBloadAllGoods() {
 	std::vector<Good> goods;
 	if (!connection_) return goods;
+
 	std::string query = "SELECT id, name, price, stock, category FROM good";
+	// 调试性日志：显示 connection 指针与将要执行的查询
+	std::cout << "DTBloadAllGoods: this=" << static_cast<void*>(this)
+	          << " connection_=" << static_cast<void*>(connection_)
+	          << " Query=\"" << query << "\"" << std::endl;
+
 	MYSQL_RES* result = DTBexecuteSelect(query);
-	if (!result) return goods;
+	if (!result) {
+		// 如果 DTBexecuteSelect 返回 nullptr，额外输出当前数据库名与错误信息以便排查
+		std::cout << "DTBloadAllGoods: DTBexecuteSelect 返回 nullptr。";
+		if (connection_) {
+			// 获取当前默认数据库名，便于确认是否连接到期望的 schema
+			if (mysql_query(connection_, "SELECT DATABASE()") == 0) {
+				MYSQL_RES* dbRes = mysql_store_result(connection_);
+				if (dbRes) {
+					MYSQL_ROW dbRow = mysql_fetch_row(dbRes);
+					if (dbRow && dbRow[0]) {
+						std::cout << " Current DATABASE(): " << dbRow[0];
+					}
+					mysql_free_result(dbRes);
+				}
+			}
+			std::cerr << " MySQL error: " << mysql_error(connection_) << std::endl;
+		} else {
+			std::cout << " connection_ is nullptr." << std::endl;
+		}
+		return goods;
+	}
+
+	// 输出结果行数，帮助判定表是否为空
+	my_ulonglong rows = mysql_num_rows(result);
+	std::cout << "DTBloadAllGoods: mysql_num_rows = " << rows << std::endl;
+
 	MYSQL_ROW row;
 	while ((row = mysql_fetch_row(result))) {
 		goods.emplace_back(std::stoi(row[0] ? row[0] : "0"),

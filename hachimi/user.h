@@ -16,6 +16,7 @@ class User {
 	std::vector<Order> orders; // 新增：订单列表
 	std::vector<OrderItem> orderItems; // 新增：订单项列表
 public:
+	User(); // 添加默认构造声明
 	User(std::string phone, std::string password, std::string address);
 	// 基本信息
 	std::string getPhone()const;
