@@ -20,3 +20,20 @@ void Order::showOrder() const {
 				  << std::endl;
 	}
 }
+
+Order::Order(const TemporaryCart& cart, const std::string& new_order_id, int order_status)
+	: order_id(new_order_id), user_phone(cart.user_phone), shipping_address(cart.shipping_address),
+	  status(order_status), discount_policy(cart.discount_policy),
+	  total_amount(cart.total_amount), discount_amount(cart.discount_amount),
+	  final_amount(cart.final_amount), items() {
+	for (const auto& ci : cart.items) {
+		OrderItem oi;
+		oi.order_id = order_id;
+		oi.good_id = ci.good_id;
+		oi.good_name = ci.good_name;
+		oi.price = ci.price;
+		oi.quantity = ci.quantity;
+		oi.subtotal = ci.subtotal;
+		items.push_back(oi);
+	}
+}

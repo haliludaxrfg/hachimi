@@ -100,6 +100,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="admin.cpp" />
+    <ClCompile Include="AdminWindow.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="databaseManager.cpp" />
     <ClCompile Include="logger.cpp" />
@@ -112,14 +114,18 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
+    <ClCompile Include="TemporaryCart.cpp" />
     <ClCompile Include="user.cpp" />
     <ClCompile Include="good.cpp" />
     <ClCompile Include="userManager.cpp" />
+    <ClCompile Include="UserWindow.cpp" />
     <QtRcc Include="hachimi.qrc" />
     <QtUic Include="hachimi.ui" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="admin.h" />
+    <QtMoc Include="AdminWindow.h" />
     <ClInclude Include="cartItem.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="databaseManager.h" />
@@ -128,6 +134,7 @@
     <ClInclude Include="order.h" />
     <ClInclude Include="orderItem.h" />
     <ClInclude Include="promotion.h" />
+    <QtMoc Include="UserWindow.h" />
     <QtMoc Include="LoginDialog.h" />
     <QtMoc Include="QtServer.h" />
     <ClInclude Include="Server.h" />

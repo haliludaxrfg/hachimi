@@ -6,11 +6,15 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QPlainTextEdit>
-
+#include <QInputDialog>
+#include <QMessageBox>
 #include <mysql.h>
 #include <iostream>
 //#include "hachimi.h"
 //ccbccbccbc4nmb
+#include "admin.h"
+#include "AdminWindow.h"
+#include "AdminWindow.h"
 #include "cartItem.h"
 #include "Client.h"
 #include "databaseManager.h"
@@ -23,7 +27,10 @@
 #include "TemporaryCart.h"
 #include "user.h"
 #include "userManager.h"
+#include "UserWindow.h"
 #include "LoginDialog.h"
+
+
 
 // 自定义streambuf，将cout输出重定向到QPlainTextEdit
 class QtLogStream : public std::streambuf {
@@ -75,7 +82,7 @@ int main(int argc, char* argv[])
 
     // 1. 测试数据库连接
     DatabaseManager db("localhost", "root", "a5B3#eF7hJ", "remake", 3306);
-    if (db.initialize()) {
+    if (db.DTBinitialize()) {
         std::cout << "数据库连接成功！" << std::endl;
     }
     else {
@@ -92,7 +99,6 @@ int main(int argc, char* argv[])
     TCPClient client("127.0.0.1", 8888);
     if (client.connectToServer()) {
         std::cout << "客户端连接服务器成功！" << std::endl;
-        // 4. 发送简单请求（假设服务器有processRequest实现）
         std::string response = client.sendRequest("GET_ALL_GOODS");
         std::cout << "服务器响应: " << response << std::endl;
     }
@@ -100,18 +106,38 @@ int main(int argc, char* argv[])
         std::cout << "客户端连接服务器失败！" << std::endl;
     }
 
-    // 注册和登录测试
-    std::vector<User> users;
-    // 1. 启动时从数据库加载所有用户
-    users = db.loadAllUsers();
+    // ===== 新增：身份选择 =====
+    QStringList roles;
+    roles << "管理员" << "用户";
+    bool ok = false;
+    QString role = QInputDialog::getItem(nullptr, "选择身份", "请选择登录身份：", roles, 0, false, &ok);
+    if (!ok) return 0;
 
-    LoginDialog loginDlg(users, &db);
-    if (loginDlg.exec() == QDialog::Accepted) {
-        std::cout << "用户登录成功，索引: " << loginDlg.getLoginIndex() << std::endl;
-        // 可以继续后续操作
+    if (role == "管理员") {
+        bool ok = false;
+        QString inputPwd = QInputDialog::getText(
+            nullptr, "管理员登录", "请输入管理员密码：", QLineEdit::Password, "", &ok);
+        if (!ok) return 0;
+        if (inputPwd.toStdString() != Admin::password) {
+            QMessageBox::warning(nullptr, "登录失败", "管理员密码错误！");
+            return 0;
+        }
+        AdminWindow* adminWin = new AdminWindow();
+        adminWin->show();
     } else {
-        std::cout << "用户未登录，程序退出。" << std::endl;
-        return 0;
+        // 用户注册和登录
+        std::vector<User> users;
+        users = db.DTBloadAllUsers();
+
+        LoginDialog loginDlg(users, &db);
+        if (loginDlg.exec() == QDialog::Accepted) {
+            std::cout << "用户登录成功，索引: " << loginDlg.getLoginIndex() << std::endl;
+            UserWindow* userWin = new UserWindow();
+            userWin->show();
+        } else {
+            std::cout << "用户未登录，程序退出。" << std::endl;
+            return 0;
+        }
     }
 
     // 5. 停止服务器
@@ -125,39 +151,3 @@ int main(int argc, char* argv[])
 
     return app.exec();
 }
-/*
-int connectTest() {
-    // 1. 测试数据库连接
-    DatabaseManager db("localhost", "root", "a5B3#eF7hJ", "remake", 3306);
-    if (db.initialize()) {
-        std::cout << "数据库连接成功！" << std::endl;
-    }
-    else {
-        std::cout << "数据库连接失败！" << std::endl;
-        return 1;
-    }
-
-    // 2. 启动服务器
-    Server server(8888);
-    server.start();
-    std::cout << "服务器已启动。" << std::endl;
-
-    // 3. 启动客户端并连接服务器
-    TCPClient client("127.0.0.1", 8888);
-    if (client.connectToServer()) {
-        std::cout << "客户端连接服务器成功！" << std::endl;
-        // 4. 发送简单请求（假设服务器有processRequest实现）
-        std::string response = client.sendRequest("GET_ALL_GOODS");
-        std::cout << "服务器响应: " << response << std::endl;
-    }
-    else {
-        std::cout << "客户端连接服务器失败！" << std::endl;
-    }
-
-    // 5. 停止服务器
-    server.stop();
-    std::cout << "服务器已停止。" << std::endl;
-    system("pause");
-    return 0;
-}
-*/

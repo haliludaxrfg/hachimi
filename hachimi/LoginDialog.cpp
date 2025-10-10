@@ -82,12 +82,12 @@ void LoginDialog::onRegisterClicked() {
 
     // 先查数据库是否已存在
     User tmpUser("", "", "");
-    if (db->loadUser(phone.toStdString(), tmpUser)) {
+    if (db->DTBloadUser(phone.toStdString(), tmpUser)) {
         QMessageBox::warning(this, "注册", "注册失败，手机号已存在！");
         return;
     }
     // 插入数据库
-    if (db->addUser(User(phone.toStdString(), pwd.toStdString(), addr.toStdString()))) {
+    if (db->DTBaddUser(User(phone.toStdString(), pwd.toStdString(), addr.toStdString()))) {
         usersRef.push_back(User(phone.toStdString(), pwd.toStdString(), addr.toStdString()));
         QMessageBox::information(this, "注册", "注册成功！");
     } else {

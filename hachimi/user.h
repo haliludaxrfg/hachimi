@@ -5,7 +5,6 @@
 #include "good.h"
 #include "cartItem.h"
 #include "order.h"
-
 #include "orderItem.h"
 
 class User {
@@ -25,16 +24,10 @@ public:
 	void setPassword(std::string newpassword);
 	void setAddress(std::string newaddress);
 
+
 	// 购物车相关
 	TemporaryCart& getCart();
 	void showCart() const;
-
-	// 商品相关
-	void addGood(const Good& g);
-	bool removeGood(int index);
-	Good* findGood(int index);
-	bool updateGood(int index, const Good& g);
-	void showGoods() const;
 
 	// 订单相关
 	std::vector<Order>& getOrders();

@@ -23,10 +23,10 @@ private:
     std::string database_;
     unsigned int port_;
 
-    bool connect();
-    void disconnect();
-    bool executeQuery(const std::string& query);
-    MYSQL_RES* executeSelect(const std::string& query);
+    bool DTBconnect();
+    void DTBdisconnect();
+    bool DTBexecuteQuery(const std::string& query);
+    MYSQL_RES* DTBexecuteSelect(const std::string& query);
 
 public:
     DatabaseManager(const std::string& host, const std::string& user,
@@ -35,60 +35,61 @@ public:
     ~DatabaseManager();
 
     // 连接管理
-    bool initialize();
-    bool isConnected() const;
+    bool DTBinitialize();
+    bool DTBisConnected() const;
 
-    
     // 用户管理
-	bool addUser(const User& u); // 新增用户
-    bool saveUser(const User& u);
-    bool updateUser(const User& u);
-    bool loadUser(const std::string& phone, User& u);
-    bool deleteUser(const std::string& phone);
-    std::vector<User> loadAllUsers();
+    bool DTBaddUser(const User& u); // 新增用户
+    bool DTBsaveUser(const User& u);
+    bool DTBupdateUser(const User& u);
+    bool DTBloadUser(const std::string& phone, User& u);
+    bool DTBdeleteUser(const std::string& phone);
+    std::vector<User> DTBloadAllUsers();
 
     // 商品管理
-    bool saveGood(const Good& g);
-    bool updateGood(const Good& g);
-    bool loadGood(int id, Good& g);
-    bool deleteGood(int id);
-    std::vector<Good> loadAllGoods();
-    std::vector<Good> loadGoodsByCategory(const std::string& category);
-    bool updateGoodStock(int good_id, int new_stock);
+    bool DTBsaveGood(const Good& g);
+    bool DTBupdateGood(const Good& g);
+    bool DTBloadGood(int id, Good& g);
+    bool DTBdeleteGood(int id);
+    std::vector<Good> DTBloadAllGoods();
+    std::vector<Good> DTBloadGoodsByCategory(const std::string& category);
+    bool DTBupdateGoodStock(int good_id, int new_stock);
 
     // 订单管理
-    bool saveOrder(const Order& o);
-    bool updateOrderStatus(const std::string& order_id, int status);
-    bool loadOrder(const std::string& order_id, Order& o);
-    bool deleteOrder(const std::string& order_id);
-    std::vector<Order> loadOrdersByUser(const std::string& user_phone);
-    std::vector<Order> loadOrdersByStatus(int status);
-    std::vector<Order> loadRecentOrders(int limit = 50);
+    bool DTBsaveOrder(const Order& o);
+    bool DTBupdateOrder(const Order& o);
+    bool DTBupdateOrderStatus(const std::string& order_id, int status);
+    bool DTBloadOrder(const std::string& order_id, Order& o);
+    bool DTBdeleteOrder(const std::string& order_id);
+    std::vector<Order> DTBloadOrdersByUser(const std::string& user_phone);
+    std::vector<Order> DTBloadOrdersByStatus(int status);
+    std::vector<Order> DTBloadRecentOrders(int limit = 50);
 
     // 订单项管理
-    bool saveOrderItem(const OrderItem& item);
-    std::vector<OrderItem> loadOrderItems(const std::string& order_id);
-    bool deleteOrderItems(const std::string& order_id);
+    bool DTBsaveOrderItem(const OrderItem& item);
+    bool DTBupdateOrderItem(const OrderItem& item);
+    std::vector<OrderItem> DTBloadOrderItems(const std::string& order_id);
+    bool DTBdeleteOrderItems(const std::string& order_id);
 
     // 临时购物车管理
-    bool saveTemporaryCart(const TemporaryCart& cart);
-    bool updateTemporaryCart(const TemporaryCart& cart);
-    bool loadTemporaryCart(const std::string& cart_id, TemporaryCart& cart);
-    bool deleteTemporaryCart(const std::string& cart_id);
-    std::vector<TemporaryCart> loadExpiredCarts();
-    bool cleanupExpiredCarts();
+    bool DTBsaveTemporaryCart(const TemporaryCart& cart);
+    bool DTBupdateTemporaryCart(const TemporaryCart& cart);
+    bool DTBloadTemporaryCart(const std::string& cart_id, TemporaryCart& cart);
+    bool DTBdeleteTemporaryCart(const std::string& cart_id);
+    std::vector<TemporaryCart> DTBloadExpiredCarts();
+    bool DTBcleanupExpiredCarts();
 
     // 购物车项管理
-    bool saveCartItem(const CartItem& item, const std::string& cart_id);
-    bool updateCartItem(const CartItem& item, const std::string& cart_id);
-    bool deleteCartItem(int good_id, const std::string& cart_id);
-    bool deleteAllCartItems(const std::string& cart_id);
-    std::vector<CartItem> loadCartItems(const std::string& cart_id);
+    bool DTBsaveCartItem(const CartItem& item, const std::string& cart_id);
+    bool DTBupdateCartItem(const CartItem& item, const std::string& cart_id);
+    bool DTBdeleteCartItem(int good_id, const std::string& cart_id);
+    bool DTBdeleteAllCartItems(const std::string& cart_id);
+    std::vector<CartItem> DTBloadCartItems(const std::string& cart_id);
 
     // 促销策略
-    bool savePromotionStrategy(const std::string& name, const std::string& type,
+    bool DTBsavePromotionStrategy(const std::string& name, const std::string& type,
         const std::string& config, const std::string& conditions = "");
-    bool updatePromotionStrategy(const std::string& name, bool is_active);
-    std::map<std::string, std::string> loadPromotionStrategy(const std::string& name);
-    std::vector<std::map<std::string, std::string>> loadAllPromotionStrategies(bool active_only = true);
+    bool DTBupdatePromotionStrategy(const std::string& name, bool is_active);
+    std::map<std::string, std::string> DTBloadPromotionStrategy(const std::string& name);
+    std::vector<std::map<std::string, std::string>> DTBloadAllPromotionStrategies(bool active_only = true);
 };

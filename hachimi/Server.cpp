@@ -7,7 +7,7 @@ Server::Server(int port)
     : port(port), server(nullptr)
 {
     dbManager = new DatabaseManager("localhost", "root", "a5B3#eF7hJ", "remake", 3306);
-    if (!dbManager->initialize()) {
+    if (!dbManager->DTBinitialize()) {
         std::cerr << "数据库连接失败！" << std::endl;
     } else {
         std::cout << "数据库连接成功！" << std::endl;

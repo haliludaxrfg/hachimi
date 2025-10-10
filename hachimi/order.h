@@ -33,6 +33,11 @@ public:
     double getDiscountAmount() const { return discount_amount; }
     double getFinalAmount() const { return final_amount; }
     const std::vector<OrderItem>& getItems() const { return items; }
-    //
+    //setXX
+	void setItems(const std::vector<OrderItem>& newItems) { items = newItems; }
+	void setStatus(int newStatus) { status = newStatus; }
+	void setShippingAddress(const std::string& newAddress) { shipping_address = newAddress; }
+	void setDiscountPolicy(const std::string& newPolicy) { discount_policy = newPolicy; }
+
 
 };

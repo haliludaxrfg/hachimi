@@ -12,11 +12,6 @@ double Good::getPrice() const { return price; }
 int Good::getStock() const { return stock; }
 std::string Good::getCategory() const { return category; }
 
-void Good::setName(std::string newname) { name = newname; }
-void Good::setPrice(double newprice) { price = newprice; }
-void Good::setStock(int newstock) { stock = newstock; }
-void Good::setCategory(std::string newcategory) { category = newcategory; }
-
 Good::Good() : id(0), name(""), price(0.0), stock(0), category("") {}
 Good::~Good() {}
 

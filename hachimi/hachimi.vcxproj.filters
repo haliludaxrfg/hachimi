@@ -64,6 +64,18 @@
     <ClCompile Include="LoginDialog.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="TemporaryCart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="admin.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AdminWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="databaseManager.h">
@@ -102,6 +114,9 @@
     <ClInclude Include="logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="admin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\document\Image-Line\Downloads\Themes\Community Vision Themes Vol 1\Loopy Fruits.html">
@@ -125,6 +140,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="LoginDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="UserWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AdminWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

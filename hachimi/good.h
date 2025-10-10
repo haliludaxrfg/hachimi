@@ -2,7 +2,9 @@
 #include <string>
 #include <iostream>
 
+
 class Good {
+	friend class DatabaseManager;
     int id; //prikey
     std::string name;
     double price; //保留两位小数
@@ -21,8 +23,4 @@ public:
     int getStock() const;
     std::string getCategory() const;
 
-    void setName(std::string newname);
-    void setPrice(double newprice);
-    void setStock(int newstock);
-    void setCategory(std::string newcategory);
 };
