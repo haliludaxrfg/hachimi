@@ -8,7 +8,7 @@
 #include "cartItem.h"
 #include "order.h"
 #include "orderItem.h"
-#include "promotion.h"
+#include "PromotionStrategy.h"
 #include "TemporaryCart.h"
 #include "logger.h"
 #include "admin.h"
@@ -101,8 +101,9 @@ public:
     bool CLTdeleteSettledOrder(const std::string& orderId, const std::string& userPhone);
 
 
-    // ---------------- 促销相关（对应 Server 的促销 API；暂可返回空 / 未实现） ----------------
-    std::vector<PromotionStrategy> CLTgetAllPromotions();
-    std::vector<PromotionStrategy> CLTgetPromotionsByProductId(int productId);
+    // ---------------- 促销相关（对应 Server 的促销 API） ----------------
+    // 改为返回策略对象的智能指针，避免对象切割和抽象类型问题
+    std::vector<std::shared_ptr<PromotionStrategy>> CLTgetAllPromotions();
+    std::vector<std::shared_ptr<PromotionStrategy>> CLTgetPromotionsByProductId(int productId);
 
 };

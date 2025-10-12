@@ -34,6 +34,13 @@ private slots:
     void onModifyCartItem();
     void onRemoveCartItem();
 
+    // ------- 新增：订单相关槽 -------
+    void refreshOrders();
+    void onViewOrderDetail();
+    void onReturnOrder();
+    void onRepairOrder();
+    void onDeleteOrder();
+
 private:
     QTabWidget* tabWidget;
     QWidget* userTab;   // 个人信息管理
@@ -64,4 +71,12 @@ private:
     QPushButton* modifyCartBtn;
     QPushButton* removeCartBtn;
     QPushButton* checkoutBtn;
+
+    // 订单 UI
+    QTableWidget* orderTable;
+    QPushButton* refreshOrdersBtn;
+    QPushButton* viewOrderBtn;
+    QPushButton* returnOrderBtn;
+    QPushButton* repairOrderBtn;
+    QPushButton* deleteOrderBtn;
 };

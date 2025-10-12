@@ -30,6 +30,14 @@ private slots:
     void onDeleteGood();
     void refreshOrders();
 
+    // 新增：订单操作槽
+    void onReturnOrder();
+    void onRepairOrder();
+    void onDeleteOrder();
+
+    // 新增：查看订单详情（管理员）
+    void onViewOrderDetail();
+
     // 新增：返回身份选择界面槽
     void onReturnToIdentitySelection();
 
@@ -65,6 +73,12 @@ private:
 
     QTableWidget* ordersTable;
     QPushButton* refreshOrdersBtn;
+    // 新增：订单操作按钮
+    QPushButton* returnOrderBtn;
+    QPushButton* repairOrderBtn;
+    QPushButton* deleteOrderBtn;
+    // 新增：查看订单详情按钮
+    QPushButton* viewOrderBtn;
 
     // ------- 购物车管理 UI -------
     QWidget* cartTab;

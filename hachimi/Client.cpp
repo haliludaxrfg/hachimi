@@ -5,6 +5,7 @@
 #include <QCoreApplication>
 #include <sstream>
 
+
 using nlohmann::json;
 
 class Client::Impl {
@@ -567,30 +568,42 @@ bool Client::CLTupdateCartForPromotions(const std::string& userPhone) {
 
 // ---------------- 订单相关 ----------------
 bool Client::CLTaddSettledOrder(const Order& order) {
-    json j;
+    nlohmann::json j;
     j["orderId"] = order.getOrderId();
     j["userPhone"] = order.getUserPhone();
     j["status"] = order.getStatus();
     j["discountPolicy"] = order.getDiscountPolicy();
-    if (!order.getItems().empty()) {
-        const OrderItem& it = order.getItems().front();
-        j["productName"] = it.getGoodName();
-        j["productId"] = it.getGoodId();
-        j["quantity"] = it.getQuantity();
+    j["items"] = nlohmann::json::array();
+    for (const auto& it : order.getItems()) {
+        nlohmann::json ji;
+        ji["productName"] = it.getGoodName();
+        ji["productId"] = it.getGoodId();
+        ji["price"] = it.getPrice();
+        ji["quantity"] = it.getQuantity();
+        ji["subtotal"] = it.getSubtotal();
+        j["items"].push_back(ji);
     }
-    else {
-        j["productName"] = "";
-        j["productId"] = 0;
-        j["quantity"] = 0;
+
+    std::string req = std::string("ADD_SETTLED_ORDER ") + j.dump();
+    Logger::instance().info(std::string("CLTaddSettledOrder: request: ") + req);
+
+    std::string resp = CLTsendRequest(req);
+    Logger::instance().info(std::string("CLTaddSettledOrder: raw response: ") + resp);
+
+    if (resp.empty()) {
+        Logger::instance().fail("CLTaddSettledOrder: empty response from server");
+        return false;
     }
-    std::string resp = CLTsendRequest(std::string("ADD_SETTLED_ORDER ") + j.dump());
-    if (resp.empty()) return false;
     try {
-        auto r = json::parse(resp);
+        auto r = nlohmann::json::parse(resp);
+        if (r.is_object() && r.contains("error")) {
+            Logger::instance().fail("ADD_SETTLED_ORDER 返回错误: " + r.dump());
+            return false;
+        }
         return r.value("result", std::string("")) == "added";
     }
-    catch (...) {
-        Logger::instance().fail("ADD_SETTLED_ORDER 解析失败");
+    catch (const std::exception& ex) {
+        Logger::instance().fail(std::string("ADD_SETTLED_ORDER 解析失败: ") + ex.what() + " 原始响应: " + resp);
         return false;
     }
 }
@@ -626,9 +639,63 @@ std::vector<Order> Client::CLTgetAllOrders(const std::string& userPhone) {
         auto arr = json::parse(resp);
         if (!arr.is_array()) { Logger::instance().fail("GET_ALL_ORDERS 响应不是数组"); return out; }
         for (const auto& e : arr) {
-            std::string oid = e.value("order_id", std::string(""));
+            std::string oid = e.value("order_id", e.value("orderId", std::string("")));
             int status = e.value("status", 0);
+            double final_amount = e.value("final_amount", e.value("finalAmount", 0.0));
+            double total_amount = e.value("total_amount", e.value("totalAmount", 0.0));
+            std::string user_phone = e.value("user_phone", e.value("userPhone", std::string("")));
+            // 兼容不同字段名：如果服务器只返回 final_amount，则将其作为 total_amount 的回退值
+            if ((total_amount == 0.0) && (final_amount != 0.0)) {
+                total_amount = final_amount;
+            }
+
             Order o(TemporaryCart(), oid, status);
+            o.setFinalAmount(final_amount);
+            o.setTotalAmount(total_amount);
+            if (!user_phone.empty()) o.setUserPhone(user_phone);
+
+            // 尝试解析 items（如果服务器在列表响应中包含简要的 items 信息）
+            std::vector<OrderItem> items;
+            if (e.contains("items") && e["items"].is_array()) {
+                for (const auto& it : e["items"]) {
+                    try {
+                        OrderItem oi;
+                        // 兼容不同字段命名（good_id / productId，good_name / productName）
+                        if (it.contains("good_id")) oi.setGoodId(it.value("good_id", 0));
+                        else if (it.contains("productId")) oi.setGoodId(it.value("productId", 0));
+                        if (it.contains("good_name")) oi.setGoodName(it.value("good_name", std::string("")));
+                        else if (it.contains("productName")) oi.setGoodName(it.value("productName", std::string("")));
+                        // 价格/数量/小计
+                        double price = it.value("price", 0.0);
+                        int qty = it.value("quantity", it.value("qty", 0));
+                        double subtotal = it.value("subtotal", price * qty);
+                        oi.setPrice(price);
+                        oi.setQuantity(qty);
+                        oi.setSubtotal(subtotal);
+                        oi.setOrderId(oid);
+                        items.push_back(oi);
+                    }
+                    catch (...) {
+                        Logger::instance().warn("GET_ALL_ORDERS: 解析某个订单项失败");
+                        continue;
+                    }
+                }
+            } else {
+                // 有时服务器返回 items_count / count 字段而非数组，尝试读取
+                int count = 0;
+                if (e.contains("items_count")) count = e.value("items_count", 0);
+                else if (e.contains("count")) count = e.value("count", 0);
+                if (count > 0) {
+                    items.reserve(count);
+                    for (int i = 0; i < count; ++i) {
+                        OrderItem oi;
+                        oi.setOrderId(oid);
+                        items.push_back(oi);
+                    }
+                }
+            }
+
+            if (!items.empty()) o.setItems(items);
             out.push_back(o);
         }
     }
@@ -645,11 +712,31 @@ bool Client::CLTgetOrderDetail(const std::string& orderId, const std::string& us
     try {
         auto jo = json::parse(resp);
         if (jo.is_object() && jo.contains("error")) { Logger::instance().fail("GET_ORDER_DETAIL 返回错误: " + jo.dump()); return false; }
-        outOrder = Order(); // default then fill if possible via TemporaryCart ctor is used elsewhere
-        // Fill fields if matching structure exists
-        // set basic fields if present
-        // Note: Order 的具体可写接口有限，这 keeps it conservative:
-        // 如果需要更完整填充，请在 Order 类添加对应 setter 或构造器
+        // 填充 Order
+        outOrder = Order(); // reset
+        if (jo.contains("order_id")) outOrder.setOrderId(jo.value("order_id", std::string("")));
+        if (jo.contains("user_phone")) outOrder.setUserPhone(jo.value("user_phone", std::string("")));
+        if (jo.contains("shipping_address")) outOrder.setShippingAddress(jo.value("shipping_address", std::string("")));
+        if (jo.contains("status")) outOrder.setStatus(jo.value("status", 0));
+        if (jo.contains("total_amount")) outOrder.setTotalAmount(jo.value("total_amount", 0.0));
+        if (jo.contains("discount_amount")) outOrder.setDiscountAmount(jo.value("discount_amount", 0.0));
+        if (jo.contains("final_amount")) outOrder.setFinalAmount(jo.value("final_amount", 0.0));
+        if (jo.contains("discount_policy")) outOrder.setDiscountPolicy(jo.value("discount_policy", std::string("")));
+        // items
+        std::vector<OrderItem> items;
+        if (jo.contains("items") && jo["items"].is_array()) {
+            for (const auto& it : jo["items"]) {
+                OrderItem oi;
+                if (it.contains("good_id")) oi.setGoodId(it.value("good_id", 0));
+                if (it.contains("good_name")) oi.setGoodName(it.value("good_name", std::string("")));
+                if (it.contains("price")) oi.setPrice(it.value("price", 0.0));
+                if (it.contains("quantity")) oi.setQuantity(it.value("quantity", 0));
+                if (it.contains("subtotal")) oi.setSubtotal(it.value("subtotal", 0.0));
+                oi.setOrderId(orderId);
+                items.push_back(oi);
+            }
+        }
+        outOrder.setItems(items);
         return true;
     }
     catch (...) {
@@ -717,7 +804,45 @@ bool Client::CLTdeleteSettledOrder(const std::string& orderId, const std::string
 }
 
 // ---------------- 促销（占位） ----------------
-std::vector<PromotionStrategy> Client::CLTgetAllPromotions() { return {}; }
-std::vector<PromotionStrategy> Client::CLTgetPromotionsByProductId(int) { return {}; }
+std::vector<std::shared_ptr<PromotionStrategy>> Client::CLTgetAllPromotions() {
+    std::vector<std::shared_ptr<PromotionStrategy>> out;
+    std::string resp = CLTsendRequest("GET_ALL_PROMOTIONS");
+    if (resp.empty()) return out;
+    try {
+        auto arr = nlohmann::json::parse(resp);
+        if (!arr.is_array()) return out;
+        for (const auto& e : arr) {
+            try {
+                // e["policy"] 是 JSON 对象
+                if (e.contains("policy")) {
+                    auto strat = PromotionStrategy::fromJson(e["policy"]);
+                    out.push_back(strat);
+                }
+            } catch (const std::exception&) {
+                // 跳过解析失败的策略
+                continue;
+            }
+        }
+    } catch (...) {}
+    return out;
+}
 
-
+std::vector<std::shared_ptr<PromotionStrategy>> Client::CLTgetPromotionsByProductId(int productId) {
+    std::vector<std::shared_ptr<PromotionStrategy>> out;
+    std::string req = std::string("GET_PROMOTIONS_BY_PRODUCT_ID ") + std::to_string(productId);
+    std::string resp = CLTsendRequest(req);
+    if (resp.empty()) return out;
+    try {
+        auto arr = nlohmann::json::parse(resp);
+        if (!arr.is_array()) return out;
+        for (const auto& e : arr) {
+            try {
+                if (e.contains("policy")) {
+                    auto strat = PromotionStrategy::fromJson(e["policy"]);
+                    out.push_back(strat);
+                }
+            } catch (...) { continue; }
+        }
+    } catch (...) {}
+    return out;
+}

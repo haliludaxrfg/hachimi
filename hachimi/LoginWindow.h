@@ -48,3 +48,4 @@ private:
     // 新增：记录启动模式（true = 管理员，false = 普通用户）
     bool startAsAdmin = false;
 };
+

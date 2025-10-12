@@ -11,7 +11,7 @@
 #include "orderItem.h"
 #include "TemporaryCart.h"
 #include "cartItem.h"
-#include "promotion.h"
+#include "PromotionStrategy.h"
 #include <nlohmann/json.hpp>
 using nlohmann::json;
 class DatabaseManager {

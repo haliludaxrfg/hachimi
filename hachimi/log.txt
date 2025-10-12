@@ -1,1316 +1,395 @@
-[2025-10-11 17:56:06][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 17:56:06][INFO] 数据库连接成功！
-[2025-10-11 17:56:06][INFO] 服务器已启动。
-[2025-10-11 17:56:06][INFO] 客户端连接服务器成功！
-[2025-10-11 17:56:06][INFO] Socket通信测试成功，收到回显: socket_test_hello
-[2025-10-11 17:56:06][INFO] 调试：开始请求所有商品(GET_ALL_GOODS)...
-[2025-10-11 17:56:06][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 17:56:06][WARN] Server SERgetAllGoods: 查询结果为空，返回提示信息。
-[2025-10-11 17:56:06][INFO] Server SERgetAllGoods: 返回JSON内容: {"error":"目前没有商品！"}
-[2025-10-11 17:56:06][INFO] Server SERgetAllGoods: 已写入 localJSONOutPut.json
-[2025-10-11 17:56:06][INFO] Server GET_ALL_GOODS 响应内容: {"error":"目前没有商品！"}
-[2025-10-11 17:56:06][INFO] testJSONOutput: 已将JSON内容写入 test_json_output.txt
-[2025-10-11 17:56:06][INFO] 服务器原始响应: {"error":"目前没有商品！"}
-[2025-10-11 17:56:06][FAIL] GET_ALL_GOODS 服务器返回错误: {"error":"目前没有商品！"}
-[2025-10-11 17:56:06][INFO] testReadLocalJSON: 读取到JSON内容: [
-    {
-        "id": 1,
-        "name": "测试商品A",
-        "price": 9.99,
-        "stock": 100,
-        "category": "测试分类"
-    },
-    {
-        "id": 2,
-        "name": "测试商品B",
-        "price": 19.99,
-        "stock": 50,
-        "category": "测试分类"
-    }
-]
-[2025-10-11 17:56:07][INFO] testReadLocalJSON: 商品数量: 2
-[2025-10-11 17:56:07][INFO] 商品ID: 1, 名称: 测试商品A, 价格: 9.990000, 库存: 100, 分类: 测试分类
-[2025-10-11 17:56:07][INFO] 商品ID: 2, 名称: 测试商品B, 价格: 19.990000, 库存: 50, 分类: 测试分类
-[2025-10-11 17:56:09][INFO] 服务器已停止。
-[2025-10-11 18:06:31][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:06:31][INFO] 数据库连接成功！
-[2025-10-11 18:06:31][INFO] 服务器已启动。
-[2025-10-11 18:06:31][INFO] 客户端连接服务器成功！
-[2025-10-11 18:06:31][INFO] Socket通信测试成功，收到回显: socket_test_hello
-[2025-10-11 18:06:31][INFO] 调试：开始请求所有商品(GET_ALL_GOODS)...
-[2025-10-11 18:06:31][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 18:06:31][WARN] Server SERgetAllGoods: 查询结果为空，返回提示信息。
-[2025-10-11 18:06:31][INFO] Server SERgetAllGoods: 返回JSON内容: {"error":"目前没有商品！"}
-[2025-10-11 18:06:31][INFO] Server SERgetAllGoods: 已写入 localJSONOutPut.json
-[2025-10-11 18:06:31][INFO] Server GET_ALL_GOODS 响应内容: {"error":"目前没有商品！"}
-[2025-10-11 18:06:32][INFO] testJSONOutput: 已将JSON内容写入 test_json_output.txt
-[2025-10-11 18:06:32][INFO] 服务器原始响应: {"error":"目前没有商品！"}
-[2025-10-11 18:06:32][FAIL] GET_ALL_GOODS 服务器返回错误: {"error":"目前没有商品！"}
-[2025-10-11 18:06:32][INFO] testReadLocalJSON: 读取到JSON内容: [
-    {
-        "id": 1,
-        "name": "测试商品A",
-        "price": 9.99,
-        "stock": 100,
-        "category": "测试分类"
-    },
-    {
-        "id": 2,
-        "name": "测试商品B",
-        "price": 19.99,
-        "stock": 50,
-        "category": "测试分类"
-    }
-]
-[2025-10-11 18:06:32][INFO] testReadLocalJSON: 商品数量: 2
-[2025-10-11 18:06:32][INFO] 商品ID: 1, 名称: 测试商品A, 价格: 9.990000, 库存: 100, 分类: 测试分类
-[2025-10-11 18:06:32][INFO] 商品ID: 2, 名称: 测试商品B, 价格: 19.990000, 库存: 50, 分类: 测试分类
-[2025-10-11 18:06:42][INFO] 服务器已停止。
-[2025-10-11 18:12:44][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:12:44][INFO] 数据库连接成功！
-[2025-10-11 18:12:44][INFO] 服务器已启动。
-[2025-10-11 18:12:44][INFO] 客户端连接服务器成功！
-[2025-10-11 18:12:45][INFO] Socket通信测试成功，收到回显: socket_test_hello
-[2025-10-11 18:12:45][INFO] 调试：开始请求所有商品(GET_ALL_GOODS)...
-[2025-10-11 18:12:45][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 18:12:45][INFO] Server SERgetAllGoods: dbManager ptr = 1520860828352, DTBisConnected=false
-[2025-10-11 18:12:45][WARN] Server SERgetAllGoods: 查询结果为空，返回提示信息。
-[2025-10-11 18:12:45][INFO] Server SERgetAllGoods: 返回JSON内容: {"error":"目前没有商品！"}
-[2025-10-11 18:12:45][INFO] Server SERgetAllGoods: 已写入 localJSONOutPut.json
-[2025-10-11 18:12:45][INFO] Server GET_ALL_GOODS 响应内容: {"error":"目前没有商品！"}
-[2025-10-11 18:12:45][INFO] testJSONOutput: 已将JSON内容写入 test_json_output.txt
-[2025-10-11 18:12:45][INFO] 服务器原始响应: {"error":"目前没有商品！"}
-[2025-10-11 18:12:45][FAIL] GET_ALL_GOODS 服务器返回错误: {"error":"目前没有商品！"}
-[2025-10-11 18:12:45][INFO] testReadLocalJSON: 读取到JSON内容: [
-    {
-        "id": 1,
-        "name": "测试商品A",
-        "price": 9.99,
-        "stock": 100,
-        "category": "测试分类"
-    },
-    {
-        "id": 2,
-        "name": "测试商品B",
-        "price": 19.99,
-        "stock": 50,
-        "category": "测试分类"
-    }
-]
-[2025-10-11 18:12:45][INFO] testReadLocalJSON: 商品数量: 2
-[2025-10-11 18:12:45][INFO] 商品ID: 1, 名称: 测试商品A, 价格: 9.990000, 库存: 100, 分类: 测试分类
-[2025-10-11 18:12:45][INFO] 商品ID: 2, 名称: 测试商品B, 价格: 19.990000, 库存: 50, 分类: 测试分类
-[2025-10-11 18:12:53][INFO] 服务器已停止。
-[2025-10-11 18:15:28][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:15:28][INFO] 数据库连接成功！
-[2025-10-11 18:15:28][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:15:28][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 18:15:28][INFO] 服务器已启动。
-[2025-10-11 18:15:28][INFO] 客户端连接服务器成功！
-[2025-10-11 18:15:29][INFO] Socket通信测试成功，收到回显: socket_test_hello
-[2025-10-11 18:15:29][INFO] 调试：开始请求所有商品(GET_ALL_GOODS)...
-[2025-10-11 18:15:29][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 18:15:29][INFO] Server SERgetAllGoods: dbManager ptr = 2354031717792, DTBisConnected=true
-[2025-10-11 18:15:29][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:15:29][INFO] Server SERgetAllGoods: 查询到 1 个商品
-[2025-10-11 18:15:29][INFO] Server SERgetAllGoods: 已写入 localJSONOutPut.json
-[2025-10-11 18:15:29][INFO] Server GET_ALL_GOODS 响应内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:15:29][INFO] testJSONOutput: 已将JSON内容写入 test_json_output.txt
-[2025-10-11 18:15:29][INFO] 服务器原始响应: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:15:29][INFO] 商品数量: 1
-[2025-10-11 18:15:29][INFO] 商品ID: 1, 名称: lanzhen, 价格: 9.990000, 库存: 100, 分类: catogory
-[2025-10-11 18:15:29][INFO] testReadLocalJSON: 读取到JSON内容: [
-    {
-        "id": 1,
-        "name": "测试商品A",
-        "price": 9.99,
-        "stock": 100,
-        "category": "测试分类"
-    },
-    {
-        "id": 2,
-        "name": "测试商品B",
-        "price": 19.99,
-        "stock": 50,
-        "category": "测试分类"
-    }
-]
-[2025-10-11 18:15:29][INFO] testReadLocalJSON: 商品数量: 2
-[2025-10-11 18:15:29][INFO] 商品ID: 1, 名称: 测试商品A, 价格: 9.990000, 库存: 100, 分类: 测试分类
-[2025-10-11 18:15:29][INFO] 商品ID: 2, 名称: 测试商品B, 价格: 19.990000, 库存: 50, 分类: 测试分类
-[2025-10-11 18:15:38][INFO] 服务器已停止。
-[2025-10-11 18:17:11][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:17:11][INFO] 数据库连接成功！
-[2025-10-11 18:17:11][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:17:11][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 18:17:11][INFO] 服务器已启动。
-[2025-10-11 18:17:11][INFO] 客户端连接服务器成功！
-[2025-10-11 18:17:18][INFO] Socket通信测试成功，收到回显: socket_test_hello
-[2025-10-11 18:17:18][INFO] 调试：开始请求所有商品(GET_ALL_GOODS)...
-[2025-10-11 18:17:29][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 18:17:29][INFO] Server SERgetAllGoods: dbManager ptr = 2247759935600, DTBisConnected=true
-[2025-10-11 18:17:31][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:17:31][INFO] Server SERgetAllGoods: 查询到 1 个商品
-[2025-10-11 18:17:31][INFO] Server SERgetAllGoods: 已写入 localJSONOutPut.json
-[2025-10-11 18:17:31][INFO] Server GET_ALL_GOODS 响应内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:17:31][INFO] testJSONOutput: 已将JSON内容写入 test_json_output.txt
-[2025-10-11 18:17:31][INFO] 服务器原始响应: 
-[2025-10-11 18:17:31][FAIL] GET_ALL_GOODS 响应为空，跳过解析。
-[2025-10-11 18:17:31][INFO] testReadLocalJSON: 读取到JSON内容: [
-    {
-        "id": 1,
-        "name": "测试商品A",
-        "price": 9.99,
-        "stock": 100,
-        "category": "测试分类"
-    },
-    {
-        "id": 2,
-        "name": "测试商品B",
-        "price": 19.99,
-        "stock": 50,
-        "category": "测试分类"
-    }
-]
-[2025-10-11 18:17:31][INFO] testReadLocalJSON: 商品数量: 2
-[2025-10-11 18:17:31][INFO] 商品ID: 1, 名称: 测试商品A, 价格: 9.990000, 库存: 100, 分类: 测试分类
-[2025-10-11 18:17:31][INFO] 商品ID: 2, 名称: 测试商品B, 价格: 19.990000, 库存: 50, 分类: 测试分类
-[2025-10-11 18:18:11][INFO] 服务器已停止。
-[2025-10-11 18:19:23][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:19:23][INFO] 数据库连接成功！
-[2025-10-11 18:19:23][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:19:23][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 18:19:23][INFO] 服务器已启动。
-[2025-10-11 18:19:23][INFO] 客户端连接服务器成功！
-[2025-10-11 18:19:38][FAIL] Socket通信测试失败，期望: socket_test_hello，实际收到: 
-[2025-10-11 18:19:38][INFO] 调试：开始请求所有商品(GET_ALL_GOODS)...
-[2025-10-11 18:19:38][INFO] testJSONOutput: 已将JSON内容写入 test_json_output.txt
-[2025-10-11 18:19:38][INFO] 服务器原始响应: socket_test_hello
-[2025-10-11 18:19:38][FAIL] GET_ALL_GOODS 解析失败 (parse_error): [json.exception.parse_error.101] parse error at line 1, column 1: syntax error while parsing value - invalid literal; last read: 's', 原始响应: socket_test_hello
-[2025-10-11 18:19:39][INFO] testReadLocalJSON: 读取到JSON内容: [
-    {
-        "id": 1,
-        "name": "测试商品A",
-        "price": 9.99,
-        "stock": 100,
-        "category": "测试分类"
-    },
-    {
-        "id": 2,
-        "name": "测试商品B",
-        "price": 19.99,
-        "stock": 50,
-        "category": "测试分类"
-    }
-]
-[2025-10-11 18:19:39][INFO] testReadLocalJSON: 商品数量: 2
-[2025-10-11 18:19:39][INFO] 商品ID: 1, 名称: 测试商品A, 价格: 9.990000, 库存: 100, 分类: 测试分类
-[2025-10-11 18:19:39][INFO] 商品ID: 2, 名称: 测试商品B, 价格: 19.990000, 库存: 50, 分类: 测试分类
-[2025-10-11 18:19:42][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 18:19:42][INFO] Server SERgetAllGoods: dbManager ptr = 1692987289216, DTBisConnected=true
-[2025-10-11 18:19:42][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:19:42][INFO] Server SERgetAllGoods: 查询到 1 个商品
-[2025-10-11 18:19:42][INFO] Server SERgetAllGoods: 已写入 localJSONOutPut.json
-[2025-10-11 18:19:42][INFO] Server GET_ALL_GOODS 响应内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:20:27][INFO] 服务器已停止。
-[2025-10-11 18:21:19][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:21:19][INFO] 数据库连接成功！
-[2025-10-11 18:21:19][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:21:19][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 18:21:19][INFO] 服务器已启动。
-[2025-10-11 18:21:20][INFO] 客户端连接服务器成功！
-[2025-10-11 18:21:20][INFO] Socket通信测试成功，收到回显: socket_test_hello
-[2025-10-11 18:21:20][INFO] 调试：开始请求所有商品(GET_ALL_GOODS)...
-[2025-10-11 18:21:20][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 18:21:20][INFO] Server SERgetAllGoods: dbManager ptr = 2263165034832, DTBisConnected=true
-[2025-10-11 18:21:20][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:21:20][INFO] Server SERgetAllGoods: 查询到 1 个商品
-[2025-10-11 18:21:20][INFO] Server SERgetAllGoods: 已写入 localJSONOutPut.json
-[2025-10-11 18:21:20][INFO] Server GET_ALL_GOODS 响应内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:21:20][INFO] testJSONOutput: 已将JSON内容写入 test_json_output.txt
-[2025-10-11 18:21:20][INFO] 服务器原始响应: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:21:20][INFO] 商品数量: 1
-[2025-10-11 18:21:20][INFO] 商品ID: 1, 名称: lanzhen, 价格: 9.990000, 库存: 100, 分类: catogory
-[2025-10-11 18:21:20][INFO] testReadLocalJSON: 读取到JSON内容: [
-    {
-        "id": 1,
-        "name": "测试商品A",
-        "price": 9.99,
-        "stock": 100,
-        "category": "测试分类"
-    },
-    {
-        "id": 2,
-        "name": "测试商品B",
-        "price": 19.99,
-        "stock": 50,
-        "category": "测试分类"
-    }
-]
-[2025-10-11 18:21:20][INFO] testReadLocalJSON: 商品数量: 2
-[2025-10-11 18:21:20][INFO] 商品ID: 1, 名称: 测试商品A, 价格: 9.990000, 库存: 100, 分类: 测试分类
-[2025-10-11 18:21:20][INFO] 商品ID: 2, 名称: 测试商品B, 价格: 19.990000, 库存: 50, 分类: 测试分类
-[2025-10-11 18:21:25][INFO] 服务器已停止。
-[2025-10-11 18:21:26][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:21:26][INFO] 数据库连接成功！
-[2025-10-11 18:21:26][INFO] DatabaseManager::connect() called.
-
-[2025-10-11 18:21:26][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 18:21:26][INFO] 服务器已启动。
-[2025-10-11 18:21:26][INFO] 客户端连接服务器成功！
-[2025-10-11 18:21:26][INFO] Socket通信测试成功，收到回显: socket_test_hello
-[2025-10-11 18:21:26][INFO] 调试：开始请求所有商品(GET_ALL_GOODS)...
-[2025-10-11 18:21:26][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 18:21:26][INFO] Server SERgetAllGoods: dbManager ptr = 2769869002432, DTBisConnected=true
-[2025-10-11 18:21:26][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:21:26][INFO] Server SERgetAllGoods: 查询到 1 个商品
-[2025-10-11 18:21:26][INFO] Server SERgetAllGoods: 已写入 localJSONOutPut.json
-[2025-10-11 18:21:26][INFO] Server GET_ALL_GOODS 响应内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:21:26][INFO] testJSONOutput: 已将JSON内容写入 test_json_output.txt
-[2025-10-11 18:21:26][INFO] 服务器原始响应: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 18:21:26][INFO] 商品数量: 1
-[2025-10-11 18:21:26][INFO] 商品ID: 1, 名称: lanzhen, 价格: 9.990000, 库存: 100, 分类: catogory
-[2025-10-11 18:21:26][INFO] testReadLocalJSON: 读取到JSON内容: [
-    {
-        "id": 1,
-        "name": "测试商品A",
-        "price": 9.99,
-        "stock": 100,
-        "category": "测试分类"
-    },
-    {
-        "id": 2,
-        "name": "测试商品B",
-        "price": 19.99,
-        "stock": 50,
-        "category": "测试分类"
-    }
-]
-[2025-10-11 18:21:26][INFO] testReadLocalJSON: 商品数量: 2
-[2025-10-11 18:21:26][INFO] 商品ID: 1, 名称: 测试商品A, 价格: 9.990000, 库存: 100, 分类: 测试分类
-[2025-10-11 18:21:26][INFO] 商品ID: 2, 名称: 测试商品B, 价格: 19.990000, 库存: 50, 分类: 测试分类
-[2025-10-11 18:21:39][INFO] 服务器已停止。
-[2025-10-11 21:25:27][INFO] 应用启动
-[2025-10-11 21:25:27][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 21:25:27][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-11 21:25:27][INFO] Client 已连接到 Server
-[2025-10-11 21:25:27][WARN] 数据库连接失败，注册/登录功能可能受限
-[2025-10-11 21:26:03][INFO] 用户取消登录，退出应用
-[2025-10-11 21:42:11][INFO] 应用启动
-[2025-10-11 21:42:11][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 21:42:11][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-11 21:42:11][INFO] Client 已连接到 Server
-[2025-10-11 21:42:26][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-11 21:42:26][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 21:42:26][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 21:42:26][INFO] Server SERgetAllGoods: dbManager ptr = 2026627969776, DTBisConnected=true
-[2025-10-11 21:42:26][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100}]
-[2025-10-11 21:42:26][INFO] Server SERgetAllGoods: 查询到 1 个商品
-[2025-10-11 21:42:38][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 21:42:39][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 21:43:09][INFO] Server SERaddGood: 添加成功，返回JSON内容: {"category":"umamusume","id":0,"name":"manbo","price":28.88,"stock":114514}
-[2025-10-11 21:43:09][INFO] Server SERaddGood: 已写入 localJSONOutPut.json
-[2025-10-11 21:43:10][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 21:43:10][INFO] Server SERgetAllGoods: dbManager ptr = 2026627969776, DTBisConnected=true
-[2025-10-11 21:43:10][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"catogory","id":1,"name":"lanzhen","price":9.99,"stock":100},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 21:43:10][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 21:43:35][INFO] Server SERupdateGoods: 更新成功，返回JSON内容: {"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999}
-[2025-10-11 21:43:35][INFO] Server SERupdateGoods: 已写入 localJSONOutPut.json
-[2025-10-11 21:43:37][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 21:43:37][INFO] Server SERgetAllGoods: dbManager ptr = 2026627969776, DTBisConnected=true
-[2025-10-11 21:43:37][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 21:43:37][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 21:43:48][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 21:43:51][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 21:44:05][INFO] 应用退出
-[2025-10-11 22:00:07][INFO] 应用启动
-[2025-10-11 22:00:07][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 22:00:07][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-11 22:00:07][INFO] Client 已连接到 Server
-[2025-10-11 22:00:15][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-11 22:00:15][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:00:15][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:00:15][INFO] Server SERgetAllGoods: dbManager ptr = 2330468896400, DTBisConnected=true
-[2025-10-11 22:00:15][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:00:15][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:00:18][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:00:18][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:00:19][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:00:25][INFO] 应用退出
-[2025-10-11 22:00:29][INFO] 应用启动
-[2025-10-11 22:00:29][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 22:00:29][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-11 22:00:29][INFO] Client 已连接到 Server
-[2025-10-11 22:00:38][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-11 22:00:38][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:00:38][INFO] Server SERgetAllGoods: dbManager ptr = 2103561271648, DTBisConnected=true
-[2025-10-11 22:00:38][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:00:38][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:00:50][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:00:50][INFO] Server SERgetAllGoods: dbManager ptr = 2103561271648, DTBisConnected=true
-[2025-10-11 22:00:50][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:00:50][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:01:08][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:01:08][INFO] Server SERgetAllGoods: dbManager ptr = 2103561271648, DTBisConnected=true
-[2025-10-11 22:01:08][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:01:08][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:01:22][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:01:22][INFO] Server SERgetAllGoods: dbManager ptr = 2103561271648, DTBisConnected=true
-[2025-10-11 22:01:22][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:01:22][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:01:38][INFO] 应用退出
-[2025-10-11 22:08:14][INFO] 应用启动
-[2025-10-11 22:08:14][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 22:08:14][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-11 22:08:14][INFO] Client 已连接到 Server
-[2025-10-11 22:08:20][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-11 22:08:21][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:08:21][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:08:21][INFO] Server SERgetAllGoods: dbManager ptr = 1555755507840, DTBisConnected=true
-[2025-10-11 22:08:21][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:08:21][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:08:23][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:08:24][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:08:24][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:08:28][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:08:28][INFO] Server SERgetAllGoods: dbManager ptr = 1555755507840, DTBisConnected=true
-[2025-10-11 22:08:28][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:08:28][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:10:01][INFO] 应用退出
-[2025-10-11 22:11:43][INFO] 应用启动
-[2025-10-11 22:11:43][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 22:11:43][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-11 22:11:43][INFO] Client 已连接到 Server
-[2025-10-11 22:11:51][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-11 22:11:51][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:11:51][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:11:51][INFO] Server SERgetAllGoods: dbManager ptr = 2070532415984, DTBisConnected=true
-[2025-10-11 22:11:51][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:11:51][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:11:53][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:12:18][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:12:39][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:12:40][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:12:49][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:12:50][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:12:53][INFO] 应用退出
-[2025-10-11 22:23:53][INFO] 应用启动
-[2025-10-11 22:23:53][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 22:23:53][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-11 22:23:53][INFO] Client 已连接到 Server
-[2025-10-11 22:23:58][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-11 22:23:59][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:23:59][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:23:59][INFO] Server SERgetAllGoods: dbManager ptr = 1858744859888, DTBisConnected=true
-[2025-10-11 22:23:59][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:23:59][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:24:01][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:24:48][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:25:43][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:25:44][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:25:52][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:25:56][INFO] 应用退出
-[2025-10-11 22:31:04][INFO] 应用启动
-[2025-10-11 22:31:04][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 22:31:04][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-11 22:31:04][INFO] Client 已连接到 Server
-[2025-10-11 22:31:11][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-11 22:31:11][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:31:11][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:31:11][INFO] Server SERgetAllGoods: dbManager ptr = 1914135432960, DTBisConnected=true
-[2025-10-11 22:31:11][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:31:11][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:31:15][INFO] AdminWindow::onAddUser called
-[2025-10-11 22:31:29][INFO] AdminWindow::onAddUser CLTaddAccount returned true
-[2025-10-11 22:31:30][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:31:34][INFO] AdminWindow::onEditUser called
-[2025-10-11 22:31:49][INFO] AdminWindow::onEditUser CLTupdateUser returned false
-[2025-10-11 22:31:52][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:31:55][INFO] AdminWindow::onDeleteUser called
-[2025-10-11 22:31:57][INFO] AdminWindow::onDeleteUser CLTdeleteAccount returned false
-[2025-10-11 22:31:58][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:32:01][INFO] 应用退出
-[2025-10-11 22:35:34][INFO] 应用启动
-[2025-10-11 22:35:34][INFO] Server: DatabaseManager 已连接。
-[2025-10-11 22:35:34][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-11 22:35:34][INFO] Client 已连接到 Server
-[2025-10-11 22:35:41][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-11 22:35:41][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:35:41][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-11 22:35:41][INFO] Server SERgetAllGoods: dbManager ptr = 1465055582176, DTBisConnected=true
-[2025-10-11 22:35:41][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-11 22:35:41][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-11 22:35:44][INFO] AdminWindow::onEditUser called
-[2025-10-11 22:35:51][INFO] AdminWindow::onEditUser CLTupdateUser returned true
-[2025-10-11 22:35:53][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:35:56][INFO] AdminWindow::onDeleteUser called
-[2025-10-11 22:35:58][INFO] AdminWindow::onDeleteUser CLTdeleteAccount returned true
-[2025-10-11 22:35:59][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:36:01][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:36:12][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-11 22:36:13][INFO] 应用退出
-
-[2025-10-12 07:44:24][INFO] 应用启动
-[2025-10-12 07:44:24][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 07:44:24][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 07:44:24][INFO] Client 已连接到 Server
-[2025-10-12 07:44:30][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-12 07:44:30][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 07:44:31][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 07:44:31][INFO] Server SERgetAllGoods: dbManager ptr = 2276903198896, DTBisConnected=true
-[2025-10-12 07:44:31][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 07:44:31][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 07:44:33][INFO] AdminWindow::onSearchUser called
-[2025-10-12 07:44:38][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 07:44:42][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 07:44:43][INFO] AdminWindow::onSearchUser called
-[2025-10-12 07:44:51][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 07:44:56][INFO] 应用退出
-
-[2025-10-12 07:48:39][INFO] 应用启动
-[2025-10-12 07:48:39][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 07:48:39][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 07:48:39][INFO] Client 已连接到 Server
-[2025-10-12 07:48:39][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 07:48:45][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-12 07:48:45][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 07:48:45][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 07:48:45][INFO] Server SERgetAllGoods: dbManager ptr = 1752723735360, DTBisConnected=true
-[2025-10-12 07:48:45][INFO] DTBloadAllGoods: this=000001981679C340 connection_=00000198168393F0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 07:48:45][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 07:48:45][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 07:48:45][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 07:48:52][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 07:48:56][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 07:48:56][INFO] Server SERgetAllGoods: dbManager ptr = 1752723735360, DTBisConnected=true
-[2025-10-12 07:48:56][INFO] DTBloadAllGoods: this=000001981679C340 connection_=00000198168393F0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 07:48:56][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 07:48:56][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 07:48:56][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 07:49:13][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 07:49:13][INFO] Server SERgetAllGoods: dbManager ptr = 1752723735360, DTBisConnected=true
-[2025-10-12 07:49:13][INFO] DTBloadAllGoods: this=000001981679C340 connection_=00000198168393F0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 07:49:13][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 07:49:13][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 07:49:13][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 07:49:44][INFO] Server SERaddGood: 添加成功，返回JSON内容: {"category":"chicken","id":0,"name":"dingdongji","price":82.0,"stock":127}
-[2025-10-12 07:49:44][INFO] Server SERaddGood: 已写入 localJSONOutPut.json
-[2025-10-12 07:49:46][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 07:49:46][INFO] Server SERgetAllGoods: dbManager ptr = 1752723735360, DTBisConnected=true
-[2025-10-12 07:49:46][INFO] DTBloadAllGoods: this=000001981679C340 connection_=00000198168393F0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 07:49:46][INFO] DTBloadAllGoods: mysql_num_rows = 3
-
-[2025-10-12 07:49:46][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"chicken","id":3,"name":"dingdongji","price":82.0,"stock":127}]
-[2025-10-12 07:49:46][INFO] Server SERgetAllGoods: 查询到 3 个商品
-[2025-10-12 07:50:07][INFO] Server SERupdateGoods: 更新成功，返回JSON内容: {"category":"chicken","id":3,"name":"dingdongji","price":66.0,"stock":81}
-[2025-10-12 07:50:07][INFO] Server SERupdateGoods: 已写入 localJSONOutPut.json
-[2025-10-12 07:50:09][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 07:50:09][INFO] Server SERgetAllGoods: dbManager ptr = 1752723735360, DTBisConnected=true
-[2025-10-12 07:50:09][INFO] DTBloadAllGoods: this=000001981679C340 connection_=00000198168393F0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 07:50:09][INFO] DTBloadAllGoods: mysql_num_rows = 3
-
-[2025-10-12 07:50:09][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"chicken","id":3,"name":"dingdongji","price":66.0,"stock":81}]
-[2025-10-12 07:50:09][INFO] Server SERgetAllGoods: 查询到 3 个商品
-[2025-10-12 07:50:26][INFO] Server SERdeleteGood: 删除商品 id=3
-[2025-10-12 07:50:32][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 07:50:32][INFO] Server SERgetAllGoods: dbManager ptr = 1752723735360, DTBisConnected=true
-[2025-10-12 07:50:32][INFO] DTBloadAllGoods: this=000001981679C340 connection_=00000198168393F0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 07:50:32][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 07:50:32][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 07:50:32][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 07:50:39][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 07:50:39][INFO] 应用退出
-
-[2025-10-12 07:50:39][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:13:14][INFO] 应用启动
-[2025-10-12 08:13:14][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 08:13:14][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 08:13:14][INFO] Client 已连接到 Server
-[2025-10-12 08:13:14][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 08:13:23][INFO] Invalid phone number or password.
-
-[2025-10-12 08:13:25][INFO] Login successful.
-
-[2025-10-12 08:13:25][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 08:13:25][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:13:25][INFO] Server SERgetAllGoods: dbManager ptr = 2368264290080, DTBisConnected=true
-[2025-10-12 08:13:25][INFO] DTBloadAllGoods: this=00000227678D3F20 connection_=000002276796D760 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:13:25][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:13:25][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:13:25][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:13:26][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:13:34][INFO] UserWindow::onSaveUserInfo called
-[2025-10-12 08:13:39][FAIL] UPDATE_ACCOUNT_PASSWORD 返回错误: {"error":"旧密码错误"}
-[2025-10-12 08:13:39][INFO] UserWindow::onSaveUserInfo CLTupdateAccountPassword returned false
-[2025-10-12 08:13:42][INFO] UserWindow::onSaveUserInfo called
-[2025-10-12 08:13:46][INFO] UserWindow::onSaveUserInfo CLTupdateAccountPassword returned true
-[2025-10-12 08:13:46][INFO] UserWindow::onSaveUserInfo CLTupdateUser(after pwd change) returned false
-[2025-10-12 08:14:14][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:14:14][INFO] 应用退出
-
-[2025-10-12 08:14:14][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:17:32][INFO] 应用启动
-[2025-10-12 08:17:32][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 08:17:32][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 08:17:32][INFO] Client 已连接到 Server
-[2025-10-12 08:17:32][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 08:17:40][INFO] Login successful.
-
-[2025-10-12 08:17:40][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 08:17:40][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:17:40][INFO] Server SERgetAllGoods: dbManager ptr = 2876680708224, DTBisConnected=true
-[2025-10-12 08:17:40][INFO] DTBloadAllGoods: this=0000029DC7882080 connection_=0000029DC78FBD20 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:17:40][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:17:40][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:17:40][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:17:41][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:17:50][INFO] UserWindow::onSaveUserInfo called
-[2025-10-12 08:17:54][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:17:54][INFO] UserWindow::onSaveUserInfo CLTupdateUser(before pwd change) returned true
-[2025-10-12 08:17:55][FAIL] UPDATE_ACCOUNT_PASSWORD 返回错误: {"error":"更新失败"}
-[2025-10-12 08:17:55][INFO] UserWindow::onSaveUserInfo CLTupdateAccountPassword returned false
-[2025-10-12 08:17:55][INFO] UserWindow::onSaveUserInfo rollback CLTupdateUser returned true
-[2025-10-12 08:18:13][INFO] UserWindow::onSaveUserInfo called
-[2025-10-12 08:18:17][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:18:17][INFO] UserWindow::onSaveUserInfo CLTupdateUser(before pwd change) returned true
-[2025-10-12 08:18:18][INFO] UserWindow::onSaveUserInfo CLTupdateAccountPassword returned true
-[2025-10-12 08:18:27][INFO] UserWindow::onReturnToIdentitySelection called
-[2025-10-12 08:18:27][INFO] 收到 UserWindow::backRequested，返回登录界面
-[2025-10-12 08:18:34][INFO] Invalid phone number or password.
-
-[2025-10-12 08:18:38][INFO] Invalid phone number or password.
-
-[2025-10-12 08:18:40][INFO] Invalid phone number or password.
-
-[2025-10-12 08:18:50][INFO] Invalid phone number or password.
-
-[2025-10-12 08:18:57][INFO] Login successful.
-
-[2025-10-12 08:18:57][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 08:18:58][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:18:58][INFO] Server SERgetAllGoods: dbManager ptr = 2876680708224, DTBisConnected=true
-[2025-10-12 08:18:58][INFO] DTBloadAllGoods: this=0000029DC7882080 connection_=0000029DC78FBD20 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:18:58][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:18:58][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:18:58][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:18:58][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:19:08][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:19:08][INFO] 应用退出
-
-[2025-10-12 08:19:08][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:26:27][INFO] 应用启动
-[2025-10-12 08:26:27][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 08:26:27][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 08:26:27][INFO] Client 已连接到 Server
-[2025-10-12 08:26:27][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 08:26:27][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 08:26:33][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-12 08:26:34][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:26:34][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:26:34][INFO] Server SERgetAllGoods: dbManager ptr = 2207549475504, DTBisConnected=true
-[2025-10-12 08:26:34][INFO] DTBloadAllGoods: this=00000201FC33CAB0 connection_=00000201FC3CAE50 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:26:34][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:26:34][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:26:34][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:26:36][INFO] 收到 AdminWindow::backRequested，返回登录界面
-[2025-10-12 08:26:36][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 08:26:47][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 08:26:47][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:26:47][INFO] Server SERgetAllGoods: dbManager ptr = 2207549475504, DTBisConnected=true
-[2025-10-12 08:26:47][INFO] DTBloadAllGoods: this=00000201FC33CAB0 connection_=00000201FC3CAE50 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:26:47][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:26:47][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:26:47][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:26:48][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:27:02][INFO] UserWindow::onSaveUserInfo called
-[2025-10-12 08:27:10][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:27:11][INFO] UserWindow::onSaveUserInfo CLTupdateUser(before pwd change) returned false
-[2025-10-12 08:27:26][INFO] UserWindow::onSaveUserInfo called
-[2025-10-12 08:27:45][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:27:46][INFO] UserWindow::onSaveUserInfo CLTupdateUser(before pwd change) returned false
-[2025-10-12 08:27:50][INFO] UserWindow::onSaveUserInfo called
-[2025-10-12 08:27:57][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:27:57][INFO] UserWindow::onSaveUserInfo CLTupdateUser(before pwd change) returned true
-[2025-10-12 08:27:58][INFO] UserWindow::onSaveUserInfo CLTupdateAccountPassword returned true
-[2025-10-12 08:28:08][INFO] UserWindow::onSaveUserInfo called
-[2025-10-12 08:28:09][INFO] UserWindow::onSaveUserInfo CLTupdateUser(return) true
-[2025-10-12 08:28:16][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:28:16][INFO] 应用退出
-
-[2025-10-12 08:28:16][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:36:55][INFO] 应用启动
-[2025-10-12 08:36:55][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 08:36:55][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 08:36:55][INFO] Client 已连接到 Server
-[2025-10-12 08:36:55][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 08:36:55][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 08:37:03][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 08:37:03][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:37:03][INFO] Server SERgetAllGoods: dbManager ptr = 1812144947008, DTBisConnected=true
-[2025-10-12 08:37:03][INFO] DTBloadAllGoods: this=000001A5EC417F40 connection_=000001A5EC4984D0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:37:03][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:37:03][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:37:03][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:37:04][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:37:14][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:37:14][INFO] Server SERgetAllGoods: dbManager ptr = 1812144947008, DTBisConnected=true
-[2025-10-12 08:37:14][INFO] DTBloadAllGoods: this=000001A5EC417F40 connection_=000001A5EC4984D0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:37:14][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:37:14][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:37:14][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:37:18][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:37:18][INFO] Server SERgetAllGoods: dbManager ptr = 1812144947008, DTBisConnected=true
-[2025-10-12 08:37:18][INFO] DTBloadAllGoods: this=000001A5EC417F40 connection_=000001A5EC4984D0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:37:18][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:37:18][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:37:18][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:37:21][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:37:21][INFO] Server SERgetAllGoods: dbManager ptr = 1812144947008, DTBisConnected=true
-[2025-10-12 08:37:21][INFO] DTBloadAllGoods: this=000001A5EC417F40 connection_=000001A5EC4984D0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:37:21][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:37:21][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:37:21][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:37:25][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:37:25][INFO] Server SERgetAllGoods: dbManager ptr = 1812144947008, DTBisConnected=true
-[2025-10-12 08:37:25][INFO] DTBloadAllGoods: this=000001A5EC417F40 connection_=000001A5EC4984D0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:37:25][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:37:25][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:37:25][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:37:49][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:37:49][INFO] 应用退出
-
-[2025-10-12 08:37:49][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:41:09][INFO] 应用启动
-[2025-10-12 08:41:09][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 08:41:09][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 08:41:09][INFO] Client 已连接到 Server
-[2025-10-12 08:41:09][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 08:41:09][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 08:41:17][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 08:41:17][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:41:17][INFO] Server SERgetAllGoods: dbManager ptr = 1888340067520, DTBisConnected=true
-[2025-10-12 08:41:17][INFO] DTBloadAllGoods: this=000001B7A9D6C4C0 connection_=000001B7A9DD9920 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:41:17][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:41:17][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:41:17][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:41:18][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:41:31][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=1, name=hyw, price=9.990000, qty=100
-[2025-10-12 08:41:32][INFO] UserWindow::onAddToCart CLTaddToCart returned true
-[2025-10-12 08:43:45][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:43:45][INFO] 应用退出
-
-[2025-10-12 08:43:45][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:48:17][INFO] 应用启动
-[2025-10-12 08:48:17][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 08:48:17][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 08:48:17][INFO] Client 已连接到 Server
-[2025-10-12 08:48:17][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 08:48:17][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 08:48:24][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-12 08:48:24][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:48:25][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:48:25][INFO] Server SERgetAllGoods: dbManager ptr = 1388687332656, DTBisConnected=true
-[2025-10-12 08:48:25][INFO] DTBloadAllGoods: this=0000014354371530 connection_=0000014354406060 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:48:25][INFO] DTBloadAllGoods: mysql_num_rows = 2
-
-[2025-10-12 08:48:25][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514}]
-[2025-10-12 08:48:25][INFO] Server SERgetAllGoods: 查询到 2 个商品
-[2025-10-12 08:48:44][INFO] Server SERaddGood: 添加成功，返回JSON内容: {"category":"ji","id":0,"name":"dingdongji","price":8.11,"stock":666}
-[2025-10-12 08:48:44][INFO] Server SERaddGood: 已写入 localJSONOutPut.json
-[2025-10-12 08:48:45][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:48:45][INFO] Server SERgetAllGoods: dbManager ptr = 1388687332656, DTBisConnected=true
-[2025-10-12 08:48:45][INFO] DTBloadAllGoods: this=0000014354371530 connection_=0000014354406060 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:48:45][INFO] DTBloadAllGoods: mysql_num_rows = 3
-
-[2025-10-12 08:48:45][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666}]
-[2025-10-12 08:48:45][INFO] Server SERgetAllGoods: 查询到 3 个商品
-[2025-10-12 08:48:58][INFO] Server SERaddGood: 添加成功，返回JSON内容: {"category":"ji","id":0,"name":"ikun","price":2.5,"stock":250}
-[2025-10-12 08:48:58][INFO] Server SERaddGood: 已写入 localJSONOutPut.json
-[2025-10-12 08:48:59][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:48:59][INFO] Server SERgetAllGoods: dbManager ptr = 1388687332656, DTBisConnected=true
-[2025-10-12 08:48:59][INFO] DTBloadAllGoods: this=0000014354371530 connection_=0000014354406060 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:48:59][INFO] DTBloadAllGoods: mysql_num_rows = 4
-
-[2025-10-12 08:48:59][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250}]
-[2025-10-12 08:48:59][INFO] Server SERgetAllGoods: 查询到 4 个商品
-[2025-10-12 08:49:21][INFO] Server SERaddGood: 添加成功，返回JSON内容: {"category":"ji","id":0,"name":"野火哈基米","price":66.4,"stock":444}
-[2025-10-12 08:49:21][INFO] Server SERaddGood: 已写入 localJSONOutPut.json
-[2025-10-12 08:49:23][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:49:23][INFO] Server SERgetAllGoods: dbManager ptr = 1388687332656, DTBisConnected=true
-[2025-10-12 08:49:23][INFO] DTBloadAllGoods: this=0000014354371530 connection_=0000014354406060 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:49:23][INFO] DTBloadAllGoods: mysql_num_rows = 5
-
-[2025-10-12 08:49:23][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444}]
-[2025-10-12 08:49:23][INFO] Server SERgetAllGoods: 查询到 5 个商品
-[2025-10-12 08:49:50][INFO] Server SERaddGood: 添加成功，返回JSON内容: {"category":"ji","id":0,"name":"ハチミ","price":78.0,"stock":93}
-[2025-10-12 08:49:50][INFO] Server SERaddGood: 已写入 localJSONOutPut.json
-[2025-10-12 08:49:51][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:49:51][INFO] Server SERgetAllGoods: dbManager ptr = 1388687332656, DTBisConnected=true
-[2025-10-12 08:49:51][INFO] DTBloadAllGoods: this=0000014354371530 connection_=0000014354406060 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:49:51][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 08:49:51][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 08:49:51][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 08:50:06][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:50:06][INFO] Server SERgetAllGoods: dbManager ptr = 1388687332656, DTBisConnected=true
-[2025-10-12 08:50:06][INFO] DTBloadAllGoods: this=0000014354371530 connection_=0000014354406060 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:50:06][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 08:50:06][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 08:50:06][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 08:50:11][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:50:11][INFO] Server SERgetAllGoods: dbManager ptr = 1388687332656, DTBisConnected=true
-[2025-10-12 08:50:11][INFO] DTBloadAllGoods: this=0000014354371530 connection_=0000014354406060 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:50:11][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 08:50:11][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 08:50:11][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 08:50:21][INFO] AdminWindow::onReturnToIdentitySelection called
-[2025-10-12 08:50:21][INFO] 收到 AdminWindow::backRequested，返回登录界面
-[2025-10-12 08:50:21][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 08:50:39][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 08:50:39][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 08:50:39][INFO] Server SERgetAllGoods: dbManager ptr = 1388687332656, DTBisConnected=true
-[2025-10-12 08:50:39][INFO] DTBloadAllGoods: this=0000014354371530 connection_=0000014354406060 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 08:50:39][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 08:50:39][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 08:50:39][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 08:50:39][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 08:50:39][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
-[2025-10-12 08:50:39][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
-[2025-10-12 08:50:39][INFO] UserWindow::refreshCart: got cart_id=, items=0
-[2025-10-12 08:50:40][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 08:50:42][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 08:50:42][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
-[2025-10-12 08:50:42][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
-[2025-10-12 08:50:42][INFO] UserWindow::refreshCart: got cart_id=, items=0
-[2025-10-12 08:51:05][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 08:51:05][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
-[2025-10-12 08:51:05][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
-[2025-10-12 08:51:05][INFO] UserWindow::refreshCart: got cart_id=, items=0
-[2025-10-12 08:51:13][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 08:51:13][INFO] 应用退出
-
-[2025-10-12 08:51:13][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:11:14][INFO] 应用启动
-[2025-10-12 09:11:14][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 09:11:14][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 09:11:14][INFO] Client 已连接到 Server
-[2025-10-12 09:11:14][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 09:11:14][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 09:11:26][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 09:11:26][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 09:11:26][INFO] Server SERgetAllGoods: dbManager ptr = 1649946950496, DTBisConnected=true
-[2025-10-12 09:11:26][INFO] DTBloadAllGoods: this=0000018028807B60 connection_=00000180288A1DA0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 09:11:26][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 09:11:26][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 09:11:26][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 09:11:26][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:11:26][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":999.0,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0}],"shipping_address":"","total_amount":999.0,"user_phone":"17708659389"}
-[2025-10-12 09:11:26][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
-[2025-10-12 09:11:26][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:11:26][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
-[2025-10-12 09:11:26][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:11:27][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 09:11:34][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:11:35][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":999.0,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0}],"shipping_address":"","total_amount":999.0,"user_phone":"17708659389"}
-[2025-10-12 09:11:35][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
-[2025-10-12 09:11:35][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:11:35][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
-[2025-10-12 09:11:35][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:12:14][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:12:14][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":999.0,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0}],"shipping_address":"","total_amount":999.0,"user_phone":"17708659389"}
-[2025-10-12 09:12:14][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
-[2025-10-12 09:12:14][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:12:14][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
-[2025-10-12 09:12:14][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:12:16][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 09:12:16][INFO] Server SERgetAllGoods: dbManager ptr = 1649946950496, DTBisConnected=true
-[2025-10-12 09:12:16][INFO] DTBloadAllGoods: this=0000018028807B60 connection_=00000180288A1DA0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 09:12:16][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 09:12:16][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 09:12:16][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 09:12:21][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=7, name=ハチミ, price=78.000000, qty=2
-[2025-10-12 09:12:22][INFO] UserWindow::onAddToCart CLTaddToCart returned true
-[2025-10-12 09:12:23][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:12:23][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1155.0,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"","total_amount":1155.0,"user_phone":"17708659389"}
-[2025-10-12 09:12:23][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:12:23][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:12:23][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:12:23][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:12:23][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:12:23][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:13:32][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=6, name=野火哈基米, price=66.400000, qty=3
-[2025-10-12 09:13:33][INFO] UserWindow::onAddToCart CLTaddToCart returned true
-[2025-10-12 09:13:34][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:13:34][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:13:34][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:13:34][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:13:34][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:13:34][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:13:34][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:13:34][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:13:34][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:13:34][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:14:13][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:14:14][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:14:14][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:14:14][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:14:14][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:14:14][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:14:16][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:14:17][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:14:17][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:14:17][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:14:17][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:14:17][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:14:17][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:14:17][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:14:17][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:14:17][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:14:40][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:14:41][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:14:41][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:14:41][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:14:41][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:14:41][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:14:53][INFO] UserWindow::onReturnToIdentitySelection called
-[2025-10-12 09:14:53][INFO] 收到 UserWindow::backRequested，返回登录界面
-[2025-10-12 09:14:53][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 09:15:03][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 09:15:03][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 09:15:03][INFO] Server SERgetAllGoods: dbManager ptr = 1649946950496, DTBisConnected=true
-[2025-10-12 09:15:03][INFO] DTBloadAllGoods: this=0000018028807B60 connection_=00000180288A1DA0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 09:15:03][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 09:15:03][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 09:15:03][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 09:15:03][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:15:04][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:15:04][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:15:04][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:15:04][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:15:04][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:15:04][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:15:04][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:15:04][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:15:04][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:15:04][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 09:15:14][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:15:14][INFO] 应用退出
-
-[2025-10-12 09:15:14][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:16:19][INFO] 应用启动
-[2025-10-12 09:16:19][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 09:16:19][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 09:16:19][INFO] Client 已连接到 Server
-[2025-10-12 09:16:19][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 09:16:19][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 09:16:27][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 09:16:28][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 09:16:28][INFO] Server SERgetAllGoods: dbManager ptr = 2712667483120, DTBisConnected=true
-[2025-10-12 09:16:28][INFO] DTBloadAllGoods: this=000002779794EBF0 connection_=0000027797994D60 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 09:16:28][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 09:16:28][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 09:16:28][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 09:16:28][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:16:28][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:16:28][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:16:28][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:16:28][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:16:28][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:16:28][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:16:28][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:16:28][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:16:28][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:16:28][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 09:16:35][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:16:35][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:16:35][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:16:35][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:16:35][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:16:35][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:16:35][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:16:35][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:16:35][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:16:35][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:16:49][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:16:49][INFO] 应用退出
-
-[2025-10-12 09:16:49][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:21:04][INFO] 应用启动
-[2025-10-12 09:21:04][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 09:21:04][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 09:21:04][INFO] Client 已连接到 Server
-[2025-10-12 09:21:04][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 09:21:04][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 09:21:15][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 09:21:15][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 09:21:15][INFO] Server SERgetAllGoods: dbManager ptr = 2025874709168, DTBisConnected=true
-[2025-10-12 09:21:15][INFO] DTBloadAllGoods: this=000001D7AF8ADAB0 connection_=000001D7AF9315E0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 09:21:15][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 09:21:15][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 09:21:15][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 09:21:15][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:21:15][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:21:15][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:15][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:21:15][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:21:15][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:21:15][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:15][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:21:15][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:21:15][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:21:15][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 09:21:25][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
-[2025-10-12 09:21:27][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:21:28][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:21:28][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:28][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:21:28][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:21:28][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:21:28][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:28][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:21:28][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:21:28][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:21:38][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
-[2025-10-12 09:21:39][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:21:40][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:21:40][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:40][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:21:40][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:21:40][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:21:40][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:40][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:21:40][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:21:40][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:21:47][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
-[2025-10-12 09:21:47][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:21:48][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:21:48][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:48][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:21:48][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:21:48][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:21:48][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:48][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:21:48][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:21:48][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:21:52][INFO] UserWindow::onRemoveCartItem CLTremoveFromCart returned false
-[2025-10-12 09:21:52][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:21:53][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:21:53][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:53][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:21:53][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:21:53][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:21:53][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:53][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:21:53][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:21:53][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:21:55][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:21:55][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:21:55][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:55][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:21:55][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:21:55][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:21:55][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:21:55][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw
-[2025-10-12 09:21:55][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ
-[2025-10-12 09:21:55][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米
-[2025-10-12 09:22:04][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:22:04][INFO] 应用退出
-
-[2025-10-12 09:22:04][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:32:27][INFO] 应用启动
-[2025-10-12 09:32:27][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 09:32:27][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 09:32:27][INFO] Client 已连接到 Server
-[2025-10-12 09:32:28][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 09:32:28][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 09:32:37][INFO] 用户登录成功，手机号: 17708659389
-[2025-10-12 09:32:37][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 09:32:37][INFO] Server SERgetAllGoods: dbManager ptr = 2316244884016, DTBisConnected=true
-[2025-10-12 09:32:37][INFO] DTBloadAllGoods: this=0000021B4AF41A30 connection_=0000021B4AFC17A0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 09:32:37][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 09:32:37][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 09:32:37][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 09:32:37][INFO] UserWindow::refreshCart: client connection active? true
-[2025-10-12 09:32:37][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:32:38][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1354.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":100,"subtotal":999.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":1354.2,"user_phone":"17708659389"}
-[2025-10-12 09:32:38][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:32:38][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=100, subtotal=999.000000
-[2025-10-12 09:32:38][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:32:38][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:32:38][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:32:38][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=100, subtotal=999.000000
-[2025-10-12 09:32:38][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ, qty=2, subtotal=156.000000
-[2025-10-12 09:32:38][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米, qty=3, subtotal=199.200000
-[2025-10-12 09:32:38][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 09:32:41][INFO] UserWindow::onModifyCartItem called
-[2025-10-12 09:32:41][WARN] UserWindow::onModifyCartItem: no selection
-[2025-10-12 09:32:45][INFO] UserWindow::onModifyCartItem called
-[2025-10-12 09:32:45][INFO] UserWindow::onModifyCartItem: selected productId=1, currentQty=100
-[2025-10-12 09:32:50][INFO] UserWindow::onModifyCartItem: user cancelled input dialog
-[2025-10-12 09:32:55][INFO] UserWindow::onModifyCartItem called
-[2025-10-12 09:32:55][INFO] UserWindow::onModifyCartItem: selected productId=1, currentQty=100
-[2025-10-12 09:32:59][INFO] UserWindow::onModifyCartItem: requested newQty=1000
-[2025-10-12 09:32:59][INFO] UserWindow::onModifyCartItem: attempt update productId=1, newQty=1000, attempt=1
-[2025-10-12 09:33:00][INFO] Server SERupdateCartItem: request userPhone=17708659389, productId=1, quantity=1000
-[2025-10-12 09:33:00][INFO] Server SERupdateCartItem: updated productId=1 qty=1000 cart_id=c1760229692248_44fe7ebe71b0aabe
-[2025-10-12 09:33:00][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned true
-[2025-10-12 09:33:01][INFO] UserWindow::refreshCart: client connection active? true
-[2025-10-12 09:33:01][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:33:01][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":10345.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":1000,"subtotal":9990.0},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":10345.2,"user_phone":"17708659389"}
-[2025-10-12 09:33:01][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:33:01][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=1000, subtotal=9990.000000
-[2025-10-12 09:33:01][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
-[2025-10-12 09:33:01][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:33:01][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:33:01][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=1000, subtotal=9990.000000
-[2025-10-12 09:33:01][INFO] UserWindow::refreshCart: item 1 good_id=7, name=ハチミ, qty=2, subtotal=156.000000
-[2025-10-12 09:33:01][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米, qty=3, subtotal=199.200000
-[2025-10-12 09:33:06][INFO] UserWindow::onRemoveCartItem called
-[2025-10-12 09:33:06][INFO] UserWindow::onRemoveCartItem: selected productId=7
-[2025-10-12 09:33:07][INFO] UserWindow::onRemoveCartItem: attempt remove productId=7, attempt=1
-[2025-10-12 09:33:07][INFO] Server SERremoveFromCart: request userPhone=17708659389, productId=7
-[2025-10-12 09:33:07][INFO] Server SERremoveFromCart: removed productId=7 cart_id=c1760229692248_44fe7ebe71b0aabe
-[2025-10-12 09:33:08][INFO] UserWindow::onRemoveCartItem CLTremoveFromCart returned true
-[2025-10-12 09:33:08][INFO] UserWindow::refreshCart: client connection active? true
-[2025-10-12 09:33:08][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:33:09][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":10189.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":1000,"subtotal":9990.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2}],"shipping_address":"","total_amount":10189.2,"user_phone":"17708659389"}
-[2025-10-12 09:33:09][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:33:09][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=1000, subtotal=9990.000000
-[2025-10-12 09:33:09][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:33:09][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:33:09][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=1000, subtotal=9990.000000
-[2025-10-12 09:33:09][INFO] UserWindow::refreshCart: item 1 good_id=6, name=野火哈基米, qty=3, subtotal=199.200000
-[2025-10-12 09:33:13][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=7, name=ハチミ, price=78.000000, qty=1
-[2025-10-12 09:33:14][INFO] UserWindow::onAddToCart CLTaddToCart returned true
-[2025-10-12 09:33:15][INFO] UserWindow::refreshCart: client connection active? true
-[2025-10-12 09:33:15][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:33:15][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":10267.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":1000,"subtotal":9990.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"","total_amount":10267.2,"user_phone":"17708659389"}
-[2025-10-12 09:33:15][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:33:15][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=1000, subtotal=9990.000000
-[2025-10-12 09:33:15][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:33:15][INFO] CLTgetCartForUser: item[2] good_id=7, name=ハチミ, price=78.000000, qty=1, subtotal=78.000000
-[2025-10-12 09:33:15][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:33:15][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=1000, subtotal=9990.000000
-[2025-10-12 09:33:15][INFO] UserWindow::refreshCart: item 1 good_id=6, name=野火哈基米, qty=3, subtotal=199.200000
-[2025-10-12 09:33:15][INFO] UserWindow::refreshCart: item 2 good_id=7, name=ハチミ, qty=1, subtotal=78.000000
-[2025-10-12 09:33:16][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:33:16][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":10267.2,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":1000,"subtotal":9990.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"","total_amount":10267.2,"user_phone":"17708659389"}
-[2025-10-12 09:33:16][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:33:16][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=1000, subtotal=9990.000000
-[2025-10-12 09:33:16][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:33:16][INFO] CLTgetCartForUser: item[2] good_id=7, name=ハチミ, price=78.000000, qty=1, subtotal=78.000000
-[2025-10-12 09:33:28][INFO] UserWindow::onModifyCartItem called
-[2025-10-12 09:33:28][INFO] UserWindow::onModifyCartItem: selected productId=1, currentQty=1000
-[2025-10-12 09:33:35][INFO] UserWindow::onModifyCartItem: requested newQty=77
-[2025-10-12 09:33:35][INFO] UserWindow::onModifyCartItem: attempt update productId=1, newQty=77, attempt=1
-[2025-10-12 09:33:36][INFO] Server SERupdateCartItem: request userPhone=17708659389, productId=1, quantity=77
-[2025-10-12 09:33:36][INFO] Server SERupdateCartItem: updated productId=1 qty=77 cart_id=c1760229692248_44fe7ebe71b0aabe
-[2025-10-12 09:33:36][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned true
-[2025-10-12 09:33:37][INFO] UserWindow::refreshCart: client connection active? true
-[2025-10-12 09:33:37][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:33:38][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1046.43,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":77,"subtotal":769.23},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"","total_amount":1046.43,"user_phone":"17708659389"}
-[2025-10-12 09:33:38][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:33:38][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=77, subtotal=769.230000
-[2025-10-12 09:33:38][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:33:38][INFO] CLTgetCartForUser: item[2] good_id=7, name=ハ�[2025-10-12 09:41:08][INFO] 应用启动
-[2025-10-12 09:41:08][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 09:41:08][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 09:41:08][INFO] Client 已连接到 Server
-[2025-10-12 09:41:08][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 09:41:08][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 09:41:14][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-12 09:41:14][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 09:41:14][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 09:41:14][INFO] Server SERgetAllGoods: dbManager ptr = 1888985419904, DTBisConnected=true
-[2025-10-12 09:41:14][INFO] DTBloadAllGoods: this=000001B7D04E1080 connection_=000001B7D057F440 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 09:41:14][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 09:41:14][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 09:41:14][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 09:41:21][INFO] AdminWindow::onLoadCartForUser: request for userPhone=17708659389
-[2025-10-12 09:41:21][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:41:21][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1046.43,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":77,"subtotal":769.23},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"","total_amount":1046.43,"user_phone":"17708659389"}
-[2025-10-12 09:41:21][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:41:21][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=77, subtotal=769.230000
-[2025-10-12 09:41:21][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:41:21][INFO] CLTgetCartForUser: item[2] good_id=7, name=ハチミ, price=78.000000, qty=1, subtotal=78.000000
-[2025-10-12 09:41:21][INFO] AdminWindow::onLoadCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:41:46][INFO] Server SERupdateCartItem: request userPhone=17708659389, productId=7, quantity=88
-[2025-10-12 09:41:46][INFO] Server SERupdateCartItem: updated productId=7 qty=88 cart_id=c1760229692248_44fe7ebe71b0aabe
-[2025-10-12 09:41:46][INFO] AdminWindow::onEditCartItem CLTupdateCartItem returned true
-[2025-10-12 09:41:47][INFO] AdminWindow::onLoadCartForUser: request for userPhone=17708659389
-[2025-10-12 09:41:47][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:41:47][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":7832.43,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":77,"subtotal":769.23},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":88,"subtotal":6864.0}],"shipping_address":"","total_amount":7832.43,"user_phone":"17708659389"}
-[2025-10-12 09:41:47][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:41:47][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=77, subtotal=769.230000
-[2025-10-12 09:41:47][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
-[2025-10-12 09:41:47][INFO] CLTgetCartForUser: item[2] good_id=7, name=ハチミ, price=78.000000, qty=88, subtotal=6864.000000
-[2025-10-12 09:41:47][INFO] AdminWindow::onLoadCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
-[2025-10-12 09:41:52][INFO] Server SERremoveFromCart: request userPhone=17708659389, productId=6
-[2025-10-12 09:41:52][INFO] Server SERremoveFromCart: removed productId=6 cart_id=c1760229692248_44fe7ebe71b0aabe
-[2025-10-12 09:41:52][INFO] AdminWindow::onRemoveCartItem CLTremoveFromCart returned true
-[2025-10-12 09:41:53][INFO] AdminWindow::onLoadCartForUser: request for userPhone=17708659389
-[2025-10-12 09:41:53][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:41:54][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":7633.23,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":77,"subtotal":769.23},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":88,"subtotal":6864.0}],"shipping_address":"","total_amount":7633.23,"user_phone":"17708659389"}
-[2025-10-12 09:41:54][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:41:54][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=77, subtotal=769.230000
-[2025-10-12 09:41:54][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=88, subtotal=6864.000000
-[2025-10-12 09:41:54][INFO] AdminWindow::onLoadCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:42:28][INFO] AdminWindow::onSaveCartForUser CLTsaveCartForUser returned true
-[2025-10-12 09:42:29][INFO] AdminWindow::onLoadCartForUser: request for userPhone=17708659389
-[2025-10-12 09:42:29][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:42:30][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":7633.23,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":77,"subtotal":769.23},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":88,"subtotal":6864.0}],"shipping_address":"","total_amount":7633.23,"user_phone":"17708659389"}
-[2025-10-12 09:42:30][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:42:30][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=77, subtotal=769.230000
-[2025-10-12 09:42:30][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=88, subtotal=6864.000000
-[2025-10-12 09:42:30][INFO] AdminWindow::onLoadCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:43:24][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:43:24][INFO] 应用退出
-
-[2025-10-12 09:43:24][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:49:17][INFO] 应用启动
-[2025-10-12 09:49:17][INFO] Server: DatabaseManager 已连接。
-[2025-10-12 09:49:17][INFO] 本地 Server 已启动 (127.0.0.1:8888)
-[2025-10-12 09:49:18][INFO] Client 已连接到 Server
-[2025-10-12 09:49:18][INFO] DatabaseManager::connect() called.
-
-[2025-10-12 09:49:18][INFO] 已从数据库刷新用户列表用于登录对话框
-[2025-10-12 09:49:24][INFO] 管理员登录成功，打开管理员窗口
-[2025-10-12 09:49:25][INFO] Server 收到请求: GET_ALL_ACCOUNTS
-[2025-10-12 09:49:25][INFO] Server 收到请求: GET_ALL_GOODS
-[2025-10-12 09:49:25][INFO] Server SERgetAllGoods: dbManager ptr = 2409312858544, DTBisConnected=true
-[2025-10-12 09:49:25][INFO] DTBloadAllGoods: this=00000230F63CB1B0 connection_=00000230F646CFA0 Query="SELECT id, name, price, stock, category FROM good"
-
-[2025-10-12 09:49:25][INFO] DTBloadAllGoods: mysql_num_rows = 6
-
-[2025-10-12 09:49:25][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":999},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":666},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":250},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":444},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":93}]
-[2025-10-12 09:49:25][INFO] Server SERgetAllGoods: 查询到 6 个商品
-[2025-10-12 09:49:36][INFO] AdminWindow::onLoadCartForUser: request for userPhone=17708659389
-[2025-10-12 09:49:36][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:49:37][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":7633.23,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":77,"subtotal":769.23},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":88,"subtotal":6864.0}],"shipping_address":"","total_amount":7633.23,"user_phone":"17708659389"}
-[2025-10-12 09:49:37][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:49:37][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=77, subtotal=769.230000
-[2025-10-12 09:49:37][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=88, subtotal=6864.000000
-[2025-10-12 09:49:37][INFO] AdminWindow::onLoadCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:49:45][INFO] Server SERupdateCartItem: request userPhone=17708659389, productId=1, quantity=76
-[2025-10-12 09:49:45][INFO] Server SERupdateCartItem: updated productId=1 qty=76 cart_id=c1760229692248_44fe7ebe71b0aabe
-[2025-10-12 09:49:45][INFO] AdminWindow::onEditCartItem CLTupdateCartItem returned true
-[2025-10-12 09:49:46][INFO] AdminWindow::onLoadCartForUser: request for userPhone=17708659389
-[2025-10-12 09:49:46][INFO] CLTgetCartForUser: request for userPhone=17708659389
-[2025-10-12 09:49:47][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":7623.24,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":76,"subtotal":759.24},{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":88,"subtotal":6864.0}],"shipping_address":"","total_amount":7623.24,"user_phone":"17708659389"}
-[2025-10-12 09:49:47][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:49:47][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=76, subtotal=759.240000
-[2025-10-12 09:49:47][INFO] CLTgetCartForUser: item[1] good_id=7, name=ハチミ, price=78.000000, qty=88, subtotal=6864.000000
-[2025-10-12 09:49:47][INFO] AdminWindow::onLoadCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
-[2025-10-12 09:49:55][INFO] AdminWindow::onLoadCartForUser: request for userPhone=12345678900
-[2025-10-12 09:49:55][INFO] CLTgetCartForUser: request for userPhone=12345678900
-[2025-10-12 09:49:55][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
-[2025-10-12 09:49:55][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
-[2025-10-12 09:50:02][INFO] DatabaseManager::disconnect() called.
-
-[2025-10-12 09:50:02][INFO] 应用退出
-
-[2025-10-12 09:50:02][INFO] DatabaseManager::disconnect() called.
+[2025-10-12 21:53:39][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-12 21:53:40][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 21:53:40][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 21:53:40][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":10292.0,"is_converted":false,"items":[{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":155,"subtotal":10292.0}],"shipping_address":"","total_amount":10292.0,"user_phone":"17708659389"}
+[2025-10-12 21:53:40][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 21:53:40][INFO] CLTgetCartForUser: item[0] good_id=6, name=野火哈基米, price=66.400000, qty=155, subtotal=10292.000000
+[2025-10-12 21:53:40][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 21:53:40][INFO] UserWindow::refreshCart: item 0 good_id=6, name=野火哈基米, qty=155, subtotal=10292.000000
+[2025-10-12 21:53:45][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=5, name=ikun, price=2.500000, qty=99
+[2025-10-12 21:53:45][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-12 21:53:46][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 21:53:46][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 21:53:47][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":10539.5,"is_converted":false,"items":[{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":155,"subtotal":10292.0},{"good_id":5,"good_name":"ikun","price":2.5,"quantity":99,"subtotal":247.5}],"shipping_address":"","total_amount":10539.5,"user_phone":"17708659389"}
+[2025-10-12 21:53:47][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
+[2025-10-12 21:53:47][INFO] CLTgetCartForUser: item[0] good_id=6, name=野火哈基米, price=66.400000, qty=155, subtotal=10292.000000
+[2025-10-12 21:53:47][INFO] CLTgetCartForUser: item[1] good_id=5, name=ikun, price=2.500000, qty=99, subtotal=247.500000
+[2025-10-12 21:53:47][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
+[2025-10-12 21:53:47][INFO] UserWindow::refreshCart: item 0 good_id=6, name=野火哈基米, qty=155, subtotal=10292.000000
+[2025-10-12 21:53:47][INFO] UserWindow::refreshCart: item 1 good_id=5, name=ikun, qty=99, subtotal=247.500000
+[2025-10-12 21:53:51][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=4, name=dingdongji, price=8.110000, qty=250
+[2025-10-12 21:53:51][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-12 21:53:52][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 21:53:52][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 21:53:53][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":12567.0,"is_converted":false,"items":[{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":155,"subtotal":10292.0},{"good_id":5,"good_name":"ikun","price":2.5,"quantity":99,"subtotal":247.5},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":250,"subtotal":2027.5}],"shipping_address":"","total_amount":12567.0,"user_phone":"17708659389"}
+[2025-10-12 21:53:53][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
+[2025-10-12 21:53:53][INFO] CLTgetCartForUser: item[0] good_id=6, name=野火哈基米, price=66.400000, qty=155, subtotal=10292.000000
+[2025-10-12 21:53:53][INFO] CLTgetCartForUser: item[1] good_id=5, name=ikun, price=2.500000, qty=99, subtotal=247.500000
+[2025-10-12 21:53:53][INFO] CLTgetCartForUser: item[2] good_id=4, name=dingdongji, price=8.110000, qty=250, subtotal=2027.500000
+[2025-10-12 21:53:53][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
+[2025-10-12 21:53:53][INFO] UserWindow::refreshCart: item 0 good_id=6, name=野火哈基米, qty=155, subtotal=10292.000000
+[2025-10-12 21:53:53][INFO] UserWindow::refreshCart: item 1 good_id=5, name=ikun, qty=99, subtotal=247.500000
+[2025-10-12 21:53:53][INFO] UserWindow::refreshCart: item 2 good_id=4, name=dingdongji, qty=250, subtotal=2027.500000
+[2025-10-12 21:53:54][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 21:53:55][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":12567.0,"is_converted":false,"items":[{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":155,"subtotal":10292.0},{"good_id":5,"good_name":"ikun","price":2.5,"quantity":99,"subtotal":247.5},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":250,"subtotal":2027.5}],"shipping_address":"","total_amount":12567.0,"user_phone":"17708659389"}
+[2025-10-12 21:53:55][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
+[2025-10-12 21:53:55][INFO] CLTgetCartForUser: item[0] good_id=6, name=野火哈基米, price=66.400000, qty=155, subtotal=10292.000000
+[2025-10-12 21:53:55][INFO] CLTgetCartForUser: item[1] good_id=5, name=ikun, price=2.500000, qty=99, subtotal=247.500000
+[2025-10-12 21:53:55][INFO] CLTgetCartForUser: item[2] good_id=4, name=dingdongji, price=8.110000, qty=250, subtotal=2027.500000
+[2025-10-12 21:53:55][INFO] UserWindow::onCheckout: sending ADD_SETTLED_ORDER for orderId=o1760277235089_ed70cb3d userPhone=17708659389
+[2025-10-12 21:53:55][INFO] CLTaddSettledOrder: request: ADD_SETTLED_ORDER {"discountPolicy":"","items":[{"price":66.4,"productId":6,"productName":"野火哈基米","quantity":155,"subtotal":10292.0},{"price":2.5,"productId":5,"productName":"ikun","quantity":99,"subtotal":247.5[2025-10-12 22:02:06][INFO] 应用启动
+[2025-10-12 22:02:06][INFO] Server: DatabaseManager 已连接。
+[2025-10-12 22:02:06][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-12 22:02:06][INFO] Client 已连接到 Server
+[2025-10-12 22:02:07][INFO] DatabaseManager::connect() called.
+
+[2025-10-12 22:02:07][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 22:02:16][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-12 22:02:17][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:02:17][INFO] Server SERgetAllGoods: dbManager ptr = 1422161420272, DTBisConnected=true
+[2025-10-12 22:02:17][INFO] DTBloadAllGoods: this=0000014B1F6D1FF0 connection_=0000014B1F7593F0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:02:17][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:02:17][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":1075},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114514},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":289},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":181}]
+[2025-10-12 22:02:17][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 22:02:17][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:02:17][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:02:17][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"","total_amount":0.0,"user_phone":"17708659389"}
+[2025-10-12 22:02:17][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:02:17][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:02:18][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-12 22:02:31][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=7, name=ハチミ, price=78.000000, qty=13
+[2025-10-12 22:02:31][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-12 22:02:32][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:02:32][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:02:33][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1014.0,"is_converted":false,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":13,"subtotal":1014.0}],"shipping_address":"","total_amount":1014.0,"user_phone":"17708659389"}
+[2025-10-12 22:02:33][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 22:02:33][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:33][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 22:02:33][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:36][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=6, name=野火哈基米, price=66.400000, qty=2
+[2025-10-12 22:02:37][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-12 22:02:37][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:02:37][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:02:38][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":1146.8,"is_converted":false,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":13,"subtotal":1014.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":2,"subtotal":132.8}],"shipping_address":"","total_amount":1146.8,"user_phone":"17708659389"}
+[2025-10-12 22:02:38][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
+[2025-10-12 22:02:38][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:38][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=2, subtotal=132.800000
+[2025-10-12 22:02:38][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=2
+[2025-10-12 22:02:38][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:38][INFO] UserWindow::refreshCart: item 1 good_id=6, name=野火哈基米, qty=2, subtotal=132.800000
+[2025-10-12 22:02:42][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=1, name=hyw, price=9.990000, qty=91
+[2025-10-12 22:02:43][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-12 22:02:44][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:02:44][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:02:44][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":2055.89,"is_converted":false,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":13,"subtotal":1014.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":2,"subtotal":132.8},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":91,"subtotal":909.09}],"shipping_address":"","total_amount":2055.89,"user_phone":"17708659389"}
+[2025-10-12 22:02:44][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
+[2025-10-12 22:02:44][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:44][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=2, subtotal=132.800000
+[2025-10-12 22:02:44][INFO] CLTgetCartForUser: item[2] good_id=1, name=hyw, price=9.990000, qty=91, subtotal=909.090000
+[2025-10-12 22:02:44][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=3
+[2025-10-12 22:02:44][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:44][INFO] UserWindow::refreshCart: item 1 good_id=6, name=野火哈基米, qty=2, subtotal=132.800000
+[2025-10-12 22:02:44][INFO] UserWindow::refreshCart: item 2 good_id=1, name=hyw, qty=91, subtotal=909.090000
+[2025-10-12 22:02:48][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=2, name=manbo, price=28.880000, qty=141
+[2025-10-12 22:02:48][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-12 22:02:49][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:02:49][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:02:50][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":6127.97,"is_converted":false,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":13,"subtotal":1014.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":2,"subtotal":132.8},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":91,"subtotal":909.09},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":141,"subtotal":4072.08}],"shipping_address":"","total_amount":6127.97,"user_phone":"17708659389"}
+[2025-10-12 22:02:50][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=4
+[2025-10-12 22:02:50][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:50][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=2, subtotal=132.800000
+[2025-10-12 22:02:50][INFO] CLTgetCartForUser: item[2] good_id=1, name=hyw, price=9.990000, qty=91, subtotal=909.090000
+[2025-10-12 22:02:50][INFO] CLTgetCartForUser: item[3] good_id=2, name=manbo, price=28.880000, qty=141, subtotal=4072.080000
+[2025-10-12 22:02:50][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=4
+[2025-10-12 22:02:50][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:50][INFO] UserWindow::refreshCart: item 1 good_id=6, name=野火哈基米, qty=2, subtotal=132.800000
+[2025-10-12 22:02:50][INFO] UserWindow::refreshCart: item 2 good_id=1, name=hyw, qty=91, subtotal=909.090000
+[2025-10-12 22:02:50][INFO] UserWindow::refreshCart: item 3 good_id=2, name=manbo, qty=141, subtotal=4072.080000
+[2025-10-12 22:02:53][INFO] UserWindow::onModifyCartItem called
+[2025-10-12 22:02:53][INFO] UserWindow::onModifyCartItem: selected productId=6, currentQty=2
+[2025-10-12 22:02:55][INFO] UserWindow::onModifyCartItem: requested newQty=3
+[2025-10-12 22:02:55][INFO] UserWindow::onModifyCartItem: attempt update productId=6, newQty=3, attempt=1
+[2025-10-12 22:02:55][INFO] Server SERupdateCartItem: request userPhone=17708659389, productId=6, quantity=3
+[2025-10-12 22:02:56][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned true
+[2025-10-12 22:02:56][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:02:56][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:02:57][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":6194.37,"is_converted":false,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":13,"subtotal":1014.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":91,"subtotal":909.09},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":141,"subtotal":4072.08}],"shipping_address":"","total_amount":6194.37,"user_phone":"17708659389"}
+[2025-10-12 22:02:57][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=4
+[2025-10-12 22:02:57][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:57][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
+[2025-10-12 22:02:57][INFO] CLTgetCartForUser: item[2] good_id=1, name=hyw, price=9.990000, qty=91, subtotal=909.090000
+[2025-10-12 22:02:57][INFO] CLTgetCartForUser: item[3] good_id=2, name=manbo, price=28.880000, qty=141, subtotal=4072.080000
+[2025-10-12 22:02:57][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=4
+[2025-10-12 22:02:57][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:57][INFO] UserWindow::refreshCart: item 1 good_id=6, name=野火哈基米, qty=3, subtotal=199.200000
+[2025-10-12 22:02:57][INFO] UserWindow::refreshCart: item 2 good_id=1, name=hyw, qty=91, subtotal=909.090000
+[2025-10-12 22:02:57][INFO] UserWindow::refreshCart: item 3 good_id=2, name=manbo, qty=141, subtotal=4072.080000
+[2025-10-12 22:02:58][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:02:58][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":6194.37,"is_converted":false,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":13,"subtotal":1014.0},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":3,"subtotal":199.2},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":91,"subtotal":909.09},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":141,"subtotal":4072.08}],"shipping_address":"","total_amount":6194.37,"user_phone":"17708659389"}
+[2025-10-12 22:02:58][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=4
+[2025-10-12 22:02:58][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=13, subtotal=1014.000000
+[2025-10-12 22:02:58][INFO] CLTgetCartForUser: item[1] good_id=6, name=野火哈基米, price=66.400000, qty=3, subtotal=199.200000
+[2025-10-12 22:02:58][INFO] CLTgetCartForUser: item[2] good_id=1, name=hyw, price=9.990000, qty=91, subtotal=909.090000
+[2025-10-12 22:02:58][INFO] CLTgetCartForUser: item[3] good_id=2, name=manbo, price=28.880000, qty=141, subtotal=4072.080000
+[2025-10-12 22:02:58][INFO] UserWindow::onCheckout: sending ADD_SETTLED_ORDER for orderId=o1760277778542_7cd3258d userPhone=17708659389
+[2025-10-12 22:02:58][INFO] CLTaddSettledOrder: request: ADD_SETTLED_ORDER {"discountPolicy":"","items":[{"price":78.0,"productId":7,"productName":"ハチミ","quantity":13,"subtotal":1014.0},{"price":66.4,"productId":6,"productName":"野火哈基米","quantity":3,"subtotal":199.2},{"price":9.99,"productId":1,"productName":"hyw","quantity":91,"subtotal":909.09},{"price":28.88,"productId":2,"productName":"manbo","quantity":141,"subtotal":4072.08}],"orderId":"o1760277778542_7cd3258d","status":1,"userPhone":"17708659389"}
+[2025-10-12 22:02:58][INFO] Server SERaddSettledOrder: 减库存 good_id=7 -> 168
+[2025-10-12 22:02:58][INFO] Server SERaddSettledOrder: 减库存 good_id=6 -> 286
+[2025-10-12 22:02:58][INFO] Server SERaddSettledOrder: 减库存 good_id=1 -> 984
+[2025-10-12 22:02:58][INFO] Server SERaddSettledOrder: 减库存 good_id=2 -> 114373
+[2025-10-12 22:02:58][INFO] CLTaddSettledOrder: raw response: {"order_id":"o1760277778542_7cd3258d","result":"added"}
+[2025-10-12 22:02:58][INFO] UserWindow::onCheckout: CLTaddSettledOrder returned true
+[2025-10-12 22:03:00][INFO] Server SERremoveFromCart: request userPhone=17708659389, productId=7
+[2025-10-12 22:03:00][INFO] Server SERremoveFromCart: removed productId=7
+[2025-10-12 22:03:00][INFO] Server SERremoveFromCart: request userPhone=17708659389, productId=6
+[2025-10-12 22:03:00][INFO] Server SERremoveFromCart: removed productId=6
+[2025-10-12 22:03:00][INFO] Server SERremoveFromCart: request userPhone=17708659389, productId=1
+[2025-10-12 22:03:00][INFO] Server SERremoveFromCart: removed productId=1
+[2025-10-12 22:03:01][INFO] Server SERremoveFromCart: request userPhone=17708659389, productId=2
+[2025-10-12 22:03:01][INFO] Server SERremoveFromCart: removed productId=2
+[2025-10-12 22:03:01][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:03:01][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:03:01][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"","total_amount":0.0,"user_phone":"17708659389"}
+[2025-10-12 22:03:01][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:03:01][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:03:54][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:03:54][INFO] Server SERgetAllGoods: dbManager ptr = 1422161420272, DTBisConnected=true
+[2025-10-12 22:03:54][INFO] DTBloadAllGoods: this=0000014B1F6D1FF0 connection_=0000014B1F7593F0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:03:54][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:03:54][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":286},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":168}]
+[2025-10-12 22:03:54][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 22:04:01][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=7, name=ハチミ, price=78.000000, qty=168
+[2025-10-12 22:04:02][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-12 22:04:02][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:04:02][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:04:03][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":13104.0,"is_converted":false,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":168,"subtotal":13104.0}],"shipping_address":"","total_amount":13104.0,"user_phone":"17708659389"}
+[2025-10-12 22:04:03][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 22:04:03][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=168, subtotal=13104.000000
+[2025-10-12 22:04:03][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 22:04:03][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=168, subtotal=13104.000000
+[2025-10-12 22:04:04][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:04:05][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":13104.0,"is_converted":false,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":168,"subtotal":13104.0}],"shipping_address":"","total_amount":13104.0,"user_phone":"17708659389"}
+[2025-10-12 22:04:05][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 22:04:05][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=168, subtotal=13104.000000
+[2025-10-12 22:04:05][INFO] UserWindow::onCheckout: sending ADD_SETTLED_ORDER for orderId=o1760277845018_4d6f7f80 userPhone=17708659389
+[2025-10-12 22:04:05][INFO] CLTaddSettledOrder: request: ADD_SETTLED_ORDER {"discountPolicy":"","items":[{"price":78.0,"productId":7,"productName":"ハチミ","quantity":168,"subtotal":13104.0}],"orderId":"o1760277845018_4d6f7f80","status":1,"userPhone":"17708659389"}
+[2025-10-12 22:04:05][INFO] Server SERaddSettledOrder: 减库存 good_id=7 -> 0
+[2025-10-12 22:04:05][INFO] CLTaddSettledOrder: raw response: {"order_id":"o1760277845018_4d6f7f80","result":"added"}
+[2025-10-12 22:04:05][INFO] UserWindow::onCheckout: CLTaddSettledOrder returned true
+[2025-10-12 22:04:09][INFO] Server SERremoveFromCart: request userPhone=17708659389, productId=7
+[2025-10-12 22:04:09][INFO] Server SERremoveFromCart: removed productId=7
+[2025-10-12 22:04:09][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:04:09][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:04:10][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:04:10][INFO] Server SERgetAllGoods: dbManager ptr = 1422161420272, DTBisConnected=true
+[2025-10-12 22:04:10][INFO] DTBloadAllGoods: this=0000014B1F6D1FF0 connection_=0000014B1F7593F0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:04:10][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:04:10][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":286},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":0}]
+[2025-10-12 22:04:10][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 22:04:10][INFO] CLTgetCartForUser: raw response: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":286},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":0}]
+[2025-10-12 22:04:10][FAIL] CLTgetCartForUser 解析失败: [json.exception.type_error.306] cannot use value() with array
+[2025-10-12 22:04:[2025-10-12 22:12:46][INFO] 应用启动
+[2025-10-12 22:12:46][INFO] Server: DatabaseManager 已连接。
+[2025-10-12 22:12:46][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-12 22:12:46][INFO] Client 已连接到 Server
+[2025-10-12 22:12:46][INFO] DatabaseManager::connect() called.
+
+[2025-10-12 22:12:46][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 22:12:58][FAIL] LOGIN 返回错误: {"error":"密码错误"}
+[2025-10-12 22:13:02][FAIL] LOGIN 返回错误: {"error":"密码错误"}
+[2025-10-12 22:13:04][FAIL] LOGIN 返回错误: {"error":"密码错误"}
+[2025-10-12 22:13:09][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-12 22:13:09][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:13:09][INFO] Server SERgetAllGoods: dbManager ptr = 1765537337536, DTBisConnected=true
+[2025-10-12 22:13:09][INFO] DTBloadAllGoods: this=0000019B1239D0C0 connection_=0000019B1241B5C0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:13:09][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:13:09][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":286},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":0}]
+[2025-10-12 22:13:09][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 22:13:09][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:13:09][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:13:10][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"","total_amount":0.0,"user_phone":"17708659389"}
+[2025-10-12 22:13:10][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:13:10][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:13:10][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-12 22:13:37][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=6, name=野火哈基米, price=66.400000, qty=8
+[2025-10-12 22:13:38][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-12 22:13:39][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:13:39][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:13:39][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":531.2,"is_converted":false,"items":[{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":8,"subtotal":531.2}],"shipping_address":"","total_amount":531.2,"user_phone":"17708659389"}
+[2025-10-12 22:13:39][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 22:13:39][INFO] CLTgetCartForUser: item[0] good_id=6, name=野火哈基米, price=66.400000, qty=8, subtotal=531.200000
+[2025-10-12 22:13:39][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 22:13:39][INFO] UserWindow::refreshCart: item 0 good_id=6, name=野火哈基米, qty=8, subtotal=531.200000
+[2025-10-12 22:13:41][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:13:41][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":531.2,"is_converted":false,"items":[{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":8,"subtotal":531.2}],"shipping_address":"","total_amount":531.2,"user_phone":"17708659389"}
+[2025-10-12 22:13:41][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=1
+[2025-10-12 22:13:41][INFO] CLTgetCartForUser: item[0] good_id=6, name=野火哈基米, price=66.400000, qty=8, subtotal=531.200000
+[2025-10-12 22:13:41][INFO] UserWindow::onCheckout: sending ADD_SETTLED_ORDER for orderId=o1760278421449_8022398a userPhone=17708659389
+[2025-10-12 22:13:41][INFO] CLTaddSettledOrder: request: ADD_SETTLED_ORDER {"discountPolicy":"","items":[{"price":66.4,"productId":6,"productName":"野火哈基米","quantity":8,"subtotal":531.2}],"orderId":"o1760278421449_8022398a","status":1,"userPhone":"17708659389"}
+[2025-10-12 22:13:41][INFO] Server SERaddSettledOrder: 减库存 good_id=6 -> 278
+[2025-10-12 22:13:41][INFO] CLTaddSettledOrder: raw response: {"order_id":"o1760278421449_8022398a","result":"added"}
+[2025-10-12 22:13:41][INFO] UserWindow::onCheckout: CLTaddSettledOrder returned true
+[2025-10-12 22:13:43][INFO] Server SERremoveFromCart: request userPhone=17708659389, productId=6
+[2025-10-12 22:13:43][INFO] Server SERremoveFromCart: removed productId=6
+[2025-10-12 22:13:43][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:13:43][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:13:43][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"","total_amount":0.0,"user_phone":"17708659389"}
+[2025-10-12 22:13:43][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:13:43][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:14:06][INFO] Server SERdeleteSettledOrder: deleted order c1760229692248_44fe7ebe71b0aabe
+[2025-10-12 22:14:11][INFO] Server SERrepairSettledOrder: set status to REPAIR for order o1760276630056_16d52686
+[2025-10-12 22:14:15][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=7 -> 100
+[2025-10-12 22:14:15][INFO] Server SERreturnSettledOrder: set status to RETURNED for order o1760276650335_be1040b6
+[2025-10-12 22:14:22][INFO] UserWindow::onReturnToIdentitySelection called
+[2025-10-12 22:14:22][INFO] 收到 UserWindow::backRequested，返回登录界面
+[2025-10-12 22:14:22][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 22:14:27][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-12 22:14:27][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-12 22:14:28][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:14:28][INFO] Server SERgetAllGoods: dbManager ptr = 1765537337536, DTBisConnected=true
+[2025-10-12 22:14:28][INFO] DTBloadAllGoods: this=0000019B1239D0C0 connection_=0000019B1241B5C0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:14:28][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:14:28][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":278},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":100}]
+[2025-10-12 22:14:28][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 22:14:42][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:14:42][INFO] Server SERgetAllGoods: dbManager ptr = 1765537337536, DTBisConnected=true
+[2025-10-12 22:14:42][INFO] DTBloadAllGoods: this=0000019B1239D0C0 connection_=0000019B1241B5C0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:14:42][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:14:42][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","[2025-10-12 22:43:48][INFO] 应用启动
+[2025-10-12 22:43:49][INFO] Server: DatabaseManager 已连接。
+[2025-10-12 22:43:49][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-12 22:43:49][INFO] Client 已连接到 Server
+[2025-10-12 22:43:49][INFO] DatabaseManager::connect() called.
+
+[2025-10-12 22:43:49][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 22:43:59][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-12 22:43:59][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-12 22:43:59][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:43:59][INFO] Server SERgetAllGoods: dbManager ptr = 2302921988912, DTBisConnected=true
+[2025-10-12 22:43:59][INFO] DTBloadAllGoods: this=0000021830D8DB30 connection_=0000021830E2B440 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:43:59][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:43:59][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":278},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":199}]
+[2025-10-12 22:43:59][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 22:44:33][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:44:33][INFO] Server SERgetAllGoods: dbManager ptr = 2302921988912, DTBisConnected=true
+[2025-10-12 22:44:33][INFO] DTBloadAllGoods: this=0000021830D8DB30 connection_=0000021830E2B440 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:44:33][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:44:33][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":278},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":199}]
+[2025-10-12 22:44:33][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 22:48:47][INFO] 应用启动
+[2025-10-12 22:48:47][INFO] Server: DatabaseManager 已连接。
+[2025-10-12 22:48:47][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-12 22:48:47][INFO] Client 已连接到 Server
+[2025-10-12 22:48:47][INFO] DatabaseManager::connect() called.
+
+[2025-10-12 22:48:47][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 22:48:52][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-12 22:48:52][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-12 22:48:52][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:48:52][INFO] Server SERgetAllGoods: dbManager ptr = 2132505459424, DTBisConnected=true
+[2025-10-12 22:48:52][INFO] DTBloadAllGoods: this=000001F0833AFAE0 connection_=000001F0834335B0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:48:52][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:48:52][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":278},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":199}]
+[2025-10-12 22:48:52][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 22:50:09][INFO] AdminWindow::onReturnToIdentitySelection called
+[2025-10-12 22:50:09][INFO] 收到 AdminWindow::backRequested，返回登录界面
+[2025-10-12 22:50:09][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 22:50:18][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-12 22:50:18][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 22:50:18][INFO] Server SERgetAllGoods: dbManager ptr = 2132505459424, DTBisConnected=true
+[2025-10-12 22:50:18][INFO] DTBloadAllGoods: this=000001F0833AFAE0 connection_=000001F0834335B0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 22:50:18][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 22:50:18][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":278},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":199}]
+[2025-10-12 22:50:18][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 22:50:18][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 22:50:18][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 22:50:18][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"","total_amount":0.0,"user_phone":"17708659389"}
+[2025-10-12 22:50:18][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:50:18][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 22:50:19][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-12 23:01:31][INFO] 应用启动
+[2025-10-12 23:01:31][INFO] Server: DatabaseManager 已连接。
+[2025-10-12 23:01:31][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-12 23:01:31][INFO] Client 已连接到 Server
+[2025-10-12 23:01:31][INFO] DatabaseManager::connect() called.
+
+[2025-10-12 23:01:31][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 23:01:42][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-12 23:01:42][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-12 23:01:42][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 23:01:42][INFO] Server SERgetAllGoods: dbManager ptr = 2017349453760, DTBisConnected=true
+[2025-10-12 23:01:42][INFO] DTBloadAllGoods: this=000001D5B365C7C0 connection_=000001D5B36E28F0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 23:01:42][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 23:01:42][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":278},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":199}]
+[2025-10-12 23:01:42][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 23:02:00][INFO] AdminWindow::onReturnToIdentitySelection called
+[2025-10-12 23:02:00][INFO] 收到 AdminWindow::backRequested，返回登录界面
+[2025-10-12 23:02:00][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 23:02:13][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-12 23:02:13][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 23:02:13][INFO] Server SERgetAllGoods: dbManager ptr = 2017349453760, DTBisConnected=true
+[2025-10-12 23:02:13][INFO] DTBloadAllGoods: this=000001D5B365C7C0 connection_=000001D5B36E28F0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 23:02:13][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 23:02:13][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":278},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":199}]
+[2025-10-12 23:02:13][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 23:02:13][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-12 23:02:13][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-12 23:02:13][INFO] CLTgetCartForUser: raw response: {"cart_id":"c1760229692248_44fe7ebe71b0aabe","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"","total_amount":0.0,"user_phone":"17708659389"}
+[2025-10-12 23:02:13][INFO] CLTgetCartForUser: parsed cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 23:02:13][INFO] UserWindow::refreshCart: got cart_id=c1760229692248_44fe7ebe71b0aabe, items=0
+[2025-10-12 23:02:14][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-12 23:02:27][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-12 23:02:27][INFO] 应用退出
+
+[2025-10-12 23:02:27][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-12 23:05:02][INFO] 应用启动
+[2025-10-12 23:05:02][INFO] Server: DatabaseManager 已连接。
+[2025-10-12 23:05:02][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-12 23:05:02][INFO] Client 已连接到 Server
+[2025-10-12 23:05:02][INFO] DatabaseManager::connect() called.
+
+[2025-10-12 23:05:02][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 23:05:08][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-12 23:05:09][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-12 23:05:09][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-12 23:05:09][INFO] Server SERgetAllGoods: dbManager ptr = 1835314326752, DTBisConnected=true
+[2025-10-12 23:05:09][INFO] DTBloadAllGoods: this=000001AB51422CE0 connection_=000001AB514C6570 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-12 23:05:09][INFO] DTBloadAllGoods: mysql_num_rows = 6
+
+[2025-10-12 23:05:09][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":984},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":114373},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":416},{"category":"ji","id":5,"name":"ikun","price":2.5,"stock":151},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":278},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":199}]
+[2025-10-12 23:05:09][INFO] Server SERgetAllGoods: 查询到 6 个商品
+[2025-10-12 23:05:19][INFO] AdminWindow::onReturnToIdentitySelection called
+[2025-10-12 23:05:19][INFO] 收到 AdminWindow::backRequested，返回登录界面
+[2025-10-12 23:05:19][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-12 23:05:21][INFO] 用户取消登录，退出应用
+[2025-10-12 23:05:21][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-12 23:05:21][INFO] DatabaseManager::disconnect() called.
 

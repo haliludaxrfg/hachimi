@@ -22,7 +22,7 @@
 #include "logger.h"
 #include "order.h"
 #include "orderItem.h"
-#include "promotion.h"
+#include "PromotionStrategy.h"
 #include "Server.h"
 #include "TemporaryCart.h"
 #include "user.h"

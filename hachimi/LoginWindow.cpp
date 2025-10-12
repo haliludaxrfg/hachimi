@@ -128,10 +128,15 @@ void LoginWindow::onLoginClicked() {
     if (client_) {
         bool ok = client_->CLTlogin(phone, pwd);
         if (ok) {
-            infoLabel->setText("登录成功（服务器验证）！");
-            infoLabel->setStyleSheet("color: green;");
-            loginIndex = -1; // 标记为远端登录成功
-            accept();
+            if (ok) {
+                infoLabel->setText("登录成功（服务器验证）！");
+                infoLabel->setStyleSheet("color: green;");
+                // 确保 phoneEdit 中保存了用于登录的手机号（防止后续读取为空）
+                phoneEdit->setText(QString::fromStdString(phone));
+                loginIndex = -1; // 标记为远端登录成功
+                accept();
+                return;
+            };
             return;
         } else {
             infoLabel->setText("登录失败（服务器验证未通过）");
@@ -168,6 +173,23 @@ void LoginWindow::onRegisterClicked() {
     if (!ok || pwd.isEmpty()) return;
     QString addr = QInputDialog::getText(this, "注册", "地址:", QLineEdit::Normal, "", &ok);
     if (!ok) return;
+
+    // 去除首尾空白
+    phone = phone.trimmed();
+    pwd = pwd.trimmed();
+
+    // 验证手机号 11 位数字
+    if (!User::isValidPhoneNumber(phone.toStdString())) {
+        QMessageBox::warning(this, "注册", "手机号必须为 11 位数字。");
+        return;
+    }
+
+    // 验证密码长度 5-25 字符
+    int plen = pwd.size();
+    if (plen < 5 || plen > 25) {
+        QMessageBox::warning(this, "注册", "密码长度须在 5 到 25 个字符之间。");
+        return;
+    }
 
     // 先查数据库是否已存在
     User tmpUser("", "", "");

@@ -28,7 +28,7 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="promotion.cpp">
+    <ClCompile Include="PromotionStrategy.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="user.cpp">
@@ -81,7 +81,7 @@
     <ClInclude Include="databaseManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="promotion.h">
+    <ClInclude Include="PromotionStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="user.h">
@@ -117,12 +117,6 @@
       <Filter>others</Filter>
     </None>
     <None Include="..\..\..\..\document\Rockstar Games\GTAV Enhanced\Profiles\980E0BCA\pc_settings.bin">
-      <Filter>others</Filter>
-    </None>
-    <None Include="..\..\..\..\document\Image-Line\Downloads\Themes\Community Vision Themes Vol 1\Loopy Fruits.html">
-      <Filter>others</Filter>
-    </None>
-    <None Include="Loopy Fruits_Night.html">
       <Filter>others</Filter>
     </None>
     <None Include="..\..\..\..\document\Image-Line\FLEX\wavetables_cache.bin">

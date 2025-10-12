@@ -1,4 +1,4 @@
-#include "promotion.h"
+#include "PromotionStrategy.h"
 #include <stdexcept>
 
 // 工厂方法：通过JSON创建策略对象

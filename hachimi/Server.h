@@ -7,7 +7,7 @@
 #include "user.h"
 #include "userManager.h"
 #include "databaseManager.h"
-#include "promotion.h"
+#include "PromotionStrategy.h"
 #include "logger.h"
 
 #include <string>
@@ -73,7 +73,7 @@ public:
     std::string SERaddToCart(const std::string& userPhone, int productId, const std::string& productName, double price, int quantity);
     std::string SERupdateCartItem(const std::string& userPhone, int productId, int quantity);
     std::string SERremoveFromCart(const std::string& userPhone, int productId);
-    
+    static void recalcCartTotals(TemporaryCart& cart);
 	// promotion
     std::string SERgetAllPromotions();
     std::string SERgetPromotionsByProductId(int productId);

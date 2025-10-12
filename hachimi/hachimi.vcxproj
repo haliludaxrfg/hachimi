@@ -108,7 +108,7 @@
     <ClCompile Include="LoginWindow.cpp" />
     <ClCompile Include="LogWindow.cpp" />
     <ClCompile Include="order.cpp" />
-    <ClCompile Include="promotion.cpp" />
+    <ClCompile Include="PromotionStrategy.cpp" />
     <ClCompile Include="Server.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -135,7 +135,7 @@
     <QtMoc Include="LogWindow.h" />
     <ClInclude Include="order.h" />
     <ClInclude Include="orderItem.h" />
-    <ClInclude Include="promotion.h" />
+    <ClInclude Include="PromotionStrategy.h" />
     <QtMoc Include="UserWindow.h" />
     <QtMoc Include="LoginWindow.h" />
     <QtMoc Include="QtServer.h" />
@@ -145,14 +145,9 @@
     <ClInclude Include="userManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\document\Image-Line\Downloads\Themes\Community Vision Themes Vol 1\Loopy Fruits.html" />
     <None Include="..\..\..\..\document\Image-Line\FLEX\wavetables_cache.bin" />
     <None Include="..\..\..\..\document\Rockstar Games\GTA V\Profiles\980E0BCA\pc_settings.bin" />
     <None Include="..\..\..\..\document\Rockstar Games\GTAV Enhanced\Profiles\980E0BCA\pc_settings.bin" />
-    <None Include="Loopy Fruits_Night.html">
-      <SubType>
-      </SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="log.txt" />

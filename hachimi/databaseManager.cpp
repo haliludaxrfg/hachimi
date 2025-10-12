@@ -316,7 +316,13 @@ bool DatabaseManager::DTBloadOrder(const std::string& order_id, Order& o) {
 	if (!result) return false;
 	MYSQL_ROW row = mysql_fetch_row(result);
 	if (row) {
-		o = Order(TemporaryCart(), row[0] ? row[0] : "");
+		// 逐字段填充 Order，确保 user_phone 与金额字段也被设置
+		o = Order(); // reset
+		o.setOrderId(row[0] ? row[0] : "");
+		o.setUserPhone(row[1] ? row[1] : "");
+		o.setTotalAmount(row[2] ? std::stod(row[2]) : 0.0);
+		o.setDiscountAmount(row[3] ? std::stod(row[3]) : 0.0);
+		o.setFinalAmount(row[4] ? std::stod(row[4]) : 0.0);
 		o.setStatus(row[5] ? std::stoi(row[5]) : 0);
 		o.setShippingAddress(row[6] ? row[6] : "");
 		o.setDiscountPolicy(row[7] ? row[7] : "");
@@ -344,7 +350,12 @@ std::vector<Order> DatabaseManager::DTBloadOrdersByUser(const std::string& user_
 	if (!result) return orders;
 	MYSQL_ROW row;
 	while ((row = mysql_fetch_row(result))) {
-		Order o(TemporaryCart(), row[0] ? row[0] : "");
+		Order o;
+		o.setOrderId(row[0] ? row[0] : "");
+		o.setUserPhone(row[1] ? row[1] : "");
+		o.setTotalAmount(row[2] ? std::stod(row[2]) : 0.0);
+		o.setDiscountAmount(row[3] ? std::stod(row[3]) : 0.0);
+		o.setFinalAmount(row[4] ? std::stod(row[4]) : 0.0);
 		o.setStatus(row[5] ? std::stoi(row[5]) : 0);
 		o.setShippingAddress(row[6] ? row[6] : "");
 		o.setDiscountPolicy(row[7] ? row[7] : "");
@@ -362,7 +373,12 @@ std::vector<Order> DatabaseManager::DTBloadOrdersByStatus(int status) {
 	if (!result) return orders;
 	MYSQL_ROW row;
 	while ((row = mysql_fetch_row(result))) {
-		Order o(TemporaryCart(), row[0] ? row[0] : "");
+		Order o;
+		o.setOrderId(row[0] ? row[0] : "");
+		o.setUserPhone(row[1] ? row[1] : "");
+		o.setTotalAmount(row[2] ? std::stod(row[2]) : 0.0);
+		o.setDiscountAmount(row[3] ? std::stod(row[3]) : 0.0);
+		o.setFinalAmount(row[4] ? std::stod(row[4]) : 0.0);
 		o.setStatus(row[5] ? std::stoi(row[5]) : 0);
 		o.setShippingAddress(row[6] ? row[6] : "");
 		o.setDiscountPolicy(row[7] ? row[7] : "");
@@ -380,7 +396,12 @@ std::vector<Order> DatabaseManager::DTBloadRecentOrders(int limit) {
 	if (!result) return orders;
 	MYSQL_ROW row;
 	while ((row = mysql_fetch_row(result))) {
-		Order o(TemporaryCart(), row[0] ? row[0] : "");
+		Order o;
+		o.setOrderId(row[0] ? row[0] : "");
+		o.setUserPhone(row[1] ? row[1] : "");
+		o.setTotalAmount(row[2] ? std::stod(row[2]) : 0.0);
+		o.setDiscountAmount(row[3] ? std::stod(row[3]) : 0.0);
+		o.setFinalAmount(row[4] ? std::stod(row[4]) : 0.0);
 		o.setStatus(row[5] ? std::stoi(row[5]) : 0);
 		o.setShippingAddress(row[6] ? row[6] : "");
 		o.setDiscountPolicy(row[7] ? row[7] : "");
@@ -608,4 +629,59 @@ bool DatabaseManager::DTBloadTemporaryCartByUserPhone(const std::string& userPho
 		outCart.items.clear();
 	}
 	return true;
+}
+
+
+// ---------------- 促销策略（实现） ----------------
+
+
+bool DatabaseManager::DTBsavePromotionStrategy(const std::string& name, const std::string& type,
+	const std::string& config, const std::string& conditions) {
+	if (!connection_) return false;
+	// 把 policy_detail 当作 JSON 字符串存储
+	std::string policy = config;
+	std::string query = "INSERT INTO promotionstrategy (name, policy_detail) VALUES ('" +
+		name + "', '" + policy + "')";
+	return DTBexecuteQuery(query);
+}
+
+bool DatabaseManager::DTBupdatePromotionStrategy(const std::string& name, bool /*is_active*/) {
+	if (!connection_) return false;
+	// 当前表没有 is_active 字段；这里只提供占位逻辑（可根据实际表结构扩展）
+	std::cerr << "DTBupdatePromotionStrategy: table has no is_active column; no-op called for name=" << name << std::endl;
+	return true;
+}
+
+std::map<std::string, std::string> DatabaseManager::DTBloadPromotionStrategy(const std::string& name) {
+	std::map<std::string, std::string> out;
+	if (!connection_) return out;
+	std::string q = "SELECT id, name, policy_detail FROM promotionstrategy WHERE name='" + name + "' LIMIT 1";
+	MYSQL_RES* res = DTBexecuteSelect(q);
+	if (!res) return out;
+	MYSQL_ROW row = mysql_fetch_row(res);
+	if (row) {
+		out["id"] = row[0] ? row[0] : "";
+		out["name"] = row[1] ? row[1] : "";
+		out["policy_detail"] = row[2] ? row[2] : "";
+	}
+	mysql_free_result(res);
+	return out;
+}
+
+std::vector<std::map<std::string, std::string>> DatabaseManager::DTBloadAllPromotionStrategies(bool /*active_only*/) {
+	std::vector<std::map<std::string, std::string>> out;
+	if (!connection_) return out;
+	std::string q = "SELECT id, name, policy_detail FROM promotionstrategy";
+	MYSQL_RES* res = DTBexecuteSelect(q);
+	if (!res) return out;
+	MYSQL_ROW row;
+	while ((row = mysql_fetch_row(res))) {
+		std::map<std::string, std::string> entry;
+		entry["id"] = row[0] ? row[0] : "";
+		entry["name"] = row[1] ? row[1] : "";
+		entry["policy_detail"] = row[2] ? row[2] : "";
+		out.push_back(std::move(entry));
+	}
+	mysql_free_result(res);
+	return out;
 }

@@ -8,6 +8,19 @@
 #include <QHeaderView>
 #include <QDateTime>
 #include <QFormLayout>
+#include <random>
+// 在文件顶部 includes 之后加入与 AdminWindow 相同的状态映射辅助函数（UI 文件内局部）
+static QString orderStatusToText(int status) {
+    switch (status) {
+    case 1: return QStringLiteral("已完成");
+    case 2: return QStringLiteral("已发货");
+    case 3: return QStringLiteral("已退货");
+    case 4: return QStringLiteral("维修中");
+    case 5: return QStringLiteral("已取消");
+    case 0: return QStringLiteral("未知");
+    default: return QString::number(status);
+    }
+}
 
 UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent)
     : QWidget(parent), phone_(phone), client_(client)
@@ -83,7 +96,26 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     // 3. 订单查看
     orderTab = new QWidget;
     QVBoxLayout* orderLayout = new QVBoxLayout(orderTab);
-    orderLayout->addWidget(new QLabel("已完成订单列表"));
+    orderTable = new QTableWidget;
+    // 删除显示手机号列：只保留 订单ID, 状态, 实付金额 三列
+    orderTable->setColumnCount(3);
+    orderTable->setHorizontalHeaderLabels(QStringList() << "订单ID" << "状态" << "实付金额");
+    orderTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    orderLayout->addWidget(orderTable);
+
+    QHBoxLayout* orderBtnLayout = new QHBoxLayout;
+    refreshOrdersBtn = new QPushButton("刷新订单");
+    viewOrderBtn = new QPushButton("查看详情");
+    returnOrderBtn = new QPushButton("退货");
+    repairOrderBtn = new QPushButton("维修");
+    deleteOrderBtn = new QPushButton("删除订单");
+    orderBtnLayout->addWidget(refreshOrdersBtn);
+    orderBtnLayout->addWidget(viewOrderBtn);
+    orderBtnLayout->addWidget(returnOrderBtn);
+    orderBtnLayout->addWidget(repairOrderBtn);
+    orderBtnLayout->addWidget(deleteOrderBtn);
+    orderLayout->addLayout(orderBtnLayout);
+
     tabWidget->addTab(orderTab, "我的订单");
 
     mainLayout->addWidget(tabWidget);
@@ -112,9 +144,16 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     connect(saveInfoBtn, &QPushButton::clicked, this, &UserWindow::onSaveUserInfo);
     connect(deleteAccountBtn, &QPushButton::clicked, this, &UserWindow::onDeleteAccount);
 
+    connect(refreshOrdersBtn, &QPushButton::clicked, this, &UserWindow::refreshOrders);
+    connect(viewOrderBtn, &QPushButton::clicked, this, &UserWindow::onViewOrderDetail);
+    connect(returnOrderBtn, &QPushButton::clicked, this, &UserWindow::onReturnOrder);
+    connect(repairOrderBtn, &QPushButton::clicked, this, &UserWindow::onRepairOrder);
+    connect(deleteOrderBtn, &QPushButton::clicked, this, &UserWindow::onDeleteOrder);
+
     // 初始加载
     refreshGoods();
     refreshCart();
+    refreshOrders();
 
     // 尝试从客户端加载当前用户信息（若可用）
     if (client_) {
@@ -127,7 +166,12 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
                 break;
             }
         }
-    } else {
+        // 额外保证：即便上面没找到用户，也把构造时传入的 phone_ 显示到界面
+        if (!phone_.empty()) {
+            phoneEdit->setText(QString::fromStdString(phone_));
+        }
+    }
+    else {
         // 无 client 时禁用编辑与注销
         saveInfoBtn->setEnabled(false);
         deleteAccountBtn->setEnabled(false);
@@ -229,19 +273,38 @@ void UserWindow::refreshCart() {
 
 void UserWindow::onCheckout() {
     if (!client_) return;
+
+    // 后备：若 phone_ 为空则从界面读取（防止构造时未传入）
+    if (phone_.empty()) {
+        phone_ = phoneEdit->text().toStdString();
+        Logger::instance().info(std::string("UserWindow::onCheckout: phone_ was empty, fallback to phoneEdit: ") + phone_);
+    }
+
     TemporaryCart cart = client_->CLTgetCartForUser(phone_);
     if (cart.items.empty()) {
         QMessageBox::information(this, "结算", "购物车为空");
         return;
     }
-    // 使用临时购物车的 cart_id 作为订单 ID
-    QString orderId = QString::fromStdString(cart.cart_id);
 
-    // 使用从购物车生成订单的构造函数，将 cart_id 传入
+    // 不再直接复用 cart.cart_id（可能已使用），改为客户端生成唯一订单 id
+    // 格式：o<timestamp_ms>_<rand>
+    qint64 ms = QDateTime::currentMSecsSinceEpoch();
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<uint32_t> dist;
+    uint32_t r = dist(gen);
+    QString orderId = QString("o%1_%2").arg(ms).arg(r, 8, 16, QChar('0'));
+
     Order order(cart, orderId.toStdString(), 1);
+    // 确保 order 带上手机号
+    if (order.getUserPhone().empty()) order.setUserPhone(phone_);
 
-    // 将整个 Order 提交到后端
+    // 记录发送内容（便于排查）
+    Logger::instance().info(std::string("UserWindow::onCheckout: sending ADD_SETTLED_ORDER for orderId=") + orderId.toStdString() + " userPhone=" + phone_);
+
     bool ok = client_->CLTaddSettledOrder(order);
+    Logger::instance().info(std::string("UserWindow::onCheckout: CLTaddSettledOrder returned ") + (ok ? "true" : "false"));
+
     if (ok) {
         QMessageBox::information(this, "结算", "结算成功（已提交订单）");
         // 清空购物车：用后台接口删除购物车内商品
@@ -250,7 +313,7 @@ void UserWindow::onCheckout() {
         }
         refreshCart();
     } else {
-        QMessageBox::warning(this, "结算", "结算失败，请重试");
+        QMessageBox::warning(this, "结算", "结算失败，请查看 log.txt 获取详细信息");
     }
 }
 
@@ -573,4 +636,86 @@ void UserWindow::onRemoveCartItem() {
         QMessageBox::warning(this, "删除商品", "删除失败（查看日志）");
     }
     refreshCart();
+}
+
+// ----------------- 新增槽实现：订单相关 -----------------
+
+void UserWindow::refreshOrders() {
+    if (!client_) return;
+    orderTable->setRowCount(0);
+    auto orders = client_->CLTgetAllOrders(phone_);
+    orderTable->setRowCount((int)orders.size());
+    for (int i = 0; i < (int)orders.size(); ++i) {
+        const Order& o = orders[i];
+        // 订单ID 列 —— 将 userPhone 隐藏存为 UserRole 以备需要，但不显示
+        QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(o.getOrderId()));
+        idItem->setData(Qt::UserRole, QString::fromStdString(o.getUserPhone()));
+        orderTable->setItem(i, 0, idItem);
+
+        // 状态列
+        orderTable->setItem(i, 1, new QTableWidgetItem(orderStatusToText(o.getStatus())));
+
+        // 实付金额列（使用 final amount）
+        orderTable->setItem(i, 2, new QTableWidgetItem(QString::number(o.getFinalAmount())));
+    }
+}
+
+void UserWindow::onViewOrderDetail() {
+    if (!client_) return;
+    auto items = orderTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "查看订单", "请先选择订单行"); return; }
+    int row = orderTable->row(items.first());
+    QString oid = orderTable->item(row, 0)->text();
+    Order detail;
+    bool ok = client_->CLTgetOrderDetail(oid.toStdString(), phone_, detail);
+    if (!ok) { QMessageBox::warning(this, "查看订单", "获取订单详情失败"); return; }
+    // 构造显示文本
+    QString txt;
+    txt += "订单ID: " + QString::fromStdString(detail.getOrderId()) + "\n";
+    txt += "手机号: " + QString::fromStdString(detail.getUserPhone()) + "\n";
+    txt += "地址: " + QString::fromStdString(detail.getShippingAddress()) + "\n";
+    txt += "状态: " + QString::number(detail.getStatus()) + "\n";
+    txt += "总额: " + QString::number(detail.getTotalAmount()) + "  实付: " + QString::number(detail.getFinalAmount()) + "\n\n";
+    txt += "订单项:\n";
+    for (const auto& it : detail.getItems()) {
+        txt += QString::fromStdString(it.getGoodName()) + " (id:" + QString::number(it.getGoodId()) + ") x" + QString::number(it.getQuantity())
+               + " 单价:" + QString::number(it.getPrice()) + " 小计:" + QString::number(it.getSubtotal()) + "\n";
+    }
+    QMessageBox::information(this, "订单详情", txt);
+}
+
+void UserWindow::onReturnOrder() {
+    if (!client_) return;
+    auto items = orderTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "退货", "请先选择订单行"); return; }
+    int row = orderTable->row(items.first());
+    QString oid = orderTable->item(row, 0)->text();
+    if (QMessageBox::question(this, "退货", "确认对订单 " + oid + " 发起退货请求？") != QMessageBox::Yes) return;
+    bool ok = client_->CLTreturnSettledOrder(oid.toStdString(), phone_);
+    QMessageBox::information(this, "退货", ok ? "退货请求已发送" : "退货失败（查看日志）");
+    refreshOrders();
+}
+
+void UserWindow::onRepairOrder() {
+    if (!client_) return;
+    auto items = orderTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "维修", "请先选择订单行"); return; }
+    int row = orderTable->row(items.first());
+    QString oid = orderTable->item(row, 0)->text();
+    if (QMessageBox::question(this, "维修", "确认对订单 " + oid + " 发起维修请求？") != QMessageBox::Yes) return;
+    bool ok = client_->CLTrepairSettledOrder(oid.toStdString(), phone_);
+    QMessageBox::information(this, "维修", ok ? "维修请求已发送" : "维修失败（查看日志）");
+    refreshOrders();
+}
+
+void UserWindow::onDeleteOrder() {
+    if (!client_) return;
+    auto items = orderTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "删除订单", "请先选择订单行"); return; }
+    int row = orderTable->row(items.first());
+    QString oid = orderTable->item(row, 0)->text();
+    if (QMessageBox::question(this, "删除订单", "确认删除订单 " + oid + " ? 该操作可能不可恢复") != QMessageBox::Yes) return;
+    bool ok = client_->CLTdeleteSettledOrder(oid.toStdString(), phone_);
+    QMessageBox::information(this, "删除订单", ok ? "删除成功" : "删除失败（查看日志）");
+    refreshOrders();
 }

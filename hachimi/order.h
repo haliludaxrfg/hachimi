@@ -43,5 +43,10 @@ public:
 	void setShippingAddress(const std::string& newAddress) { shipping_address = newAddress; }
 	void setDiscountPolicy(const std::string& newPolicy) { discount_policy = newPolicy; }
 
-
+    // 新增 setter，供 Client 填充
+    void setOrderId(const std::string& id) { order_id = id; }
+    void setUserPhone(const std::string& phone) { user_phone = phone; }
+    void setTotalAmount(double t) { total_amount = t; }
+    void setDiscountAmount(double d) { discount_amount = d; }
+    void setFinalAmount(double f) { final_amount = f; }
 };

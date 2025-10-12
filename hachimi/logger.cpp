@@ -18,6 +18,7 @@ Logger::~Logger() {
 }
 
 void Logger::setLogEdit(QPlainTextEdit* edit) {
+    // 仅保存指针并确保 qtLogStream 存在（不做文件写入连接）
     logEdit = edit;
     if (!qtLogStream) {
         qtLogStream = new QtLogStream(this);
@@ -25,14 +26,22 @@ void Logger::setLogEdit(QPlainTextEdit* edit) {
 }
 
 void Logger::log(Level level, const std::string& message) {
-    std::lock_guard<std::mutex> lock(mtx);
+    // 先构造消息
     std::string time = getCurrentTime();
     std::string levelStr = levelToString(level);
     std::string logMsg = "[" + time + "][" + levelStr + "] " + message + "\n";
-    if (logFile.is_open()) logFile << logMsg;
-    if (logEdit) {
-        emit logAppended(QString::fromStdString(logMsg));
+
+    // 写文件在锁内，emit 在锁外
+    {
+        std::lock_guard<std::mutex> lock(mtx);
+        if (logFile.is_open()) {
+            logFile << logMsg;
+            logFile.flush();
+        }
     }
+
+    // 将 std::string 转为 QString 后发出信号（不在锁内）
+    emit logAppended(QString::fromStdString(logMsg));
 }
 
 std::string Logger::getCurrentTime() {
@@ -49,14 +58,15 @@ std::string Logger::levelToString(Level level) {
     return "UNKNOWN";
 }
 
-// QtLogStream实现
+// QtLogStream 实现：将 std::cout 的整行转为 Logger::info
 Logger::QtLogStream::QtLogStream(Logger* logger) : logger(logger) {}
 
 int Logger::QtLogStream::overflow(int c) {
     if (c != EOF) {
         buffer += static_cast<char>(c);
         if (c == '\n') {
-            logger->info(buffer); // 这里用info级别
+            // 使用 info 将整行写入日志（log 会写文件并 emit）
+            logger->info(buffer);
             buffer.clear();
         }
     }

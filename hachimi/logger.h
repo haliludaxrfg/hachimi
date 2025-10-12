@@ -26,6 +26,7 @@ signals:
     void logAppended(const QString& msg);
 
 private:
+    bool fileWriterConnected = 0;
     Logger();
     ~Logger();
     Logger(const Logger&) = delete;
