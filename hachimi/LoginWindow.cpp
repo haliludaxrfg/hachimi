@@ -5,9 +5,11 @@
 #include <QHBoxLayout>
 #include <QInputDialog>
 #include <QMessageBox>
+#include "Client.h" // 使用 Client 的 CLTlogin
+#include <string>
 
-LoginWindow::LoginWindow(std::vector<User>& users, DatabaseManager* db, QWidget* parent)
-    : QDialog(parent), usersRef(users), db(db)
+LoginWindow::LoginWindow(std::vector<User>& users, DatabaseManager* db, Client* client, QWidget* parent)
+    : QDialog(parent), usersRef(users), db(db), client_(client)
 {
     // 先询问以管理员还是用户身份启动
     QMessageBox modeBox(this);
@@ -119,9 +121,26 @@ void LoginWindow::onLoginClicked() {
         return;
     }
 
-    // 普通用户登录流程（保持原有逻辑）
+    // 普通用户登录：优先使用 Client::CLTlogin（若 client_ 可用）
     std::string phone = phoneEdit->text().toStdString();
     std::string pwd = passwordEdit->text().toStdString();
+
+    if (client_) {
+        bool ok = client_->CLTlogin(phone, pwd);
+        if (ok) {
+            infoLabel->setText("登录成功（服务器验证）！");
+            infoLabel->setStyleSheet("color: green;");
+            loginIndex = -1; // 标记为远端登录成功
+            accept();
+            return;
+        } else {
+            infoLabel->setText("登录失败（服务器验证未通过）");
+            infoLabel->setStyleSheet("color: red;");
+            return;
+        }
+    }
+
+    // 若没有 client_，回退到本地 usersRef 验证（原有逻辑）
     int idx = UserManager::loginUser(usersRef, phone, pwd);
     if (idx >= 0) {
         infoLabel->setText("登录成功！");

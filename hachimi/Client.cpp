@@ -412,10 +412,22 @@ bool Client::CLTupdateUser(const std::string& phone, const std::string& password
 // ---------------- 购物车相关 ----------------
 TemporaryCart Client::CLTgetCartForUser(const std::string& userPhone) {
     TemporaryCart cart;
+    // 记录请求
+    Logger::instance().info(std::string("CLTgetCartForUser: request for userPhone=") + userPhone);
     std::string resp = CLTsendRequest(std::string("GET_CART ") + userPhone);
-    if (resp.empty()) return cart;
+    if (resp.empty()) {
+        Logger::instance().info(std::string("CLTgetCartForUser: empty response for userPhone=") + userPhone);
+        return cart;
+    }
+    // 记录原始响应以便排查
+    Logger::instance().info(std::string("CLTgetCartForUser: raw response: ") + resp);
     try {
         auto j = json::parse(resp);
+        // 若包含 error，则记录并返回空 cart
+        if (j.is_object() && j.contains("error")) {
+            Logger::instance().warn(std::string("CLTgetCartForUser: server returned error: ") + j.dump());
+            return cart;
+        }
         cart.cart_id = j.value("cart_id", std::string(""));
         cart.user_phone = j.value("user_phone", std::string(""));
         cart.shipping_address = j.value("shipping_address", std::string(""));
@@ -437,13 +449,21 @@ TemporaryCart Client::CLTgetCartForUser(const std::string& userPhone) {
                     cart.items.push_back(tmp);
                 }
                 catch (...) {
-                    Logger::instance().warn("解析购物车项失败: " + it.dump());
+                    Logger::instance().warn("CLTgetCartForUser: 解析购物车项失败: " + it.dump());
                 }
             }
         }
+        // 记录解析结果
+        Logger::instance().info(std::string("CLTgetCartForUser: parsed cart_id=") + cart.cart_id + ", items=" + std::to_string(cart.items.size()));
+        for (size_t i = 0; i < cart.items.size(); ++i) {
+            const auto& it = cart.items[i];
+            Logger::instance().info(std::string("CLTgetCartForUser: item[") + std::to_string(i) + "] good_id=" + std::to_string(it.good_id) +
+                                   ", name=" + it.good_name + ", price=" + std::to_string(it.price) + ", qty=" + std::to_string(it.quantity) +
+                                   ", subtotal=" + std::to_string(it.subtotal));
+        }
     }
-    catch (...) {
-        Logger::instance().fail("GET_CART 解析失败");
+    catch (const std::exception& e) {
+        Logger::instance().fail(std::string("CLTgetCartForUser 解析失败: ") + e.what());
     }
     return cart;
 }

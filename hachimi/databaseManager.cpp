@@ -1,5 +1,7 @@
 #include "databaseManager.h"
 
+//basic
+
 bool DatabaseManager::DTBconnect() {
 	std::cout << "DatabaseManager::connect() called." << std::endl;
 	// 初始化 MYSQL 结构体
@@ -35,7 +37,6 @@ bool DatabaseManager::DTBexecuteQuery(const std::string& query) {
 		return false;
 	}
 }
-
 MYSQL_RES* DatabaseManager::DTBexecuteSelect(const std::string& query) {
 	if (!connection_) return nullptr;
 	// 运行查询
@@ -56,10 +57,6 @@ MYSQL_RES* DatabaseManager::DTBexecuteSelect(const std::string& query) {
 	}
 	return result;
 }
-
-//-----
-//basic
-
 DatabaseManager::DatabaseManager(const std::string& host, const std::string& user,
 	const std::string& password, const std::string& database, unsigned int port)
 	: host_(host), user_(user), password_(password), database_(database), port_(port), connection_(nullptr) {
@@ -68,15 +65,14 @@ DatabaseManager::DatabaseManager(const std::string& host, const std::string& use
 DatabaseManager::~DatabaseManager() {
 	DTBdisconnect();
 }
-
 bool DatabaseManager::DTBinitialize() {
 	return DTBconnect();
 }
-
 bool DatabaseManager::DTBisConnected() const {
 	return connection_ != nullptr;
 }
 
+//user
 bool DatabaseManager::DTBaddUser(const User& u) {
 	if (!connection_) return false;
 	std::string checkQuery = "SELECT COUNT(*) FROM user WHERE phone='" + u.getPhone() + "'";
@@ -91,14 +87,12 @@ bool DatabaseManager::DTBaddUser(const User& u) {
 	}
 	return DTBsaveUser(u);
 }
-
 bool DatabaseManager::DTBsaveUser(const User& u) {
 	if (!connection_) return false;
 	std::string query = "INSERT INTO user (phone, password, address) VALUES ('" +
 		u.getPhone() + "', '" + u.getPassword() + "', '" + u.getAddress() + "')";
 	return DTBexecuteQuery(query);
 }
-
 bool DatabaseManager::DTBupdateUser(const User& u) {
 	if (!connection_) return false;
 	// 统一使用表名 user（project 中其他地方也使用 user）
@@ -117,7 +111,6 @@ bool DatabaseManager::DTBupdateUser(const User& u) {
 		return false;
 	}
 }
-
 bool DatabaseManager::DTBloadUser(const std::string& phone, User& u) {
 	if (!connection_) return false;
 	std::string query = "SELECT phone, password, address FROM user WHERE phone='" + phone + "'";
@@ -132,7 +125,6 @@ bool DatabaseManager::DTBloadUser(const std::string& phone, User& u) {
 	mysql_free_result(result);
 	return false;
 }
-
 bool DatabaseManager::DTBdeleteUser(const std::string& phone) {
 	if (!connection_) return false;
 	// 统一使用表名 user
@@ -149,7 +141,6 @@ bool DatabaseManager::DTBdeleteUser(const std::string& phone) {
 		return false;
 	}
 }
-
 std::vector<User> DatabaseManager::DTBloadAllUsers() {
 	std::vector<User> users;
 	if (!connection_) return users;
@@ -164,13 +155,14 @@ std::vector<User> DatabaseManager::DTBloadAllUsers() {
 	return users;
 }
 
+//good
+
 bool DatabaseManager::DTBsaveGood(const Good& g) {
 	if (!connection_) return false;
 	std::string query = "INSERT INTO good (name, price, stock, category) VALUES ('" +
 		g.name + "', " + std::to_string(g.price) + ", " + std::to_string(g.stock) + ", '" + g.category + "')";
 	return DTBexecuteQuery(query);
 }
-
 bool DatabaseManager::DTBupdateGood(const Good& g) {
 	if (!connection_) return false;
 	std::string query = "UPDATE good SET name='" + g.name +
@@ -180,7 +172,6 @@ bool DatabaseManager::DTBupdateGood(const Good& g) {
 		"' WHERE id=" + std::to_string(g.id);
 	return DTBexecuteQuery(query);
 }
-
 bool DatabaseManager::DTBloadGood(int id, Good& g) {
 	if (!connection_) return false;
 	std::string query = "SELECT id, name, price, stock, category FROM good WHERE id=" + std::to_string(id);
@@ -199,13 +190,11 @@ bool DatabaseManager::DTBloadGood(int id, Good& g) {
 	mysql_free_result(result);
 	return false;
 }
-
 bool DatabaseManager::DTBdeleteGood(int id) {
 	if (!connection_) return false;
 	std::string query = "DELETE FROM good WHERE id=" + std::to_string(id);
 	return DTBexecuteQuery(query);
 }
-
 std::vector<Good> DatabaseManager::DTBloadAllGoods() {
 	std::vector<Good> goods;
 	if (!connection_) return goods;
@@ -254,7 +243,6 @@ std::vector<Good> DatabaseManager::DTBloadAllGoods() {
 	mysql_free_result(result);
 	return goods;
 }
-
 std::vector<Good> DatabaseManager::DTBloadGoodsByCategory(const std::string& category) {
 	std::vector<Good> goods;
 	if (!connection_) return goods;
@@ -272,13 +260,14 @@ std::vector<Good> DatabaseManager::DTBloadGoodsByCategory(const std::string& cat
 	mysql_free_result(result);
 	return goods;
 }
-
 bool DatabaseManager::DTBupdateGoodStock(int good_id, int new_stock) {
 	if (!connection_) return false;
 	std::string query = "UPDATE good SET stock=" + std::to_string(new_stock) +
 		" WHERE id=" + std::to_string(good_id);
 	return DTBexecuteQuery(query);
 }
+
+//order
 
 bool DatabaseManager::DTBsaveOrder(const Order& o) {
 	if (!connection_) return false;
@@ -296,7 +285,6 @@ bool DatabaseManager::DTBsaveOrder(const Order& o) {
 	}
 	return true;
 }
-
 bool DatabaseManager::DTBupdateOrder(const Order& o) {
 	if (!connection_) return false;
 	std::string query = "UPDATE `order` SET "
@@ -315,14 +303,12 @@ bool DatabaseManager::DTBupdateOrder(const Order& o) {
 	}
 	return true;
 }
-
 bool DatabaseManager::DTBupdateOrderStatus(const std::string& order_id, int status) {
 	if (!connection_) return false;
 	std::string query = "UPDATE `order` SET status=" + std::to_string(status) +
 		" WHERE order_id='" + order_id + "'";
 	return DTBexecuteQuery(query);
 }
-
 bool DatabaseManager::DTBloadOrder(const std::string& order_id, Order& o) {
 	if (!connection_) return false;
 	std::string query = "SELECT order_id, user_phone, total_amount, discount_amount, final_amount, status, shipping_address, discount_policy FROM `order` WHERE order_id='" + order_id + "'";
@@ -341,7 +327,6 @@ bool DatabaseManager::DTBloadOrder(const std::string& order_id, Order& o) {
 	mysql_free_result(result);
 	return false;
 }
-
 bool DatabaseManager::DTBdeleteOrder(const std::string& order_id) {
 	if (!connection_) return false;
 	if (!DTBdeleteOrderItems(order_id)) {
@@ -351,7 +336,6 @@ bool DatabaseManager::DTBdeleteOrder(const std::string& order_id) {
 	std::string query = "DELETE FROM `order` WHERE order_id='" + order_id + "'";
 	return DTBexecuteQuery(query);
 }
-
 std::vector<Order> DatabaseManager::DTBloadOrdersByUser(const std::string& user_phone) {
 	std::vector<Order> orders;
 	if (!connection_) return orders;
@@ -370,7 +354,6 @@ std::vector<Order> DatabaseManager::DTBloadOrdersByUser(const std::string& user_
 	mysql_free_result(result);
 	return orders;
 }
-
 std::vector<Order> DatabaseManager::DTBloadOrdersByStatus(int status) {
 	std::vector<Order> orders;
 	if (!connection_) return orders;
@@ -389,7 +372,6 @@ std::vector<Order> DatabaseManager::DTBloadOrdersByStatus(int status) {
 	mysql_free_result(result);
 	return orders;
 }
-
 std::vector<Order> DatabaseManager::DTBloadRecentOrders(int limit) {
 	std::vector<Order> orders;
 	if (!connection_) return orders;
@@ -408,7 +390,6 @@ std::vector<Order> DatabaseManager::DTBloadRecentOrders(int limit) {
 	mysql_free_result(result);
 	return orders;
 }
-
 bool DatabaseManager::DTBsaveOrderItem(const OrderItem& item) {
 	if (!connection_) return false;
 	std::string query = "INSERT INTO orderitem (order_id, good_id, good_name, price, quantity, subtotal) VALUES ('" +
@@ -420,7 +401,6 @@ bool DatabaseManager::DTBsaveOrderItem(const OrderItem& item) {
 		std::to_string(item.getSubtotal()) + ")";
 	return DTBexecuteQuery(query);
 }
-
 bool DatabaseManager::DTBupdateOrderItem(const OrderItem& item) {
 	if (!connection_) return false;
 	std::string query = "UPDATE orderitem SET good_name='" + item.getGoodName() +
@@ -430,7 +410,6 @@ bool DatabaseManager::DTBupdateOrderItem(const OrderItem& item) {
 		" WHERE order_id='" + item.getOrderId() + "' AND good_id=" + std::to_string(item.getGoodId());
 	return DTBexecuteQuery(query);
 }
-
 std::vector<OrderItem> DatabaseManager::DTBloadOrderItems(const std::string& order_id) {
 	std::vector<OrderItem> items;
 	if (!connection_) return items;
@@ -451,12 +430,13 @@ std::vector<OrderItem> DatabaseManager::DTBloadOrderItems(const std::string& ord
 	mysql_free_result(result);
 	return items;
 }
-
 bool DatabaseManager::DTBdeleteOrderItems(const std::string& order_id) {
 	if (!connection_) return false;
 	std::string query = "DELETE FROM orderitem WHERE order_id='" + order_id + "'";
 	return DTBexecuteQuery(query);
 }
+
+//Cart
 
 bool DatabaseManager::DTBsaveTemporaryCart(const TemporaryCart& cart) {
 	if (!connection_) return false;
@@ -473,7 +453,6 @@ bool DatabaseManager::DTBsaveTemporaryCart(const TemporaryCart& cart) {
 	}
 	return true;
 }
-
 bool DatabaseManager::DTBupdateTemporaryCart(const TemporaryCart& cart) {
 	if (!connection_) return false;
 	std::string query = "UPDATE temporarycart SET user_phone='" + cart.user_phone +
@@ -494,7 +473,6 @@ bool DatabaseManager::DTBupdateTemporaryCart(const TemporaryCart& cart) {
 	}
 	return true;
 }
-
 bool DatabaseManager::DTBloadTemporaryCart(const std::string& cart_id, TemporaryCart& cart) {
 	if (!connection_) return false;
 	std::string query = "SELECT cart_id, user_phone, shipping_address, discount_policy, total_amount, discount_amount, final_amount, is_converted FROM temporarycart WHERE cart_id='" + cart_id + "'";
@@ -517,14 +495,12 @@ bool DatabaseManager::DTBloadTemporaryCart(const std::string& cart_id, Temporary
 	mysql_free_result(result);
 	return false;
 }
-
 bool DatabaseManager::DTBdeleteTemporaryCart(const std::string& cart_id) {
 	if (!connection_) return false;
 	if (!DTBdeleteAllCartItems(cart_id)) return false;
 	std::string query = "DELETE FROM temporarycart WHERE cart_id='" + cart_id + "'";
 	return DTBexecuteQuery(query);
 }
-
 std::vector<TemporaryCart> DatabaseManager::DTBloadExpiredCarts() {
 	std::vector<TemporaryCart> carts;
 	if (!connection_) return carts;
@@ -548,13 +524,11 @@ std::vector<TemporaryCart> DatabaseManager::DTBloadExpiredCarts() {
 	mysql_free_result(result);
 	return carts;
 }
-
 bool DatabaseManager::DTBcleanupExpiredCarts() {
 	if (!connection_) return false;
 	std::string query = "DELETE FROM temporarycart WHERE is_converted=0 AND last_updated < NOW() - INTERVAL 1 DAY";
 	return DTBexecuteQuery(query);
 }
-
 bool DatabaseManager::DTBsaveCartItem(const CartItem& item, const std::string& cart_id) {
 	if (!connection_) return false;
 	std::string query = "INSERT INTO cartitem (cart_id, good_id, good_name, price, quantity, subtotal) VALUES ('" +
@@ -566,7 +540,6 @@ bool DatabaseManager::DTBsaveCartItem(const CartItem& item, const std::string& c
 		std::to_string(item.subtotal) + ")";
 	return DTBexecuteQuery(query);
 }
-
 bool DatabaseManager::DTBupdateCartItem(const CartItem& item, const std::string& cart_id) {
 	if (!connection_) return false;
 	std::string query = "UPDATE cartitem SET good_name='" + item.good_name +
@@ -576,19 +549,16 @@ bool DatabaseManager::DTBupdateCartItem(const CartItem& item, const std::string&
 		" WHERE cart_id='" + cart_id + "' AND good_id=" + std::to_string(item.good_id);
 	return DTBexecuteQuery(query);
 }
-
 bool DatabaseManager::DTBdeleteCartItem(int good_id, const std::string& cart_id) {
 	if (!connection_) return false;
 	std::string query = "DELETE FROM cartitem WHERE cart_id='" + cart_id + "' AND good_id=" + std::to_string(good_id);
 	return DTBexecuteQuery(query);
 }
-
 bool DatabaseManager::DTBdeleteAllCartItems(const std::string& cart_id) {
 	if (!connection_) return false;
 	std::string query = "DELETE FROM cartitem WHERE cart_id='" + cart_id + "'";
 	return DTBexecuteQuery(query);
 }
-
 std::vector<CartItem> DatabaseManager::DTBloadCartItems(const std::string& cart_id) {
 	std::vector<CartItem> items;
 	if (!connection_) return items;
@@ -607,4 +577,35 @@ std::vector<CartItem> DatabaseManager::DTBloadCartItems(const std::string& cart_
 	}
 	mysql_free_result(result);
 	return items;
+}
+bool DatabaseManager::DTBloadTemporaryCartByUserPhone(const std::string& userPhone, TemporaryCart& outCart) {
+	if (!connection_) return false;
+	// 查找该 user_phone 最近的临时购物车（按 cart_id 倒序作为简单的“最近”策略）
+	std::string q = "SELECT cart_id, user_phone, shipping_address, discount_policy, total_amount, discount_amount, final_amount, is_converted "
+		"FROM temporarycart WHERE user_phone='" + userPhone + "' ORDER BY cart_id DESC LIMIT 1";
+	MYSQL_RES* res = DTBexecuteSelect(q);
+	if (!res) return false;
+	MYSQL_ROW row = mysql_fetch_row(res);
+	if (!row) {
+		mysql_free_result(res);
+		return false;
+	}
+	outCart.cart_id = row[0] ? row[0] : "";
+	outCart.user_phone = row[1] ? row[1] : userPhone;
+	outCart.shipping_address = row[2] ? row[2] : "";
+	outCart.discount_policy = row[3] ? row[3] : "";
+	outCart.total_amount = row[4] ? std::stod(row[4]) : 0.0;
+	outCart.discount_amount = row[5] ? std::stod(row[5]) : 0.0;
+	outCart.final_amount = row[6] ? std::stod(row[6]) : 0.0;
+	outCart.is_converted = row[7] ? (std::stoi(row[7]) != 0) : false;
+	mysql_free_result(res);
+
+	// 使用已有函数读取 cartitem
+	if (!outCart.cart_id.empty()) {
+		outCart.items = DTBloadCartItems(outCart.cart_id);
+	}
+	else {
+		outCart.items.clear();
+	}
+	return true;
 }

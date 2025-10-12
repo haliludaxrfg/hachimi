@@ -72,10 +72,13 @@ public:
     bool DTBdeleteOrderItems(const std::string& order_id);
 
     // 临时购物车管理
+ 
+    bool DTBloadTemporaryCart(const std::string& cart_id, TemporaryCart& cart);
+    // 按用户手机号查找最新的临时购物车（返回 true 并填充 outCart 表示找到）
+    bool DTBloadTemporaryCartByUserPhone(const std::string & userPhone, TemporaryCart & outCart);
+    bool DTBdeleteTemporaryCart(const std::string& cart_id);
     bool DTBsaveTemporaryCart(const TemporaryCart& cart);
     bool DTBupdateTemporaryCart(const TemporaryCart& cart);
-    bool DTBloadTemporaryCart(const std::string& cart_id, TemporaryCart& cart);
-    bool DTBdeleteTemporaryCart(const std::string& cart_id);
     std::vector<TemporaryCart> DTBloadExpiredCarts();
     bool DTBcleanupExpiredCarts();
 

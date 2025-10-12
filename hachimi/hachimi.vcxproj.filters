@@ -133,28 +133,33 @@
     <QtMoc Include="QtServer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="LoginWindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="UserWindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="AdminWindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="logger.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="LogWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Server.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LoginWindow.h">
+      <Filter>qt</Filter>
+    </QtMoc>
+    <QtMoc Include="LogWindow.h">
+      <Filter>qt</Filter>
+    </QtMoc>
+    <QtMoc Include="AdminWindow.h">
+      <Filter>qt</Filter>
+    </QtMoc>
+    <QtMoc Include="UserWindow.h">
+      <Filter>qt</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="hachimi.qrc">
       <Filter>others</Filter>
     </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="log.txt">
+      <Filter>others</Filter>
+    </Text>
   </ItemGroup>
 </Project>

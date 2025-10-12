@@ -3,8 +3,10 @@
 #include <QTabWidget>
 #include <QPushButton>
 #include <QTableWidget>
-#include <QString>
+#include <QLineEdit>
 #include "Client.h"
+
+class Client;
 
 class UserWindow : public QWidget {
     Q_OBJECT
@@ -14,12 +16,23 @@ public:
 
 signals:
     void backRequested(); // 返回上一级信号
+    void accountDeleted();
 
 private slots:
     void refreshGoods();
     void onAddToCart();
     void refreshCart();
     void onCheckout();
+
+    // 新增：用户信息相关槽
+    void onSaveUserInfo();
+    void onDeleteAccount();
+
+    // 新增：返回身份选择界面槽
+    void onReturnToIdentitySelection();
+    // 购物车编辑槽
+    void onModifyCartItem();
+    void onRemoveCartItem();
 
 private:
     QTabWidget* tabWidget;
@@ -28,8 +41,19 @@ private:
     QWidget* orderTab;  // 订单查看
     QPushButton* backBtn;
 
+    // 个人信息 UI
+    QLineEdit* phoneEdit;
+    QLineEdit* passwordEdit;
+    QLineEdit* addressEdit;
+    QPushButton* saveInfoBtn;
+    QPushButton* deleteAccountBtn;
+
+    // 新增：返回身份选择按钮
+    QPushButton* returnIdentityBtn;
+
     // 内部状态
     std::string phone_;
+    std::string currentPassword_;
     Client* client_;
     QTableWidget* goodsTable;
     QPushButton* refreshGoodsBtn;
@@ -37,5 +61,7 @@ private:
 
     QTableWidget* cartTable;
     QPushButton* refreshCartBtn;
+    QPushButton* modifyCartBtn;
+    QPushButton* removeCartBtn;
     QPushButton* checkoutBtn;
 };

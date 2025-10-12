@@ -63,6 +63,14 @@ int main(int argc, char* argv[])
     logWin->resize(800, 400);
     logWin->show();
 
+    // 关联 Logger 与 LogWindow（确保日志也显示到 UI）
+    Logger* logger = &Logger::instance();
+    logger->setLogEdit(logWin->getLogEdit());
+    // 明确使用 QueuedConnection 以便跨线程安全地将信号投递到 UI 线程
+    QObject::connect(logger, &Logger::logAppended, logWin, &LogWindow::appendLog, Qt::QueuedConnection);
+    // 可选：把 std::cout 重定向到 Logger（如果你希望标准输出也出现在 log 窗口）
+    logger->redirectCout();
+
     // 准备 DatabaseManager 与 本地用户列表（LoginWindow 现在需要这些参数）
     DatabaseManager* db = new DatabaseManager("127.0.0.1", "root", "a5B3#eF7hJ", "remake",3306); // 根据实际情况替换连接参数
     if (!db->DTBinitialize()) {
@@ -73,49 +81,85 @@ int main(int argc, char* argv[])
         users = db->DTBloadAllUsers();
     }
 
-    // 弹出登录窗口（LoginWindow 的构造需要 users 引用和 DatabaseManager*）
-    LoginWindow* loginDlg = new LoginWindow(users, db, nullptr);
-    // 允许在登录对话框出现时与其它窗口交互（非模态）
-    loginDlg->setModal(false);
-    loginDlg->setWindowModality(Qt::NonModal);
-
-    // 登录成功后的处理（accepted）
-    QObject::connect(loginDlg, &QDialog::accepted, [&app, &client, db, loginDlg]() {
-        bool isAdmin = loginDlg->isAdmin();
-        QString phone = loginDlg->getPhone();
-
-        if (isAdmin) {
-            Logger::instance().info("管理员登录成功，打开管理员窗口");
-            AdminWindow* aw = new AdminWindow(&client);
-            aw->setWindowTitle("管理员面板");
-            aw->resize(1024, 768);
-            aw->show();
+    // 封装一个函数用于打开登录对话框（可被首次打开和注销后再次调用）
+    std::function<void()> openLogin;
+    openLogin = [&app, &client, db, &users, &openLogin]() {
+        // 在创建 LoginWindow 之前，重新从数据库加载用户列表（若 DB 可用）
+        if (db && db->DTBisConnected()) {
+            users = db->DTBloadAllUsers();
+            Logger::instance().info("已从数据库刷新用户列表用于登录对话框");
         } else {
-            Logger::instance().info(std::string("用户登录成功，手机号: ") + phone.toStdString());
-            UserWindow* uw = nullptr;
-            try {
-                uw = new UserWindow(phone.toStdString(), &client);
-            } catch (...) {
-                uw = new UserWindow();
-            }
-            uw->setWindowTitle("用户面板");
-            uw->resize(1024, 768);
-            uw->show();
+            Logger::instance().warn("打开登录界面时数据库未连接，使用内存用户列表");
         }
 
-        // 可选择在此删除 loginDlg 或在窗口关闭时 deleteLater
-        loginDlg->deleteLater();
-    });
+        LoginWindow* loginDlg = new LoginWindow(users, db, &client, nullptr);
+        loginDlg->setModal(false);
+        loginDlg->setWindowModality(Qt::NonModal);
 
-    // 用户取消或关闭登录（rejected） -> 退出应用
-    QObject::connect(loginDlg, &QDialog::rejected, [db]() {
-        Logger::instance().info("用户取消登录，退出应用");
-        // 清理 db 后退出主事件循环
-        delete db;
-        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-    });
+        // 登录成功后的处理
+        QObject::connect(loginDlg, &QDialog::accepted, [loginDlg, &client, db, &users, &openLogin]() {
+            bool isAdmin = loginDlg->isAdmin();
+            QString phone = loginDlg->getPhone();
 
-    loginDlg->show();
+            if (isAdmin) {
+                Logger::instance().info("管理员登录成功，打开管理员窗口");
+                AdminWindow* aw = new AdminWindow(&client);
+                aw->setWindowTitle("管理员面板");
+                aw->resize(1024, 768);
+                aw->show();
+
+                // 点击 AdminWindow 的 “返回身份选择界面” 或触发 backRequested 时
+                QObject::connect(aw, &AdminWindow::backRequested, [aw, &openLogin]() {
+                    Logger::instance().info("收到 AdminWindow::backRequested，返回登录界面");
+                    aw->close();
+                    aw->deleteLater();
+                    openLogin();
+                });
+
+            } else {
+                Logger::instance().info(std::string("用户登录成功，手机号: ") + phone.toStdString());
+                UserWindow* uw = nullptr;
+                try {
+                    uw = new UserWindow(phone.toStdString(), &client);
+                } catch (...) {
+                    uw = new UserWindow();
+                }
+                uw->setWindowTitle("用户面板");
+                uw->resize(1024, 768);
+                uw->show();
+
+                // 注销（删除账号）后重新打开登录界面（已有）
+                QObject::connect(uw, &UserWindow::accountDeleted, [uw, &openLogin]() {
+                    Logger::instance().info("收到 UserWindow::accountDeleted，重新打开登录窗口");
+                    uw->deleteLater();
+                    openLogin();
+                });
+
+                // 点击 UserWindow 的 “返回身份选择界面” 或触发 backRequested 时
+                QObject::connect(uw, &UserWindow::backRequested, [uw, &openLogin]() {
+                    Logger::instance().info("收到 UserWindow::backRequested，返回登录界面");
+                    uw->close();
+                    uw->deleteLater();
+                    openLogin();
+                });
+            }
+
+            // 删除 loginDlg（已接受）
+            loginDlg->deleteLater();
+        });
+
+        // 用户取消或关闭登录（rejected） -> 退出应用
+        QObject::connect(loginDlg, &QDialog::rejected, [db]() {
+            Logger::instance().info("用户取消登录，退出应用");
+            delete db;
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+        });
+
+        loginDlg->show();
+    };
+
+    // 首次打开登录窗口
+    openLogin();
 
     // 启动 Qt 事件循环
     int ret = app.exec();

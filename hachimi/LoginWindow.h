@@ -4,16 +4,21 @@
 #include <QPushButton>
 #include <QLabel>
 #include <vector>
-#include "AdminWindow.h"
-#include "UserWindow.h"
 #include "user.h"
 #include "userManager.h"
 #include "DatabaseManager.h"
+#include <functional>
+
+// 前向声明，避免头文件循环包含
+class Client;
+class AdminWindow;
+class UserWindow;
 
 class LoginWindow : public QDialog {
     Q_OBJECT
 public:
-    LoginWindow(std::vector<User>& users, DatabaseManager* db, QWidget* parent = nullptr);
+    // 增加 Client* 参数（可为空）
+    LoginWindow(std::vector<User>& users, DatabaseManager* db, Client* client = nullptr, QWidget* parent = nullptr);
 
     QString getPhone() const;
     QString getPassword() const;
@@ -36,6 +41,9 @@ private:
     int loginIndex = -1;
     std::vector<User>& usersRef;
     DatabaseManager* db;
+
+    // 新增：Client 指针（可空）
+    Client* client_;
 
     // 新增：记录启动模式（true = 管理员，false = 普通用户）
     bool startAsAdmin = false;

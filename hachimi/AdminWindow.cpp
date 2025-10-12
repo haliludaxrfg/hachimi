@@ -70,16 +70,52 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     refreshOrdersBtn = new QPushButton("刷新订单");
     orderLayout->addWidget(refreshOrdersBtn);
 
+    // 购物车管理页（移除 添加/保存，保留加载/修改/删除）
+    cartTab = new QWidget;
+    QVBoxLayout* cartLayout = new QVBoxLayout(cartTab);
+    QHBoxLayout* cartTop = new QHBoxLayout;
+    cartPhoneEdit = new QLineEdit;
+    cartPhoneEdit->setPlaceholderText("输入用户手机号");
+    loadCartBtn = new QPushButton("加载购物车");
+    cartTop->addWidget(new QLabel("用户手机号:"));
+    cartTop->addWidget(cartPhoneEdit);
+    cartTop->addWidget(loadCartBtn);
+    cartLayout->addLayout(cartTop);
+
+    cartTable = new QTableWidget;
+    cartTable->setColumnCount(5);
+    cartTable->setHorizontalHeaderLabels(QStringList() << "good_id" << "名称" << "价格" << "数量" << "小计");
+    cartTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    cartTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    cartTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    cartTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    cartLayout->addWidget(cartTable);
+
+    QHBoxLayout* cartBtnLayout = new QHBoxLayout;
+    editCartItemBtn = new QPushButton("修改数量");
+    removeCartItemBtn = new QPushButton("删除条目");
+    cartBtnLayout->addWidget(editCartItemBtn);
+    cartBtnLayout->addWidget(removeCartItemBtn);
+    cartLayout->addLayout(cartBtnLayout);
+
     tabWidget->addTab(userTab, "用户管理");
     tabWidget->addTab(goodTab, "商品管理");
     tabWidget->addTab(orderTab, "订单管理");
+    tabWidget->addTab(cartTab, "购物车管理");
 
     mainLayout->addWidget(tabWidget);
 
-    // 返回按钮
+    // 返回按钮与“返回身份选择界面”并列
+    QHBoxLayout* bottomBtnLayout = new QHBoxLayout;
     backBtn = new QPushButton("返回上一级", this);
+    returnIdentityBtn = new QPushButton("返回身份选择界面", this);
+    bottomBtnLayout->addStretch();
+    bottomBtnLayout->addWidget(backBtn);
+    bottomBtnLayout->addWidget(returnIdentityBtn);
+    mainLayout->addLayout(bottomBtnLayout);
+
     connect(backBtn, &QPushButton::clicked, this, &AdminWindow::backRequested);
-    mainLayout->addWidget(backBtn);
+    connect(returnIdentityBtn, &QPushButton::clicked, this, &AdminWindow::onReturnToIdentitySelection);
 
     // 连接槽（用户部分）
     connect(refreshUsersBtn, &QPushButton::clicked, this, &AdminWindow::refreshUsers);
@@ -94,12 +130,18 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     connect(deleteGoodBtn, &QPushButton::clicked, this, &AdminWindow::onDeleteGood);
     connect(refreshOrdersBtn, &QPushButton::clicked, this, &AdminWindow::refreshOrders);
 
+    // 购物车槽（移除添加/保存连接）
+    connect(loadCartBtn, &QPushButton::clicked, this, &AdminWindow::onLoadCartForUser);
+    connect(editCartItemBtn, &QPushButton::clicked, this, &AdminWindow::onEditCartItem);
+    connect(removeCartItemBtn, &QPushButton::clicked, this, &AdminWindow::onRemoveCartItem);
+
     // 首次加载
     refreshUsers();
     refreshGoods();
     refreshOrders();
 }
 
+// ---------------- 用户/商品/订单 已在之前文件中实现 ----------------
 void AdminWindow::refreshUsers() {
     usersTable->setRowCount(0);
     if (!client_) return;
@@ -112,6 +154,36 @@ void AdminWindow::refreshUsers() {
         // 显示明文密码（仅管理员视图），使用访问器获取密码
         usersTable->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(u.getPassword())));
     }
+}
+
+void AdminWindow::onSearchUser() {
+    Logger::instance().info("AdminWindow::onSearchUser called");
+    if (!client_) return;
+    bool ok;
+    QString phone = QInputDialog::getText(this, "查询用户", "手机号:", QLineEdit::Normal, "", &ok);
+    if (!ok) return;
+    phone = phone.trimmed();
+    if (phone.isEmpty()) {
+        QMessageBox::warning(this, "查询用户", "请输入手机号");
+        return;
+    }
+
+    // 获取所有用户并在客户端筛选（服务端暂无按手机号单独查询的 API）
+    auto users = client_->CLTgetAllAccounts();
+    for (int i = 0; i < (int)users.size(); ++i) {
+        if (QString::fromStdString(users[i].getPhone()) == phone) {
+            // 找到：只显示这一行
+            usersTable->setRowCount(1);
+            const User& u = users[i];
+            usersTable->setItem(0, 0, new QTableWidgetItem(QString::fromStdString(u.getPhone())));
+            usersTable->setItem(0, 1, new QTableWidgetItem(QString::fromStdString(u.getAddress())));
+            usersTable->setItem(0, 2, new QTableWidgetItem(QString::fromStdString(u.getPassword())));
+            QMessageBox::information(this, "查询用户", "找到匹配用户，表格已过滤显示该用户。若要查看全部用户，请点击“刷新用户”。");
+            return;
+        }
+    }
+
+    QMessageBox::information(this, "查询用户", "未找到匹配的用户");
 }
 
 void AdminWindow::onAddUser() {
@@ -181,7 +253,7 @@ void AdminWindow::onDeleteUser() {
     }
     int row = usersTable->row(items.first());
     QString phone = usersTable->item(row, 0)->text();
-    QString pwd = usersTable->item(row, 2)->text(); // 管理员界面显示明文
+    QString pwd = usersTable->item(row, 2)->text(); // 管理員界面显示明文
 
     if (QMessageBox::question(this, "删除用户", QString("确认删除用户 %1 ?").arg(phone)) != QMessageBox::Yes) return;
 
@@ -284,4 +356,99 @@ void AdminWindow::refreshOrders() {
         QString summary = QString("%1 件, 总计 %2").arg((int)o.getItems().size()).arg(o.getTotalAmount());
         ordersTable->setItem(i, 3, new QTableWidgetItem(summary));
     }
+}
+
+// ---------------- 购物车相关实现（已移除 增/保存） ----------------
+void AdminWindow::onLoadCartForUser() {
+    if (!client_) return;
+    QString phone = cartPhoneEdit->text().trimmed();
+    if (phone.isEmpty()) {
+        QMessageBox::warning(this, "加载购物车", "请输入手机号");
+        return;
+    }
+    Logger::instance().info(std::string("AdminWindow::onLoadCartForUser: request for userPhone=") + phone.toStdString());
+    if (!client_->CLTisConnectionActive()) {
+        Logger::instance().warn("AdminWindow::onLoadCartForUser: client not connected, attempting reconnect");
+        client_->CLTreconnect();
+    }
+    TemporaryCart cart = client_->CLTgetCartForUser(phone.toStdString());
+    currentCart_ = cart; // cache
+    cartTable->setRowCount(0);
+    if (cart.items.empty() && cart.cart_id.empty()) {
+        QMessageBox::information(this, "加载购物车", "未找到购物车或购物车为空");
+        return;
+    }
+    cartTable->setRowCount((int)cart.items.size());
+    for (int i = 0; i < (int)cart.items.size(); ++i) {
+        const CartItem& it = cart.items[i];
+        cartTable->setItem(i, 0, new QTableWidgetItem(QString::number(it.good_id)));
+        cartTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(it.good_name)));
+        cartTable->setItem(i, 2, new QTableWidgetItem(QString::number(it.price)));
+        cartTable->setItem(i, 3, new QTableWidgetItem(QString::number(it.quantity)));
+        cartTable->setItem(i, 4, new QTableWidgetItem(QString::number(it.subtotal)));
+    }
+    Logger::instance().info(std::string("AdminWindow::onLoadCartForUser: parsed cart_id=") + cart.cart_id + ", items=" + std::to_string(cart.items.size()));
+}
+
+void AdminWindow::onEditCartItem() {
+    if (!client_) return;
+    QString phone = cartPhoneEdit->text().trimmed();
+    if (phone.isEmpty()) { QMessageBox::warning(this, "修改数量", "请输入手机号后再修改"); return; }
+    auto items = cartTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "修改数量", "请先选择要修改的商品行"); return; }
+    int row = cartTable->row(items.first());
+    int productId = cartTable->item(row, 0)->text().toInt();
+    int curQty = cartTable->item(row, 3)->text().toInt();
+
+    bool ok;
+    int newQty = QInputDialog::getInt(this, "修改数量", "新数量:", curQty, 0, 1e9, 1, &ok);
+    if (!ok) return;
+
+    if (!client_->CLTisConnectionActive()) { client_->CLTreconnect(); }
+
+    // 若 newQty == 0，建议删除
+    if (newQty == 0) {
+        if (QMessageBox::question(this, "删除条目", "输入数量为 0，是否删除该条目？") == QMessageBox::Yes) {
+            bool rem = client_->CLTremoveFromCart(phone.toStdString(), productId);
+            Logger::instance().info(std::string("AdminWindow::onEditCartItem -> remove CLTremoveFromCart returned ") + (rem ? "true" : "false"));
+            if (!rem) { QMessageBox::warning(this, "删除条目", "删除失败"); return; }
+            QMessageBox::information(this, "删除条目", "删除成功，正在刷新购物车");
+            onLoadCartForUser();
+            return;
+        } else {
+            return;
+        }
+    }
+
+    bool res = client_->CLTupdateCartItem(phone.toStdString(), productId, newQty);
+    Logger::instance().info(std::string("AdminWindow::onEditCartItem CLTupdateCartItem returned ") + (res ? "true" : "false"));
+    if (!res) { QMessageBox::warning(this, "修改数量", "更新失败（检查日志）"); return; }
+    QMessageBox::information(this, "修改数量", "更新成功，正在刷新购物车");
+    onLoadCartForUser();
+}
+
+void AdminWindow::onRemoveCartItem() {
+    if (!client_) return;
+    QString phone = cartPhoneEdit->text().trimmed();
+    if (phone.isEmpty()) { QMessageBox::warning(this, "删除条目", "请输入手机号后再删除"); return; }
+    auto items = cartTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "删除条目", "请先选择要删除的商品行"); return; }
+    int row = cartTable->row(items.first());
+    int productId = cartTable->item(row, 0)->text().toInt();
+
+    if (QMessageBox::question(this, "删除条目", QString("确认从 %1 的购物车删除商品 ID=%2 ?").arg(phone).arg(productId)) != QMessageBox::Yes) return;
+
+    if (!client_->CLTisConnectionActive()) { client_->CLTreconnect(); }
+    bool res = client_->CLTremoveFromCart(phone.toStdString(), productId);
+    Logger::instance().info(std::string("AdminWindow::onRemoveCartItem CLTremoveFromCart returned ") + (res ? "true" : "false"));
+    if (!res) { QMessageBox::warning(this, "删除条目", "删除失败（检查日志）"); return; }
+    QMessageBox::information(this, "删除条目", "删除成功，正在刷新购物车");
+    onLoadCartForUser();
+}
+
+// 新增：返回身份选择界面槽实现
+void AdminWindow::onReturnToIdentitySelection() {
+    Logger::instance().info("AdminWindow::onReturnToIdentitySelection called");
+    emit backRequested();
+    this->close();
 }
