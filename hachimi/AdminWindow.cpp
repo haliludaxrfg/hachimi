@@ -637,9 +637,18 @@ void AdminWindow::createPromotionsTab() {
     v->addWidget(promoTable);
     tabWidget->addTab(promoTab, "促销");
 
-    // 连接信号：只连接刷新与删除（编辑/新增功能被隐藏/移除）
+    // 连接信号：刷新、删除、以及新增和双击编辑
     connect(refreshPromosBtn, &QPushButton::clicked, this, &AdminWindow::refreshPromotions);
     connect(deletePromoBtn, &QPushButton::clicked, this, &AdminWindow::onDeletePromotion);
+
+    // 新增：连接新增按钮到实现好的 onAddPromotion()
+    connect(addPromoBtn, &QPushButton::clicked, this, &AdminWindow::onAddPromotion);
+
+    // 方便：双击表格行进入编辑（使用已有 onEditPromotion）
+    connect(promoTable, &QTableWidget::cellDoubleClicked, this, [this](int row, int /*col*/) {
+        Q_UNUSED(row);
+        this->onEditPromotion();
+        });
 }
 
 // helper: show simple editor dialog for add/edit
@@ -698,7 +707,7 @@ bool AdminWindow::showPromotionTypeSelector(QWidget* parent, PromotionKind& outK
     return true;
 }
 
-// 针对不同类型弹出编辑器并构建 policy JSON / policy_detail
+// 替换原有的 showTypedPromotionEditor 实现，新增折扣值校验（确保折扣 <= 1）
 bool AdminWindow::showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
                                            const std::string& inName, const nlohmann::json& inPolicyJson, const std::string& inPolicyDetail,
                                            std::string& outName, nlohmann::json& outPolicyJson, std::string& outPolicyDetail) {
@@ -711,14 +720,15 @@ bool AdminWindow::showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
 
     if (kind == PromotionKind::Discount) {
         QDoubleSpinBox* rate = new QDoubleSpinBox;
-        rate->setRange(0.01, 10.0);
+        // 限制折扣范围为 (0.01 .. 1.00)，确保折后不大于原价
+        rate->setRange(0.01, 1.0);
         rate->setDecimals(4);
         rate->setSingleStep(0.01);
         if (inPolicyJson.contains("discount")) rate->setValue(inPolicyJson.value("discount", 1.0));
         else if (!inPolicyDetail.empty()) {
             try { auto p = nlohmann::json::parse(inPolicyDetail); if (p.contains("discount")) rate->setValue(p.value("discount", 1.0)); } catch(...) {}
         }
-        form->addRow(new QLabel("折扣率（例如 0.9 表示 9 折）:"), rate);
+        form->addRow(new QLabel("折扣率（例如 0.9 表示 9 折，必须 <= 1）:"), rate);
 
         main->addLayout(form);
         QHBoxLayout* hb = new QHBoxLayout;
@@ -730,10 +740,18 @@ bool AdminWindow::showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
         QObject::connect(cancel, &QPushButton::clicked, &dlg, &QDialog::reject);
 
         if (dlg.exec() != QDialog::Accepted) return false;
+
+        // 再次校验（以防程序逻辑修改了范围）
+        double v = rate->value();
+        if (v > 1.0) {
+            QMessageBox::warning(parent, "折扣错误", "折扣率必须小于或等于 1（不能超过原价）。");
+            return false;
+        }
+
         outName = nameEdit->text().toStdString();
         outPolicyJson = nlohmann::json::object();
         outPolicyJson["type"] = "discount";
-        outPolicyJson["discount"] = rate->value();
+        outPolicyJson["discount"] = v;
         outPolicyJson["scope"] = "global";
         outPolicyDetail.clear();
         return true;
@@ -750,7 +768,8 @@ bool AdminWindow::showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
             minQtyBoxes[t]->setRange(0, 1000000);
             minQtyBoxes[t]->setValue(0);
             discountBoxes[t] = new QDoubleSpinBox;
-            discountBoxes[t]->setRange(0.0, 10.0);
+            // 限制每档折扣最大为 1.0，避免出现大于 1 的“加价”折扣
+            discountBoxes[t]->setRange(0.0, 1.0);
             discountBoxes[t]->setDecimals(4);
             discountBoxes[t]->setSingleStep(0.01);
             discountBoxes[t]->setValue(1.0); // 默认不打折
@@ -759,7 +778,7 @@ bool AdminWindow::showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
             row->addWidget(new QLabel(QString("第%1阶 阈值(min_qty):").arg(t+1)));
             row->addWidget(minQtyBoxes[t]);
             row->addSpacing(8);
-            row->addWidget(new QLabel("折扣(例如0.9表示9折):"));
+            row->addWidget(new QLabel("折扣(例如0.9表示9折，必须 <=1):"));
             row->addWidget(discountBoxes[t]);
 
             tiersLayout->addRow(row);
@@ -791,7 +810,7 @@ bool AdminWindow::showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
             }
         } catch (...) {}
 
-        form->addRow(new QLabel("三个阶梯（阈值 = 商品总数量；折扣 = 单项折扣率）"), tiersWidget);
+        form->addRow(new QLabel("三个阶梯（阈值 = 商品总数量；折扣 = 单项折扣率，均必须 <=1）"), tiersWidget);
 
         main->addLayout(form);
         QHBoxLayout* hb = new QHBoxLayout;
@@ -812,6 +831,15 @@ bool AdminWindow::showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
         if (!(mins[0] < mins[1] && mins[1] < mins[2])) {
             QMessageBox::warning(parent, "阶梯设置错误", "三个阶梯的阈值 min_qty 必须严格递增（例如 1 < 5 < 10）。请重新设置。");
             return false;
+        }
+
+        // 验证：每档折扣必须 <=1
+        for (int t = 0; t < 3; ++t) {
+            double dv = discountBoxes[t]->value();
+            if (dv > 1.0) {
+                QMessageBox::warning(parent, "折扣错误", QString("第%1阶的折扣值不得大于 1。").arg(t+1));
+                return false;
+            }
         }
 
         // 构造 outPolicyJson：{ type: "tiered", scope: "global", tiers: [ {min_qty, discount}, ... ] }
