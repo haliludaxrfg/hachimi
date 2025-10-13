@@ -695,6 +695,19 @@ std::string Server::SERprocessRequest(const std::string& request) {
                 nlohmann::json e; e["error"] = "参数解析失败"; return e.dump();
             }
         }
+        if (cmd == "UPDATE_CART_ITEM") {
+            try {
+                auto j = parseJson(rest);
+                if (!j.is_object()) { nlohmann::json e; e["error"] = "invalid_payload"; return e.dump(); }
+                std::string userPhone = j.value("userPhone", std::string(""));
+                int productId = j.value("productId", 0);
+                int quantity = j.value("quantity", 0);
+                return SERupdateCartItem(userPhone, productId, quantity);
+            }
+            catch (...) {
+                nlohmann::json e; e["error"] = "参数解析失败"; return e.dump();
+            }
+        }
         if (cmd == "GET_CART") {
             return SERgetCart(rest);
         }

@@ -207,6 +207,11 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     connect(repairOrderBtn, &QPushButton::clicked, this, &UserWindow::onRepairOrder);
     connect(deleteOrderBtn, &QPushButton::clicked, this, &UserWindow::onDeleteOrder);
 
+    // 强制整行选择、单选并禁止编辑，避免用户只选单元格导致读取错误
+    cartTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    cartTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    cartTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     // 初始加载
     refreshGoods();
     refreshCart();
@@ -655,20 +660,19 @@ void UserWindow::onModifyCartItem() {
         return;
     }
 
-    bool ok;
-    int productId = 0;
-    int currentQty = 0;
-    try {
-        productId = cartTable->item(row, 0)->text().toInt();
-        currentQty = cartTable->item(row, 3)->text().toInt();
-    } catch (...) {
-        Logger::instance().warn("UserWindow::onModifyCartItem: failed to read productId/currentQty from table");
-        QMessageBox::warning(this, "修改数量", "读取选中行数据失败");
+    // 安全读取 productId/currentQty，避免 nullptr 解引用
+    QTableWidgetItem* idItem = cartTable->item(row, 0);
+    QTableWidgetItem* qtyItem = cartTable->item(row, 3);
+    if (!idItem || !qtyItem) {
+        Logger::instance().warn("UserWindow::onModifyCartItem: table items missing (nullptr)");
+        QMessageBox::warning(this, "修改数量", "读取选中行数据失败（请确保整行被选中）");
         return;
     }
+    int productId = idItem->text().toInt();
+    int currentQty = qtyItem->text().toInt();
 
     Logger::instance().info(std::string("UserWindow::onModifyCartItem: selected productId=") + std::to_string(productId) + ", currentQty=" + std::to_string(currentQty));
-
+    bool ok;
     int newQty = QInputDialog::getInt(this, "修改数量", "请输入新数量:", currentQty, 0, 1000000, 1, &ok);
     if (!ok) {
         Logger::instance().info("UserWindow::onModifyCartItem: user cancelled input dialog");

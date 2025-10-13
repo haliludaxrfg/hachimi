@@ -7533,3 +7533,1142 @@ GET_ALL_ORDERS {"userPhone":"12345678901"}
 
 [2025-10-13 22:06:11][INFO] DatabaseManager::disconnect() called.
 
+[2025-10-13 22:22:42][INFO] 应用启动
+[2025-10-13 22:22:42][INFO] Server: DatabaseManager 已连接。
+[2025-10-13 22:22:42][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-13 22:22:42][INFO] Client 已连接到 Server
+[2025-10-13 22:22:42][INFO] DatabaseManager::connect() called.
+
+[2025-10-13 22:22:42][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:22:44][INFO] 用户取消登录，退出应用
+[2025-10-13 22:22:44][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:22:44][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:24:54][INFO] 应用启动
+[2025-10-13 22:24:54][INFO] Server: DatabaseManager 已连接。
+[2025-10-13 22:24:54][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-13 22:24:54][INFO] Client 已连接到 Server
+[2025-10-13 22:24:55][INFO] DatabaseManager::connect() called.
+
+[2025-10-13 22:24:55][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:24:58][INFO] 应用启动
+[2025-10-13 22:24:58][INFO] 检测到已有本地 Server 监听 127.0.0.1:8888，跳过启动
+[2025-10-13 22:24:58][INFO] Client 已连接到 Server
+[2025-10-13 22:24:58][INFO] DatabaseManager::connect() called.
+
+[2025-10-13 22:24:58][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:25:00][INFO] 应用启动
+[2025-10-13 22:25:00][INFO] 检测到已有本地 Server 监听 127.0.0.1:8888，跳过启动
+[2025-10-13 22:25:00][INFO] Client 已连接到 Server
+[2025-10-13 22:25:00][INFO] DatabaseManager::connect() called.
+
+[2025-10-13 22:25:00][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:25:31][INFO] 用户取消登录，退出应用
+[2025-10-13 22:25:31][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:25:31][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:25:31][INFO] 用户取消登录，退出应用
+[2025-10-13 22:25:31][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:25:31][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:25:32][INFO] 用户取消登录，退出应用
+[2025-10-13 22:25:32][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:25:32][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:48:08][INFO] 应用启动
+[2025-10-13 22:48:08][INFO] Server: DatabaseManager 已连接。
+[2025-10-13 22:48:08][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-13 22:48:08][INFO] Client 已连接到 Server
+[2025-10-13 22:48:08][INFO] DatabaseManager::connect() called.
+
+[2025-10-13 22:48:08][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:48:11][INFO] 应用启动
+[2025-10-13 22:48:11][INFO] 检测到已有本地 Server 监听 127.0.0.1:8888，跳过启动
+[2025-10-13 22:48:11][INFO] Client 已连接到 Server
+[2025-10-13 22:48:12][INFO] DatabaseManager::connect() called.
+
+[2025-10-13 22:48:12][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:49:21][INFO] Server received request: LOGIN {"password":"123456789","phone":"15568713710"}
+[2025-10-13 22:49:21][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"123456789","phone":"15568713710"}
+[2025-10-13 22:49:21][INFO] Server sending response (len=37): {"phone":"15568713710","result":"ok"}
+[2025-10-13 22:49:21][INFO] 用户登录成功，手机号: 15568713710
+[2025-10-13 22:49:21][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:49:21][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:49:21][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:49:22][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:49:22][INFO] Server received request: GET_ALL_GOODS
+[2025-10-13 22:49:22][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-13 22:49:22][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-13 22:49:22][INFO] Server SERgetAllGoods: dbManager ptr = 1931621162672, DTBisConnected=true
+[2025-10-13 22:49:22][INFO] DTBloadAllGoods: this=000001C1BD97DEB0 connection_=000001C1BDA1BF50 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-13 22:49:22][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-13 22:49:22][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":783},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113969},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":200},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:49:22][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-13 22:49:22][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":783},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113969},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":200},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:49:22][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:49:22][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:49:22][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:49:22][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:49:22][INFO] Server sending response (len=30): {"error":"未找到购物车"}
+[2025-10-13 22:49:22][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
+[2025-10-13 22:49:22][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
+[2025-10-13 22:49:22][INFO] UserWindow::refreshCart: got cart_id=, items=0
+[2025-10-13 22:49:22][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 22:49:22][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 22:49:22][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 22:49:22][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 22:49:22][INFO] UserWindow::refreshCart: filled shipping_address from account: 踩踩
+[2025-10-13 22:49:22][INFO] Server received request: SAVE_CART {"cart":{"cart_id":"","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":""},"userPhone":""}
+[2025-10-13 22:49:22][INFO] Server::SERprocessRequest: cmd=SAVE_CART payload={"cart":{"cart_id":"","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":""},"userPhone":""}
+[2025-10-13 22:49:22][INFO] Server sending response (len=24): {"error":"参数缺失"}
+[2025-10-13 22:49:22][INFO] UserWindow::refreshCart: saved cart with filled address returned false
+[2025-10-13 22:49:22][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:49:22][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:49:22][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:49:22][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:49:22][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:49:22][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:49:22][INFO] Server sending response (len=2): []
+[2025-10-13 22:49:22][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 22:49:22][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 22:49:22][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 22:49:22][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 22:49:39][INFO] UserWindow::onAddToCart params: phone=15568713710, goodId=1, name=hyw, price=9.990000, qty=1000000
+[2025-10-13 22:49:39][INFO] Server received request: ADD_TO_CART {"price":9.99,"productId":1,"productName":"hyw","quantity":1000000,"userPhone":"15568713710"}
+[2025-10-13 22:49:39][INFO] Server::SERprocessRequest: cmd=ADD_TO_CART payload={"price":9.99,"productId":1,"productName":"hyw","quantity":1000000,"userPhone":"15568713710"}
+[2025-10-13 22:49:39][INFO] Server sending response (len=62): {"available":783,"error":"stock_exceeded","requested":1000000}
+[2025-10-13 22:49:39][FAIL] ADD_TO_CART 返回错误: {"available":783,"error":"stock_exceeded","requested":1000000}
+[2025-10-13 22:49:39][INFO] UserWindow::onAddToCart CLTaddToCart returned false
+[2025-10-13 22:49:40][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:49:40][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:49:40][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:49:40][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:49:40][INFO] Server sending response (len=30): {"error":"未找到购物车"}
+[2025-10-13 22:49:40][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
+[2025-10-13 22:49:40][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
+[2025-10-13 22:49:40][INFO] UserWindow::refreshCart: got cart_id=, items=0
+[2025-10-13 22:49:40][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 22:49:40][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 22:49:40][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 22:49:40][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 22:49:40][INFO] UserWindow::refreshCart: filled shipping_address from account: 踩踩
+[2025-10-13 22:49:40][INFO] Server received request: SAVE_CART {"cart":{"cart_id":"","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":""},"userPhone":""}
+[2025-10-13 22:49:40][INFO] Server::SERprocessRequest: cmd=SAVE_CART payload={"cart":{"cart_id":"","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":false,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":""},"userPhone":""}
+[2025-10-13 22:49:40][INFO] Server sending response (len=24): {"error":"参数缺失"}
+[2025-10-13 22:49:40][INFO] UserWindow::refreshCart: saved cart with filled address returned false
+[2025-10-13 22:49:40][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:49:40][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:49:40][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:49:40][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:49:53][INFO] UserWindow::onAddToCart params: phone=15568713710, goodId=1, name=hyw, price=9.990000, qty=12
+[2025-10-13 22:49:53][INFO] Server received request: ADD_TO_CART {"price":9.99,"productId":1,"productName":"hyw","quantity":12,"userPhone":"15568713710"}
+[2025-10-13 22:49:53][INFO] Server::SERprocessRequest: cmd=ADD_TO_CART payload={"price":9.99,"productId":1,"productName":"hyw","quantity":12,"userPhone":"15568713710"}
+[2025-10-13 22:49:53][INFO] Server sending response (len=63): {"cart_id":"c20251013224953889_9d87e070d5218c79","result":"ok"}
+[2025-10-13 22:49:54][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-13 22:49:54][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:49:54][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:49:54][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:49:54][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:49:54][INFO] Server sending response (len=293): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:54][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:54][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:54][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:49:54][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:54][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 22:49:54][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 22:49:54][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 22:49:54][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 22:49:54][INFO] UserWindow::refreshCart: filled shipping_address from account: 踩踩
+[2025-10-13 22:49:54][INFO] Server received request: SAVE_CART {"cart":{"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"},"userPhone":"15568713710"}
+[2025-10-13 22:49:54][INFO] Server::SERprocessRequest: cmd=SAVE_CART payload={"cart":{"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"},"userPhone":"15568713710"}
+[2025-10-13 22:49:54][INFO] Server sending response (len=66): {"cart_id":"c20251013224953889_9d87e070d5218c79","result":"saved"}
+[2025-10-13 22:49:55][INFO] UserWindow::refreshCart: saved cart with filled address returned true
+[2025-10-13 22:49:55][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:49:55][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:49:55][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:49:55][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:49:55][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:49:58][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:49:58][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:49:58][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:49:58][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:49:58][INFO] Server sending response (len=299): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:58][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:58][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:58][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:49:58][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:58][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:49:58][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:49:58][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:49:58][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:49:58][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:49:58][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:49:58][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:49:58][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:49:58][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:49:58][INFO] Server sending response (len=299): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:58][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:58][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:58][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:49:58][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:58][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:49:58][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:49:58][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:49:58][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:49:59][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:49:59][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:49:59][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:49:59][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:49:59][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:49:59][INFO] Server sending response (len=299): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:59][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:59][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:59][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:49:59][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:59][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:49:59][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:49:59][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:49:59][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:49:59][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:49:59][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:49:59][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:49:59][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:49:59][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:49:59][INFO] Server sending response (len=299): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:59][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":119.88,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88}],"shipping_address":"踩踩","total_amount":119.88,"user_phone":"15568713710"}
+[2025-10-13 22:49:59][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:59][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:49:59][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=1
+[2025-10-13 22:49:59][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:49:59][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:49:59][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:49:59][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:49:59][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:50:00][INFO] UserWindow::onModifyCartItem called
+[2025-10-13 22:50:00][WARN] UserWindow::onModifyCartItem: no selection
+[2025-10-13 22:50:03][INFO] UserWindow::onAddToCart params: phone=15568713710, goodId=2, name=manbo, price=28.880000, qty=1
+[2025-10-13 22:50:03][INFO] Server received request: ADD_TO_CART {"price":28.88,"productId":2,"productName":"manbo","quantity":1,"userPhone":"15568713710"}
+[2025-10-13 22:50:03][INFO] Server::SERprocessRequest: cmd=ADD_TO_CART payload={"price":28.88,"productId":2,"productName":"manbo","quantity":1,"userPhone":"15568713710"}
+[2025-10-13 22:50:03][INFO] Server sending response (len=63): {"cart_id":"c20251013224953889_9d87e070d5218c79","result":"ok"}
+[2025-10-13 22:50:03][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-13 22:50:04][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:50:04][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:04][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:04][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:04][INFO] Server sending response (len=377): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":148.76,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88}],"shipping_address":"踩踩","total_amount":148.76,"user_phone":"15568713710"}
+[2025-10-13 22:50:04][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":148.76,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88}],"shipping_address":"踩踩","total_amount":148.76,"user_phone":"15568713710"}
+[2025-10-13 22:50:04][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=2
+[2025-10-13 22:50:04][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:04][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:04][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=2
+[2025-10-13 22:50:04][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:50:04][INFO] UserWindow::refreshCart: item 1 good_id=2, name=manbo, qty=1, subtotal=28.880000
+[2025-10-13 22:50:04][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:50:04][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:50:04][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:50:04][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:50:06][INFO] UserWindow::onAddToCart params: phone=15568713710, goodId=6, name=野火哈基米, price=66.400000, qty=1
+[2025-10-13 22:50:06][INFO] Server received request: ADD_TO_CART {"price":66.4,"productId":6,"productName":"野火哈基米","quantity":1,"userPhone":"15568713710"}
+[2025-10-13 22:50:06][INFO] Server::SERprocessRequest: cmd=ADD_TO_CART payload={"price":66.4,"productId":6,"productName":"野火哈基米","quantity":1,"userPhone":"15568713710"}
+[2025-10-13 22:50:06][INFO] Server sending response (len=63): {"cart_id":"c20251013224953889_9d87e070d5218c79","result":"ok"}
+[2025-10-13 22:50:06][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-13 22:50:07][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:50:07][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:07][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:07][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:07][INFO] Server sending response (len=463): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:07][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:07][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:07][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:07][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:07][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:07][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:07][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:50:07][INFO] UserWindow::refreshCart: item 1 good_id=2, name=manbo, qty=1, subtotal=28.880000
+[2025-10-13 22:50:07][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米, qty=1, subtotal=66.400000
+[2025-10-13 22:50:07][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:50:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:50:07][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:50:07][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:50:08][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:50:08][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:08][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:08][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:08][INFO] Server sending response (len=463): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:08][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:08][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:08][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:08][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:08][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:08][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:08][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:50:08][INFO] UserWindow::refreshCart: item 1 good_id=2, name=manbo, qty=1, subtotal=28.880000
+[2025-10-13 22:50:08][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米, qty=1, subtotal=66.400000
+[2025-10-13 22:50:08][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:50:08][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:50:08][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:50:08][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:50:11][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:11][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:11][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:11][INFO] Server sending response (len=463): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:11][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:11][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:11][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:11][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:11][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:13][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:13][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:13][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:13][INFO] Server sending response (len=463): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:13][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:13][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:13][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:13][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:13][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:17][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:17][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:17][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:17][INFO] Server sending response (len=463): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:18][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:18][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:18][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:18][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:18][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:19][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:19][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:19][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:19][INFO] Server sending response (len=463): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:19][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:19][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:19][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:19][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:19][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:21][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:21][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:21][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:21][INFO] Server sending response (len=463): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:21][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:21][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:21][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:21][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:21][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:23][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:23][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:23][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:23][INFO] Server sending response (len=463): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:23][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:23][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:23][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:23][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:23][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:31][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:31][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:31][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:31][INFO] Server sending response (len=463): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:31][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:31][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:31][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:31][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:31][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:31][INFO] Server received request: SAVE_CART {"cart":{"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"满1999减288","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"},"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"},"userPhone":"15568713710"}
+[2025-10-13 22:50:31][INFO] Server::SERprocessRequest: cmd=SAVE_CART payload={"cart":{"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"满1999减288","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"},"shipping_address":...(truncated)
+[2025-10-13 22:50:31][INFO] Server sending response (len=66): {"cart_id":"c20251013224953889_9d87e070d5218c79","result":"saved"}
+[2025-10-13 22:50:33][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:50:33][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:33][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:33][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:33][INFO] Server sending response (len=476): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"满1999减288","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:33][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"满1999减288","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:33][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:33][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:33][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:33][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:33][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:33][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:50:33][INFO] UserWindow::refreshCart: item 1 good_id=2, name=manbo, qty=1, subtotal=28.880000
+[2025-10-13 22:50:33][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米, qty=1, subtotal=66.400000
+[2025-10-13 22:50:33][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:50:33][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:50:33][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:50:33][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:50:34][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:34][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:34][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:34][INFO] Server sending response (len=476): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"满1999减288","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:34][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"满1999减288","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:34][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:34][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:34][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:34][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:38][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:38][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:38][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:38][INFO] Server sending response (len=476): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"满1999减288","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:38][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"满1999减288","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:38][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:38][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:38][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:38][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:38][INFO] Server received request: SAVE_CART {"cart":{"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"},"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"},"userPhone":"15568713710"}
+[2025-10-13 22:50:38][INFO] Server::SERprocessRequest: cmd=SAVE_CART payload={"cart":{"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"},"shipping_address":"踩踩",...(truncated)
+[2025-10-13 22:50:38][INFO] Server sending response (len=66): {"cart_id":"c20251013224953889_9d87e070d5218c79","result":"saved"}
+[2025-10-13 22:50:40][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:40][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:40][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:40][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:40][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:40][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:50:40][INFO] UserWindow::refreshCart: item 1 good_id=2, name=manbo, qty=1, subtotal=28.880000
+[2025-10-13 22:50:40][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米, qty=1, subtotal=66.400000
+[2025-10-13 22:50:40][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:50:40][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:50:40][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:50:40][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:40][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:40][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:40][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:40][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:42][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:42][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:42][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:42][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:42][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:42][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:42][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:42][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:42][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:47][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:47][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:47][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:47][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:47][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:47][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:47][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:47][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:47][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:53][INFO] UserWindow::onModifyCartItem called
+[2025-10-13 22:50:53][INFO] UserWindow::onModifyCartItem: selected productId=2, currentQty=1
+[2025-10-13 22:50:55][INFO] UserWindow::onModifyCartItem: requested newQty=4
+[2025-10-13 22:50:55][INFO] UserWindow::onModifyCartItem: attempt update productId=2, newQty=4, attempt=1
+[2025-10-13 22:50:55][INFO] Server received request: UPDATE_CART_ITEM {"productId":2,"quantity":4,"userPhone":"15568713710"}
+[2025-10-13 22:50:55][INFO] Server::SERprocessRequest: cmd=UPDATE_CART_ITEM payload={"productId":2,"quantity":4,"userPhone":"15568713710"}
+[2025-10-13 22:50:55][WARN] Server 收到未知请求: UPDATE_CART_ITEM {"productId":2,"quantity":4,"userPhone":"15568713710"}
+[2025-10-13 22:50:55][INFO] Server sending response (len=119): {"error":"UNKNOWN_COMMAND","request":"UPDATE_CART_ITEM {\"productId\":2,\"quantity\":4,\"userPhone\":\"15568713710\"}"}
+[2025-10-13 22:50:55][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
+[2025-10-13 22:50:55][INFO] UserWindow::onModifyCartItem: attempt update productId=2, newQty=4, attempt=2
+[2025-10-13 22:50:55][INFO] Server received request: UPDATE_CART_ITEM {"productId":2,"quantity":4,"userPhone":"15568713710"}
+[2025-10-13 22:50:55][INFO] Server::SERprocessRequest: cmd=UPDATE_CART_ITEM payload={"productId":2,"quantity":4,"userPhone":"15568713710"}
+[2025-10-13 22:50:55][WARN] Server 收到未知请求: UPDATE_CART_ITEM {"productId":2,"quantity":4,"userPhone":"15568713710"}
+[2025-10-13 22:50:55][INFO] Server sending response (len=119): {"error":"UNKNOWN_COMMAND","request":"UPDATE_CART_ITEM {\"productId\":2,\"quantity\":4,\"userPhone\":\"15568713710\"}"}
+[2025-10-13 22:50:55][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
+[2025-10-13 22:50:56][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:50:56][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:50:56][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:50:56][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:50:56][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:56][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:50:56][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:56][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:50:56][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:50:56][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:50:56][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:50:56][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:50:56][INFO] UserWindow::refreshCart: item 1 good_id=2, name=manbo, qty=1, subtotal=28.880000
+[2025-10-13 22:50:56][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米, qty=1, subtotal=66.400000
+[2025-10-13 22:50:56][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:50:56][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:50:56][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:50:56][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:50:58][INFO] UserWindow::onModifyCartItem called
+[2025-10-13 22:50:58][INFO] UserWindow::onModifyCartItem: selected productId=2, currentQty=1
+[2025-10-13 22:51:01][INFO] UserWindow::onModifyCartItem: requested newQty=5
+[2025-10-13 22:51:01][INFO] UserWindow::onModifyCartItem: attempt update productId=2, newQty=5, attempt=1
+[2025-10-13 22:51:01][INFO] Server received request: UPDATE_CART_ITEM {"productId":2,"quantity":5,"userPhone":"15568713710"}
+[2025-10-13 22:51:01][INFO] Server::SERprocessRequest: cmd=UPDATE_CART_ITEM payload={"productId":2,"quantity":5,"userPhone":"15568713710"}
+[2025-10-13 22:51:01][WARN] Server 收到未知请求: UPDATE_CART_ITEM {"productId":2,"quantity":5,"userPhone":"15568713710"}
+[2025-10-13 22:51:01][INFO] Server sending response (len=119): {"error":"UNKNOWN_COMMAND","request":"UPDATE_CART_ITEM {\"productId\":2,\"quantity\":5,\"userPhone\":\"15568713710\"}"}
+[2025-10-13 22:51:01][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
+[2025-10-13 22:51:01][INFO] UserWindow::onModifyCartItem: attempt update productId=2, newQty=5, attempt=2
+[2025-10-13 22:51:01][INFO] Server received request: UPDATE_CART_ITEM {"productId":2,"quantity":5,"userPhone":"15568713710"}
+[2025-10-13 22:51:01][INFO] Server::SERprocessRequest: cmd=UPDATE_CART_ITEM payload={"productId":2,"quantity":5,"userPhone":"15568713710"}
+[2025-10-13 22:51:01][WARN] Server 收到未知请求: UPDATE_CART_ITEM {"productId":2,"quantity":5,"userPhone":"15568713710"}
+[2025-10-13 22:51:01][INFO] Server sending response (len=119): {"error":"UNKNOWN_COMMAND","request":"UPDATE_CART_ITEM {\"productId\":2,\"quantity\":5,\"userPhone\":\"15568713710\"}"}
+[2025-10-13 22:51:01][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
+[2025-10-13 22:51:03][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:51:03][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:03][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:03][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:03][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:03][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:03][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:03][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:03][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:03][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:03][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:03][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:51:03][INFO] UserWindow::refreshCart: item 1 good_id=2, name=manbo, qty=1, subtotal=28.880000
+[2025-10-13 22:51:03][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米, qty=1, subtotal=66.400000
+[2025-10-13 22:51:03][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:51:03][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:51:03][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:51:04][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:51:07][INFO] UserWindow::onModifyCartItem called
+[2025-10-13 22:51:07][INFO] UserWindow::onModifyCartItem: selected productId=2, currentQty=1
+[2025-10-13 22:51:10][INFO] UserWindow::onModifyCartItem: requested newQty=3
+[2025-10-13 22:51:10][INFO] UserWindow::onModifyCartItem: attempt update productId=2, newQty=3, attempt=1
+[2025-10-13 22:51:10][INFO] Server received request: UPDATE_CART_ITEM {"productId":2,"quantity":3,"userPhone":"15568713710"}
+[2025-10-13 22:51:10][INFO] Server::SERprocessRequest: cmd=UPDATE_CART_ITEM payload={"productId":2,"quantity":3,"userPhone":"15568713710"}
+[2025-10-13 22:51:10][WARN] Server 收到未知请求: UPDATE_CART_ITEM {"productId":2,"quantity":3,"userPhone":"15568713710"}
+[2025-10-13 22:51:10][INFO] Server sending response (len=119): {"error":"UNKNOWN_COMMAND","request":"UPDATE_CART_ITEM {\"productId\":2,\"quantity\":3,\"userPhone\":\"15568713710\"}"}
+[2025-10-13 22:51:10][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
+[2025-10-13 22:51:10][INFO] UserWindow::onModifyCartItem: attempt update productId=2, newQty=3, attempt=2
+[2025-10-13 22:51:10][INFO] Server received request: UPDATE_CART_ITEM {"productId":2,"quantity":3,"userPhone":"15568713710"}
+[2025-10-13 22:51:10][INFO] Server::SERprocessRequest: cmd=UPDATE_CART_ITEM payload={"productId":2,"quantity":3,"userPhone":"15568713710"}
+[2025-10-13 22:51:10][WARN] Server 收到未知请求: UPDATE_CART_ITEM {"productId":2,"quantity":3,"userPhone":"15568713710"}
+[2025-10-13 22:51:10][INFO] Server sending response (len=119): {"error":"UNKNOWN_COMMAND","request":"UPDATE_CART_ITEM {\"productId\":2,\"quantity\":3,\"userPhone\":\"15568713710\"}"}
+[2025-10-13 22:51:11][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
+[2025-10-13 22:51:11][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:51:11][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:11][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:11][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:11][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:12][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:12][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:12][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:12][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:12][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:12][INFO] UserWindow::refreshCart: got cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:12][INFO] UserWindow::refreshCart: item 0 good_id=1, name=hyw, qty=12, subtotal=119.880000
+[2025-10-13 22:51:12][INFO] UserWindow::refreshCart: item 1 good_id=2, name=manbo, qty=1, subtotal=28.880000
+[2025-10-13 22:51:12][INFO] UserWindow::refreshCart: item 2 good_id=6, name=野火哈基米, qty=1, subtotal=66.400000
+[2025-10-13 22:51:12][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:51:12][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:51:12][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:51:12][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:51:17][INFO] UserWindow::onCheckout called
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:17][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:17][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:17][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:17][INFO] UserWindow::onCheckout: cart already has discount_policy="330-20" -> using existing policy
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:17][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:17][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:17][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:17][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:17][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:17][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:17][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:18][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:18][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:18][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:18][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:18][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:18][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:18][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:18][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:18][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:18][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:18][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:18][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:18][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:18][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:18][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:18][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:19][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:19][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:19][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:19][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:19][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:19][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:19][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:19][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:19][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:19][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:21][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:21][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:21][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:21][INFO] Server sending response (len=469): {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:21][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013224953889_9d87e070d5218c79","discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"is_converted":false,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"shipping_address":"踩踩","total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:21][INFO] CLTgetCartForUser: parsed cart_id=c20251013224953889_9d87e070d5218c79, items=3
+[2025-10-13 22:51:21][INFO] CLTgetCartForUser: item[0] good_id=1, name=hyw, price=9.990000, qty=12, subtotal=119.880000
+[2025-10-13 22:51:21][INFO] CLTgetCartForUser: item[1] good_id=2, name=manbo, price=28.880000, qty=1, subtotal=28.880000
+[2025-10-13 22:51:21][INFO] CLTgetCartForUser: item[2] good_id=6, name=野火哈基米, price=66.400000, qty=1, subtotal=66.400000
+[2025-10-13 22:51:21][INFO] UserWindow::onCheckout: refreshed cart_id from server -> c20251013224953889_9d87e070d5218c79
+[2025-10-13 22:51:21][INFO] UserWindow::onCheckout: using cart.cart_id as order id: c20251013224953889_9d87e070d5218c79
+[2025-10-13 22:51:21][INFO] UserWindow::onCheckout: sending order c20251013224953889_9d87e070d5218c79 for user 15568713710
+[2025-10-13 22:51:21][INFO] Server received request: ADD_SETTLED_ORDER {"discountPolicy":"330-20","discount_amount":0.0,"final_amount":215.16,"items":[{"price":9.99,"productId":1,"productName":"hyw","quantity":12,"subtotal":119.88},{"price":28.88,"productId":2,"productName":"manbo","quantity":1,"subtotal":28.88},{"price":66.4,"productId":6,"productName":"野火哈基米","quantity":1,"subtotal":66.4}],"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":1,"total_amount":215.16,"userPhone":"15568713710"}
+[2025-10-13 22:51:21][INFO] Server::SERprocessRequest: cmd=ADD_SETTLED_ORDER payload={"discountPolicy":"330-20","discount_amount":0.0,"final_amount":215.16,"items":[{"price":9.99,"productId":1,"productName":"hyw","quantity":12,"subtotal":119.88},{"price":28.88,"productId":2,"productName":"manbo","quantity":1,"subtotal":28.88},{"price":66.4,"productId":6,"productName":"野火哈基米","quantity":1,"subtotal":66.4}],"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":1,"total_amount":215.16,"userPhone":"15568713710"}
+[2025-10-13 22:51:21][INFO] Server SERaddSettledOrder: 减库存 good_id=1 -> 771
+[2025-10-13 22:51:21][INFO] Server SERaddSettledOrder: 减库存 good_id=2 -> 113968
+[2025-10-13 22:51:21][INFO] Server SERaddSettledOrder: 减库存 good_id=6 -> 199
+[2025-10-13 22:51:21][INFO] Server sending response (len=67): {"order_id":"c20251013224953889_9d87e070d5218c79","result":"added"}
+[2025-10-13 22:51:21][INFO] UserWindow::onCheckout CLTaddSettledOrder returned true
+[2025-10-13 22:51:21][INFO] Server received request: SAVE_CART {"cart":{"cart_id":"","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"},"userPhone":"15568713710"}
+[2025-10-13 22:51:21][INFO] Server::SERprocessRequest: cmd=SAVE_CART payload={"cart":{"cart_id":"","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"},"userPhone":"15568713710"}
+[2025-10-13 22:51:21][INFO] Server sending response (len=66): {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","result":"saved"}
+[2025-10-13 22:51:22][INFO] UserWindow::onCheckout CLTsaveCartForUser returned true
+[2025-10-13 22:51:22][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:51:22][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:51:22][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:51:22][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:51:22][INFO] Server sending response (len=216): {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:51:22][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:51:22][INFO] CLTgetCartForUser: parsed cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:51:22][INFO] UserWindow::refreshCart: got cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:51:22][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:51:22][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:51:22][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:51:23][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:51:23][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:51:23][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:51:23][INFO] Server sending response (len=184): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":1,"total_amount":215.16,"user_phone":"15568713710"}]
+[2025-10-13 22:51:29][INFO] Server received request: GET_ORDER_DETAIL {"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:51:29][INFO] Server::SERprocessRequest: cmd=GET_ORDER_DETAIL payload={"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:51:29][INFO] Server sending response (len=460): {"discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":1,"total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:29][INFO] Server received request: REPAIR_SETTLED_ORDER {"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:51:29][INFO] Server::SERprocessRequest: cmd=REPAIR_SETTLED_ORDER payload={"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:51:29][INFO] Server SERrepairSettledOrder: set status to REPAIR for order c20251013224953889_9d87e070d5218c79
+[2025-10-13 22:51:29][INFO] Server sending response (len=80): {"order_id":"c20251013224953889_9d87e070d5218c79","result":"updated","status":4}
+[2025-10-13 22:51:30][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:51:30][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:51:30][INFO] Server sending response (len=184): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":4,"total_amount":215.16,"user_phone":"15568713710"}]
+[2025-10-13 22:51:39][INFO] Server received request: GET_ORDER_DETAIL {"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:51:39][INFO] Server::SERprocessRequest: cmd=GET_ORDER_DETAIL payload={"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:51:39][INFO] Server sending response (len=460): {"discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":4,"total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:43][INFO] Server received request: GET_ORDER_DETAIL {"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:51:43][INFO] Server::SERprocessRequest: cmd=GET_ORDER_DETAIL payload={"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:51:43][INFO] Server sending response (len=460): {"discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":4,"total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:51:43][INFO] Server received request: RETURN_SETTLED_ORDER {"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:51:43][INFO] Server::SERprocessRequest: cmd=RETURN_SETTLED_ORDER payload={"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:51:43][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=1 -> 783
+[2025-10-13 22:51:43][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=2 -> 113969
+[2025-10-13 22:51:43][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=6 -> 200
+[2025-10-13 22:51:43][INFO] Server SERreturnSettledOrder: set status to RETURNED for order c20251013224953889_9d87e070d5218c79
+[2025-10-13 22:51:43][INFO] Server sending response (len=80): {"order_id":"c20251013224953889_9d87e070d5218c79","result":"updated","status":3}
+[2025-10-13 22:51:44][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:51:44][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:51:44][INFO] Server sending response (len=184): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"}]
+[2025-10-13 22:51:45][INFO] UserWindow::onReturnToIdentitySelection called
+[2025-10-13 22:51:45][INFO] 收到 UserWindow::backRequested，返回登录界面
+[2025-10-13 22:51:45][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:52:10][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-13 22:52:10][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 22:52:10][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 22:52:10][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 22:52:10][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 22:52:10][INFO] Server received request: GET_ALL_GOODS
+[2025-10-13 22:52:10][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-13 22:52:10][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-13 22:52:10][INFO] Server SERgetAllGoods: dbManager ptr = 1931621162672, DTBisConnected=true
+[2025-10-13 22:52:10][INFO] DTBloadAllGoods: this=000001C1BD97DEB0 connection_=000001C1BDA1BF50 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-13 22:52:10][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-13 22:52:10][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":783},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113969},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":200},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:52:10][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-13 22:52:10][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":783},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113969},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":200},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:52:10][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-13 22:52:10][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-13 22:52:10][INFO] Server sending response (len=547): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":1,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-13 22:52:10][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:52:10][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:52:10][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:52:10][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:52:10][INFO] AdminWindow::refreshPromotions loaded 9 promotions
+[2025-10-13 22:52:27][INFO] AdminWindow::onReturnToIdentitySelection called
+[2025-10-13 22:52:27][INFO] 收到 AdminWindow::backRequested，返回登录界面
+[2025-10-13 22:52:27][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:52:36][INFO] Server received request: LOGIN {"password":"123456789","phone":"15568713710"}
+[2025-10-13 22:52:36][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"123456789","phone":"15568713710"}
+[2025-10-13 22:52:36][INFO] Server sending response (len=37): {"phone":"15568713710","result":"ok"}
+[2025-10-13 22:52:36][INFO] 用户登录成功，手机号: 15568713710
+[2025-10-13 22:52:36][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:52:36][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:52:36][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:52:36][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:52:36][INFO] Server received request: GET_ALL_GOODS
+[2025-10-13 22:52:36][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-13 22:52:36][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-13 22:52:36][INFO] Server SERgetAllGoods: dbManager ptr = 1931621162672, DTBisConnected=true
+[2025-10-13 22:52:36][INFO] DTBloadAllGoods: this=000001C1BD97DEB0 connection_=000001C1BDA1BF50 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-13 22:52:36][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-13 22:52:36][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":783},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113969},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":200},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:52:36][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-13 22:52:36][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":783},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113969},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":200},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:52:36][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:52:36][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:52:36][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:52:36][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:52:36][INFO] Server sending response (len=216): {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:52:36][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:52:36][INFO] CLTgetCartForUser: parsed cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:52:36][INFO] UserWindow::refreshCart: got cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:52:36][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:52:36][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:52:36][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:52:37][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:52:37][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:52:37][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:52:37][INFO] Server sending response (len=184): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"}]
+[2025-10-13 22:52:37][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 22:52:37][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 22:52:37][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 22:52:37][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 22:52:41][INFO] Server received request: GET_ORDER_DETAIL {"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:52:41][INFO] Server::SERprocessRequest: cmd=GET_ORDER_DETAIL payload={"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:52:41][INFO] Server sending response (len=460): {"discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:52:41][INFO] Server received request: RETURN_SETTLED_ORDER {"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:52:41][INFO] Server::SERprocessRequest: cmd=RETURN_SETTLED_ORDER payload={"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:52:41][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=1 -> 795
+[2025-10-13 22:52:41][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=2 -> 113970
+[2025-10-13 22:52:41][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=6 -> 201
+[2025-10-13 22:52:41][INFO] Server SERreturnSettledOrder: set status to RETURNED for order c20251013224953889_9d87e070d5218c79
+[2025-10-13 22:52:41][INFO] Server sending response (len=80): {"order_id":"c20251013224953889_9d87e070d5218c79","result":"updated","status":3}
+[2025-10-13 22:52:42][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:52:42][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:52:42][INFO] Server sending response (len=184): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"}]
+[2025-10-13 22:52:47][INFO] Server received request: GET_ORDER_DETAIL {"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:52:47][INFO] Server::SERprocessRequest: cmd=GET_ORDER_DETAIL payload={"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:52:47][INFO] Server sending response (len=460): {"discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:52:47][INFO] Server received request: RETURN_SETTLED_ORDER {"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:52:47][INFO] Server::SERprocessRequest: cmd=RETURN_SETTLED_ORDER payload={"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:52:47][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=1 -> 807
+[2025-10-13 22:52:47][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=2 -> 113971
+[2025-10-13 22:52:47][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=6 -> 202
+[2025-10-13 22:52:47][INFO] Server SERreturnSettledOrder: set status to RETURNED for order c20251013224953889_9d87e070d5218c79
+[2025-10-13 22:52:47][INFO] Server sending response (len=80): {"order_id":"c20251013224953889_9d87e070d5218c79","result":"updated","status":3}
+[2025-10-13 22:52:48][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:52:48][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:52:48][INFO] Server sending response (len=184): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"}]
+[2025-10-13 22:52:50][INFO] UserWindow::onReturnToIdentitySelection called
+[2025-10-13 22:52:50][INFO] 收到 UserWindow::backRequested，返回登录界面
+[2025-10-13 22:52:50][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:52:56][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-13 22:52:56][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 22:52:56][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 22:52:56][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 22:52:56][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 22:52:56][INFO] Server received request: GET_ALL_GOODS
+[2025-10-13 22:52:56][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-13 22:52:56][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-13 22:52:56][INFO] Server SERgetAllGoods: dbManager ptr = 1931621162672, DTBisConnected=true
+[2025-10-13 22:52:56][INFO] DTBloadAllGoods: this=000001C1BD97DEB0 connection_=000001C1BDA1BF50 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-13 22:52:56][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-13 22:52:56][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":807},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113971},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":202},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:52:56][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-13 22:52:56][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":807},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113971},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":202},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:52:56][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-13 22:52:56][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-13 22:52:56][INFO] Server sending response (len=547): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":1,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-13 22:52:57][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:52:57][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:52:57][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:52:57][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:52:57][INFO] AdminWindow::refreshPromotions loaded 9 promotions
+[2025-10-13 22:53:02][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-13 22:53:02][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-13 22:53:02][INFO] Server sending response (len=547): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":1,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-13 22:53:06][INFO] Server received request: GET_ORDER_DETAIL {"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:53:06][INFO] Server::SERprocessRequest: cmd=GET_ORDER_DETAIL payload={"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:53:06][INFO] Server sending response (len=460): {"discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:53:06][INFO] Server received request: RETURN_SETTLED_ORDER {"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:53:06][INFO] Server::SERprocessRequest: cmd=RETURN_SETTLED_ORDER payload={"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:53:06][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=1 -> 819
+[2025-10-13 22:53:06][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=2 -> 113972
+[2025-10-13 22:53:06][INFO] Server SERreturnSettledOrder: 恢复库存 good_id=6 -> 203
+[2025-10-13 22:53:06][INFO] Server SERreturnSettledOrder: set status to RETURNED for order c20251013224953889_9d87e070d5218c79
+[2025-10-13 22:53:06][INFO] Server sending response (len=80): {"order_id":"c20251013224953889_9d87e070d5218c79","result":"updated","status":3}
+[2025-10-13 22:53:06][INFO] AdminWindow::onReturnOrder CLTreturnSettledOrder returned true
+[2025-10-13 22:53:07][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-13 22:53:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-13 22:53:07][INFO] Server sending response (len=547): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":1,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-13 22:53:13][INFO] Server received request: GET_ORDER_DETAIL {"orderId":"c20251013210328472_9c6f7b4a1411aefc","userPhone":"17708659389"}
+[2025-10-13 22:53:13][INFO] Server::SERprocessRequest: cmd=GET_ORDER_DETAIL payload={"orderId":"c20251013210328472_9c6f7b4a1411aefc","userPhone":"17708659389"}
+[2025-10-13 22:53:13][INFO] Server sending response (len=287): {"discount_amount":0.5,"discount_policy":"95%off","final_amount":9.49,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":1,"subtotal":9.99}],"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":1,"total_amount":9.99,"user_phone":"17708659389"}
+[2025-10-13 22:53:13][INFO] Server received request: REPAIR_SETTLED_ORDER {"orderId":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","userPhone":"17708659389"}
+[2025-10-13 22:53:13][INFO] Server::SERprocessRequest: cmd=REPAIR_SETTLED_ORDER payload={"orderId":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","userPhone":"17708659389"}
+[2025-10-13 22:53:13][INFO] Server SERrepairSettledOrder: set status to REPAIR for order c20251013210328472_9c6f7b4a1411aefc
+[2025-10-13 22:53:13][INFO] Server sending response (len=80): {"order_id":"c20251013210328472_9c6f7b4a1411aefc","result":"updated","status":4}
+[2025-10-13 22:53:13][INFO] AdminWindow::onRepairOrder CLTrepairSettledOrder returned true
+[2025-10-13 22:53:14][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-13 22:53:14][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-13 22:53:14][INFO] Server sending response (len=547): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-13 22:53:14][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-13 22:53:14][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-13 22:53:14][INFO] Server sending response (len=547): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-13 22:53:15][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-13 22:53:15][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-13 22:53:15][INFO] Server sending response (len=547): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-13 22:53:15][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-13 22:53:15][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-13 22:53:15][INFO] Server sending response (len=547): [{"discount_amount":0.0,"final_amount":215.16,"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-13 22:53:18][INFO] Server received request: GET_ORDER_DETAIL {"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:53:18][INFO] Server::SERprocessRequest: cmd=GET_ORDER_DETAIL payload={"orderId":"c20251013224953889_9d87e070d5218c79","userPhone":"15568713710"}
+[2025-10-13 22:53:18][INFO] Server sending response (len=460): {"discount_amount":0.0,"discount_policy":"330-20","final_amount":215.16,"items":[{"good_id":1,"good_name":"hyw","price":9.99,"quantity":12,"subtotal":119.88},{"good_id":2,"good_name":"manbo","price":28.88,"quantity":1,"subtotal":28.88},{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":1,"subtotal":66.4}],"order_id":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","status":3,"total_amount":215.16,"user_phone":"15568713710"}
+[2025-10-13 22:53:18][INFO] Server received request: DELETE_SETTLED_ORDER {"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:53:18][INFO] Server::SERprocessRequest: cmd=DELETE_SETTLED_ORDER payload={"orderId":"c20251013224953889_9d87e070d5218c79","shipping_address":"踩踩","userPhone":"15568713710"}
+[2025-10-13 22:53:18][INFO] Server SERdeleteSettledOrder: deleted order c20251013224953889_9d87e070d5218c79
+[2025-10-13 22:53:18][INFO] Server sending response (len=69): {"order_id":"c20251013224953889_9d87e070d5218c79","result":"deleted"}
+[2025-10-13 22:53:19][INFO] AdminWindow::onDeleteOrder CLTdeleteSettledOrder returned true
+[2025-10-13 22:53:19][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-13 22:53:19][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-13 22:53:19][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-13 22:53:24][INFO] AdminWindow::onReturnToIdentitySelection called
+[2025-10-13 22:53:24][INFO] 收到 AdminWindow::backRequested，返回登录界面
+[2025-10-13 22:53:24][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:53:31][INFO] Server received request: LOGIN {"password":"123456789","phone":"15568713710"}
+[2025-10-13 22:53:31][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"123456789","phone":"15568713710"}
+[2025-10-13 22:53:31][INFO] Server sending response (len=37): {"phone":"15568713710","result":"ok"}
+[2025-10-13 22:53:31][INFO] 用户登录成功，手机号: 15568713710
+[2025-10-13 22:53:31][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:53:31][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:53:31][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:53:32][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:53:32][INFO] Server received request: GET_ALL_GOODS
+[2025-10-13 22:53:32][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-13 22:53:32][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-13 22:53:32][INFO] Server SERgetAllGoods: dbManager ptr = 1931621162672, DTBisConnected=true
+[2025-10-13 22:53:32][INFO] DTBloadAllGoods: this=000001C1BD97DEB0 connection_=000001C1BDA1BF50 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-13 22:53:32][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-13 22:53:32][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:53:32][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-13 22:53:32][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 22:53:32][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:53:32][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:53:32][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:53:32][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:53:32][INFO] Server sending response (len=216): {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:53:32][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:53:32][INFO] CLTgetCartForUser: parsed cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:53:32][INFO] UserWindow::refreshCart: got cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:53:32][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:53:32][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:53:32][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:53:32][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:53:32][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:53:32][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:53:32][INFO] Server sending response (len=2): []
+[2025-10-13 22:53:32][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 22:53:32][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 22:53:32][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 22:53:32][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 22:53:35][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:53:35][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:53:35][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:53:35][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:53:35][INFO] Server sending response (len=216): {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:53:35][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:53:35][INFO] CLTgetCartForUser: parsed cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:53:35][INFO] UserWindow::refreshCart: got cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:53:35][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:53:35][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:53:35][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:53:35][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:53:35][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:53:35][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:53:35][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:53:35][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:53:35][INFO] Server sending response (len=216): {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:53:36][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:53:36][INFO] CLTgetCartForUser: parsed cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:53:36][INFO] UserWindow::refreshCart: got cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:53:36][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:53:36][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:53:36][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:53:36][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:53:36][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 22:53:36][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-13 22:53:36][INFO] Server received request: GET_CART 15568713710
+[2025-10-13 22:53:36][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-13 22:53:36][INFO] Server sending response (len=216): {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:53:36][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-13 22:53:36][INFO] CLTgetCartForUser: parsed cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:53:36][INFO] UserWindow::refreshCart: got cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-13 22:53:36][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 22:53:36][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 22:53:36][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 22:53:36][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 22:53:40][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:53:40][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:53:40][INFO] Server sending response (len=2): []
+[2025-10-13 22:53:40][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:53:40][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:53:40][INFO] Server sending response (len=2): []
+[2025-10-13 22:53:40][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"15568713710"}
+[2025-10-13 22:53:40][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"15568713710"}
+[2025-10-13 22:53:40][INFO] Server sending response (len=2): []
+[2025-10-13 22:53:43][INFO] UserWindow::onReturnToIdentitySelection called
+[2025-10-13 22:53:43][INFO] 收到 UserWindow::backRequested，返回登录界面
+[2025-10-13 22:53:43][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 22:53:51][INFO] 用户取消登录，退出应用
+[2025-10-13 22:53:51][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:53:51][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:53:55][INFO] 用户取消登录，退出应用
+[2025-10-13 22:53:55][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 22:53:55][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 23:00:57][INFO] 应用启动
+[2025-10-13 23:00:58][INFO] Server: DatabaseManager 已连接。
+[2025-10-13 23:00:58][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-13 23:00:58][INFO] Client 已连接到 Server
+[2025-10-13 23:00:58][INFO] DatabaseManager::connect() called.
+
+[2025-10-13 23:00:58][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 23:01:07][INFO] Server received request: LOGIN {"password":"AUVpbb","phone":"17708659389"}
+[2025-10-13 23:01:07][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"AUVpbb","phone":"17708659389"}
+[2025-10-13 23:01:07][INFO] Server sending response (len=37): {"phone":"17708659389","result":"ok"}
+[2025-10-13 23:01:07][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-13 23:01:07][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 23:01:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 23:01:07][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 23:01:07][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 23:01:07][INFO] Server received request: GET_ALL_GOODS
+[2025-10-13 23:01:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-13 23:01:07][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-13 23:01:07][INFO] Server SERgetAllGoods: dbManager ptr = 2117369406080, DTBisConnected=true
+[2025-10-13 23:01:07][INFO] DTBloadAllGoods: this=000001ECFD0D2280 connection_=000001ECFD10FD00 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-13 23:01:07][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-13 23:01:07][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 23:01:07][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-13 23:01:07][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 23:01:08][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 23:01:08][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-13 23:01:08][INFO] Server received request: GET_CART 17708659389
+[2025-10-13 23:01:08][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-13 23:01:08][INFO] Server sending response (len=214): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"JLU1","total_amount":0.0,"user_phone":"17708659389"}
+[2025-10-13 23:01:08][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"JLU1","total_amount":0.0,"user_phone":"17708659389"}
+[2025-10-13 23:01:08][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=0
+[2025-10-13 23:01:08][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=0
+[2025-10-13 23:01:08][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 23:01:08][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 23:01:08][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 23:01:08][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 23:01:08][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-13 23:01:08][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-13 23:01:08][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-13 23:01:09][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 23:01:09][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 23:01:09][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 23:01:09][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 23:01:12][INFO] UserWindow::onAddToCart params: phone=17708659389, goodId=7, name=ハチミ, price=78.000000, qty=1
+[2025-10-13 23:01:13][INFO] Server received request: ADD_TO_CART {"price":78.0,"productId":7,"productName":"ハチミ","quantity":1,"userPhone":"17708659389"}
+[2025-10-13 23:01:13][INFO] Server::SERprocessRequest: cmd=ADD_TO_CART payload={"price":78.0,"productId":7,"productName":"ハチミ","quantity":1,"userPhone":"17708659389"}
+[2025-10-13 23:01:13][INFO] Server sending response (len=63): {"cart_id":"c20251013212012566_fafe846c913b001d","result":"ok"}
+[2025-10-13 23:01:13][INFO] UserWindow::onAddToCart CLTaddToCart returned true
+[2025-10-13 23:01:14][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 23:01:14][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-13 23:01:14][INFO] Server received request: GET_CART 17708659389
+[2025-10-13 23:01:14][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-13 23:01:14][INFO] Server sending response (len=295): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":78.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"JLU1","total_amount":78.0,"user_phone":"17708659389"}
+[2025-10-13 23:01:14][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":78.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"JLU1","total_amount":78.0,"user_phone":"17708659389"}
+[2025-10-13 23:01:14][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-13 23:01:14][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=1, subtotal=78.000000
+[2025-10-13 23:01:14][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-13 23:01:14][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=1, subtotal=78.000000
+[2025-10-13 23:01:14][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 23:01:14][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 23:01:14][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 23:01:14][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 23:01:16][INFO] UserWindow::onModifyCartItem called
+[2025-10-13 23:01:16][INFO] UserWindow::onModifyCartItem: selected productId=7, currentQty=1
+[2025-10-13 23:01:17][INFO] UserWindow::onModifyCartItem: requested newQty=2
+[2025-10-13 23:01:17][INFO] UserWindow::onModifyCartItem: attempt update productId=7, newQty=2, attempt=1
+[2025-10-13 23:01:18][INFO] Server received request: UPDATE_CART_ITEM {"productId":7,"quantity":2,"userPhone":"17708659389"}
+[2025-10-13 23:01:18][INFO] Server::SERprocessRequest: cmd=UPDATE_CART_ITEM payload={"productId":7,"quantity":2,"userPhone":"17708659389"}
+[2025-10-13 23:01:18][WARN] Server 收到未知请求: UPDATE_CART_ITEM {"productId":7,"quantity":2,"userPhone":"17708659389"}
+[2025-10-13 23:01:18][INFO] Server sending response (len=119): {"error":"UNKNOWN_COMMAND","request":"UPDATE_CART_ITEM {\"productId\":7,\"quantity\":2,\"userPhone\":\"17708659389\"}"}
+[2025-10-13 23:01:18][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
+[2025-10-13 23:01:18][INFO] UserWindow::onModifyCartItem: attempt update productId=7, newQty=2, attempt=2
+[2025-10-13 23:01:18][INFO] Server received request: UPDATE_CART_ITEM {"productId":7,"quantity":2,"userPhone":"17708659389"}
+[2025-10-13 23:01:18][INFO] Server::SERprocessRequest: cmd=UPDATE_CART_ITEM payload={"productId":7,"quantity":2,"userPhone":"17708659389"}
+[2025-10-13 23:01:18][WARN] Server 收到未知请求: UPDATE_CART_ITEM {"productId":7,"quantity":2,"userPhone":"17708659389"}
+[2025-10-13 23:01:18][INFO] Server sending response (len=119): {"error":"UNKNOWN_COMMAND","request":"UPDATE_CART_ITEM {\"productId\":7,\"quantity\":2,\"userPhone\":\"17708659389\"}"}
+[2025-10-13 23:01:18][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned false
+[2025-10-13 23:01:19][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 23:01:19][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-13 23:01:19][INFO] Server received request: GET_CART 17708659389
+[2025-10-13 23:01:19][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-13 23:01:19][INFO] Server sending response (len=295): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":78.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"JLU1","total_amount":78.0,"user_phone":"17708659389"}
+[2025-10-13 23:01:19][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":78.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"JLU1","total_amount":78.0,"user_phone":"17708659389"}
+[2025-10-13 23:01:19][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-13 23:01:19][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=1, subtotal=78.000000
+[2025-10-13 23:01:19][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-13 23:01:19][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=1, subtotal=78.000000
+[2025-10-13 23:01:20][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 23:01:20][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 23:01:20][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 23:01:20][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 23:01:25][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 23:01:25][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-13 23:01:25][INFO] 应用退出
+
+[2025-10-13 23:03:08][INFO] 应用启动
+[2025-10-13 23:03:09][INFO] Server: DatabaseManager 已连接。
+[2025-10-13 23:03:09][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-13 23:03:09][INFO] Client 已连接到 Server
+[2025-10-13 23:03:09][INFO] DatabaseManager::connect() called.
+
+[2025-10-13 23:03:09][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-13 23:03:16][INFO] Server received request: LOGIN {"password":"AUVpbb","phone":"17708659389"}
+[2025-10-13 23:03:16][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"AUVpbb","phone":"17708659389"}
+[2025-10-13 23:03:16][INFO] Server sending response (len=37): {"phone":"17708659389","result":"ok"}
+[2025-10-13 23:03:16][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-13 23:03:16][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 23:03:16][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 23:03:16][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 23:03:16][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 23:03:16][INFO] Server received request: GET_ALL_GOODS
+[2025-10-13 23:03:16][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-13 23:03:16][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-13 23:03:16][INFO] Server SERgetAllGoods: dbManager ptr = 2362588303360, DTBisConnected=true
+[2025-10-13 23:03:16][INFO] DTBloadAllGoods: this=00000226153C9000 connection_=0000022615473C90 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-13 23:03:16][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-13 23:03:16][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 23:03:16][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-13 23:03:16][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-13 23:03:17][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 23:03:17][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-13 23:03:17][INFO] Server received request: GET_CART 17708659389
+[2025-10-13 23:03:17][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-13 23:03:17][INFO] Server sending response (len=295): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":78.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"JLU1","total_amount":78.0,"user_phone":"17708659389"}
+[2025-10-13 23:03:17][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":78.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":1,"subtotal":78.0}],"shipping_address":"JLU1","total_amount":78.0,"user_phone":"17708659389"}
+[2025-10-13 23:03:17][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-13 23:03:17][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=1, subtotal=78.000000
+[2025-10-13 23:03:17][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-13 23:03:17][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=1, subtotal=78.000000
+[2025-10-13 23:03:17][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 23:03:17][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 23:03:17][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 23:03:17][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 23:03:17][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-13 23:03:17][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-13 23:03:17][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-13 23:03:18][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-13 23:03:18][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-13 23:03:18][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-13 23:03:18][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-13 23:03:20][INFO] UserWindow::onModifyCartItem called
+[2025-10-13 23:03:20][INFO] UserWindow::onModifyCartItem: selected productId=7, currentQty=1
+[2025-10-13 23:03:22][INFO] UserWindow::onModifyCartItem: requested newQty=2
+[2025-10-13 23:03:22][INFO] UserWindow::onModifyCartItem: attempt update productId=7, newQty=2, attempt=1
+[2025-10-13 23:03:22][INFO] Server received request: UPDATE_CART_ITEM {"productId":7,"quantity":2,"userPhone":"17708659389"}
+[2025-10-13 23:03:22][INFO] Server::SERprocessRequest: cmd=UPDATE_CART_ITEM payload={"productId":7,"quantity":2,"userPhone":"17708659389"}
+[2025-10-13 23:03:22][INFO] Server SERupdateCartItem: request userPhone=17708659389, productId=7, quantity=2
+[2025-10-13 23:03:22][INFO] Server sending response (len=68): {"cart_id":"c20251013212012566_fafe846c913b001d","result":"updated"}
+[2025-10-13 23:03:22][INFO] UserWindow::onModifyCartItem CLTupdateCartItem returned true
+[2025-10-13 23:03:23][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-13 23:03:23][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-13 23:03:23][INFO] Server received request: GET_CART 17708659389
+[2025-10-13 23:03:23][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-13 23:03:23][INFO] Server sending response (len=298): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-13 23:03:23][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-13 23:03:23][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-13 23:03:23][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
+[2025-10-13 23:03:23][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-13 23:03:23][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=2, subtotal=156.000000
+[2025-10-13 23:03:24][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-13 23:03:24][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-13 23:03:24][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-13 23:03:24][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-13 23:03:26][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-13 23:03:27][INFO] Server received request: GET_CART 17708659389
+[2025-10-13 23:03:27][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-13 23:03:27][INFO] Server sending response (len=298): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-13 23:03:27][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-13 23:03:27][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-13 23:03:27][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
