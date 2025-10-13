@@ -147,11 +147,6 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="hachimi.qrc">
-      <Filter>others</Filter>
-    </QtRcc>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="log.txt">
       <Filter>others</Filter>
     </Text>

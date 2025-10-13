@@ -32,6 +32,8 @@
 #include "LogWindow.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <QTcpSocket>
+#include <QHostAddress>
 using nlohmann::json;
 
 
@@ -43,10 +45,28 @@ int main(int argc, char* argv[])
     // 启动 Logger（确保先于窗口）
     Logger::instance().info("应用启动");
 
-    // 启动 Server（监听本地端口）
-    Server server(8888);
-    server.SERstart();
-    Logger::instance().info("本地 Server 已启动 (127.0.0.1:8888)");
+    // —— 改动：尝试探测本地 127.0.0.1:8888 是否已经有 Server 在监听 —— //
+    bool serverAlreadyRunning = false;
+    {
+        QTcpSocket probe;
+        probe.connectToHost(QHostAddress("127.0.0.1"), 8888);
+        // 等待短时间以判断是否能连接成功（200ms），可根据需要调整
+        if (probe.waitForConnected(200)) {
+            serverAlreadyRunning = true;
+            probe.disconnectFromHost();
+        }
+    }
+
+    Server* serverPtr = nullptr;
+    if (!serverAlreadyRunning) {
+        // 没有检测到已有 Server，当前进程启动本地 Server
+        serverPtr = new Server(8888);
+        serverPtr->SERstart();
+        Logger::instance().info("本地 Server 已启动 (127.0.0.1:8888)");
+    } else {
+        Logger::instance().info("检测到已有本地 Server 监听 127.0.0.1:8888，跳过启动");
+    }
+    // —— 改动结束 —— //
 
     // 启动 Client 并连接到本地 Server
     Client client; // 使用默认参数 127.0.0.1:8888
@@ -170,12 +190,18 @@ int main(int argc, char* argv[])
     }
     catch (...) {}
     try {
-        server.SERstop();
+        if (serverPtr) serverPtr->SERstop();
     }
     catch (...) {}
 
     // 清理 DatabaseManager
     delete db;
+
+    // 若本进程创建了 Server，则释放它
+    if (serverPtr) {
+        delete serverPtr;
+        serverPtr = nullptr;
+    }
 
     Logger::instance().info("应用退出\n");
     return ret;
