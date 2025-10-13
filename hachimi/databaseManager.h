@@ -95,4 +95,6 @@ public:
     bool DTBupdatePromotionStrategy(const std::string& name, bool is_active);
     std::map<std::string, std::string> DTBloadPromotionStrategy(const std::string& name);
     std::vector<std::map<std::string, std::string>> DTBloadAllPromotionStrategies(bool active_only = true);
+    bool DTBupdatePromotionStrategyDetail(const std::string& name, const std::string& policy_detail);
+    bool DTBdeletePromotionStrategy(const std::string& name);
 };

@@ -17,6 +17,7 @@
 #include <QMutexLocker>
 #include <QString>
 #include <QByteArray>
+#include <nlohmann/json.hpp>
 
 class Client {
 private:
@@ -71,8 +72,8 @@ public:
     // ---------------- 购物车相关（对应 Server 的购物车 API） ----------------
     // 对应 SERgetCart
     TemporaryCart CLTgetCartForUser(const std::string& userPhone);
-    // 对应 SERsaveCart
-    bool CLTsaveCartForUser(const TemporaryCart& cart);
+    // 对应 SERsaveCart（包含促销策略 JSON）
+    bool CLTsaveCartForUserWithPolicy(const TemporaryCart& cart, const std::string& policyJson);
     // 对应 SERaddToCart
     bool CLTaddToCart(const std::string& userPhone, int productId, const std::string& productName, double price, int quantity);
     // 对应 SERupdateCartItem
@@ -105,5 +106,11 @@ public:
     // 改为返回策略对象的智能指针，避免对象切割和抽象类型问题
     std::vector<std::shared_ptr<PromotionStrategy>> CLTgetAllPromotions();
     std::vector<std::shared_ptr<PromotionStrategy>> CLTgetPromotionsByProductId(int productId);
+    // 获取原始促销列表（用于 UI 显示 id/name/policy JSON）
+    std::vector<nlohmann::json> CLTgetAllPromotionsRaw();
+    // 管理员：增删改促销（客户端以管理员身份调用）
+    bool CLTaddPromotion(const nlohmann::json& promotion); // promotion JSON { name, policy, type?, conditions? }
+    bool CLTupdatePromotion(const std::string& name, const nlohmann::json& promotion);
+    bool CLTdeletePromotion(const std::string& name);
 
 };

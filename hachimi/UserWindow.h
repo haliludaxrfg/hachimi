@@ -41,6 +41,13 @@ private slots:
     void onRepairOrder();
     void onDeleteOrder();
 
+    // Promotions 操作槽
+    void refreshPromotions();
+    void onApplyPromotion();
+    void onClearPromotion();
+    void onShowOriginalTotal();
+    void onShowDiscountedTotal();
+
 private:
     QTabWidget* tabWidget;
     QWidget* userTab;   // 个人信息管理
@@ -71,6 +78,13 @@ private:
     QPushButton* modifyCartBtn;
     QPushButton* removeCartBtn;
     QPushButton* checkoutBtn;
+    QPushButton* showOriginalBtn;
+    QPushButton* showDiscountedBtn;
+
+    // Promotions UI（用户可见：只读列表 + 应用按钮）
+    QComboBox* promoCombo;
+    QPushButton* applyPromoBtn;
+    QPushButton* clearPromoBtn;
 
     // 订单 UI
     QTableWidget* orderTable;

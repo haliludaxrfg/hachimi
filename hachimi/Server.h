@@ -73,9 +73,15 @@ public:
     std::string SERaddToCart(const std::string& userPhone, int productId, const std::string& productName, double price, int quantity);
     std::string SERupdateCartItem(const std::string& userPhone, int productId, int quantity);
     std::string SERremoveFromCart(const std::string& userPhone, int productId);
-    static void recalcCartTotals(TemporaryCart& cart);
+    static void recalcCartTotalsImpl(TemporaryCart& cart, const nlohmann::json& policy, DatabaseManager* dbManager);
+    void recalcCartTotals(TemporaryCart& cart);
 	// promotion
     std::string SERgetAllPromotions();
     std::string SERgetPromotionsByProductId(int productId);
     std::string SERupdateCartForPromotions(const std::string& userPhone);
+    std::string SERdeletePromotion(const std::string& name);
+    std::string SERupdatePromotion(const nlohmann::json& j);
+    std::string SERaddPromotion(const nlohmann::json& j);
+
 };
+

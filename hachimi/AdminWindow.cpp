@@ -4,6 +4,15 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QHeaderView>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <nlohmann/json.hpp>
+#include <QFormLayout>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QDoubleSpinBox>
 
 // 状态映射辅助函数
 static QString orderStatusToText(int status) {
@@ -76,8 +85,8 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     orderTab = new QWidget;
     QVBoxLayout* orderLayout = new QVBoxLayout(orderTab);
     ordersTable = new QTableWidget;
-    ordersTable->setColumnCount(4);
-    ordersTable->setHorizontalHeaderLabels(QStringList() << "订单ID" << "用户手机号" << "状态" << "摘要");
+    ordersTable->setColumnCount(5);
+    ordersTable->setHorizontalHeaderLabels(QStringList() << "订单ID" << "用户手机号" << "地址" << "状态" << "摘要");
     ordersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     orderLayout->addWidget(ordersTable);
 
@@ -166,10 +175,14 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     connect(editCartItemBtn, &QPushButton::clicked, this, &AdminWindow::onEditCartItem);
     connect(removeCartItemBtn, &QPushButton::clicked, this, &AdminWindow::onRemoveCartItem);
 
+    // 创建促销标签页
+    createPromotionsTab();
+
     // 首次加载
     refreshUsers();
     refreshGoods();
     refreshOrders();
+    refreshPromotions();
 }
 
 // ---------------- 用户/商品/订单 已在之前文件中实现 ----------------
@@ -374,6 +387,7 @@ void AdminWindow::onDeleteGood() {
     refreshGoods();
 }
 
+// 替换 AdminWindow::refreshOrders()：在表格中显示地址（优先使用 Order 中的地址，否则拉取明细）
 void AdminWindow::refreshOrders() {
     ordersTable->setRowCount(0);
     if (!client_) return;
@@ -383,9 +397,19 @@ void AdminWindow::refreshOrders() {
         const Order& o = orders[i];
         ordersTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(o.getOrderId())));
         ordersTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(o.getUserPhone())));
-        ordersTable->setItem(i, 2, new QTableWidgetItem(orderStatusToText(o.getStatus())));
+
+        // 填地址：优先 Order 自带，否则尝试拉取详情
+        QString addr = QString::fromStdString(o.getShippingAddress());
+        if (addr.isEmpty()) {
+            Order detail;
+            bool ok = client_->CLTgetOrderDetail(o.getOrderId(), o.getUserPhone(), detail);
+            if (ok) addr = QString::fromStdString(detail.getShippingAddress());
+        }
+        ordersTable->setItem(i, 2, new QTableWidgetItem(addr));
+
+        ordersTable->setItem(i, 3, new QTableWidgetItem(orderStatusToText(o.getStatus())));
         QString summary = QString("总计 %1").arg(o.getTotalAmount());
-        ordersTable->setItem(i, 3, new QTableWidgetItem(summary));
+        ordersTable->setItem(i, 4, new QTableWidgetItem(summary));
     }
 }
 
@@ -551,13 +575,22 @@ void AdminWindow::onViewOrderDetail() {
     bool ok = client_->CLTgetOrderDetail(oid.toStdString(), userPhone.toStdString(), detail);
     if (!ok) { QMessageBox::warning(this, "查看订单", "获取订单详情失败"); return; }
 
-    // 构造显示文本
+    // 计算基于明细项的原价总额，作为回退值
+    double computedTotal = 0.0;
+    for (const auto& it : detail.getItems()) {
+        computedTotal += it.getPrice() * it.getQuantity();
+    }
+    // 若服务器返回的 total_amount 有意义（> 0.005），优先使用；否则使用计算值
+    double totalToShow = detail.getTotalAmount();
+    if (totalToShow <= 0.005) totalToShow = computedTotal;
+
+    // 构造显示文本（金额格式保留两位小数）
     QString txt;
     txt += "订单ID: " + QString::fromStdString(detail.getOrderId()) + "\n";
     txt += "手机号: " + QString::fromStdString(detail.getUserPhone()) + "\n";
     txt += "地址: " + QString::fromStdString(detail.getShippingAddress()) + "\n";
     txt += "状态: " + orderStatusToText(detail.getStatus()) + "\n";
-    txt += "总额: " + QString::number(detail.getTotalAmount()) + "  实付: " + QString::number(detail.getFinalAmount()) + "\n\n";
+    txt += "总额: " + QString::number(totalToShow, 'f', 2) + "  实付: " + QString::number(detail.getFinalAmount(), 'f', 2) + "\n\n";
     txt += "订单项:\n";
     const auto& itemsVec = detail.getItems();
     if (itemsVec.empty()) {
@@ -565,8 +598,421 @@ void AdminWindow::onViewOrderDetail() {
     } else {
         for (const auto& it : itemsVec) {
             txt += QString::fromStdString(it.getGoodName()) + " (id:" + QString::number(it.getGoodId()) + ") x" + QString::number(it.getQuantity())
-                   + " 单价:" + QString::number(it.getPrice()) + " 小计:" + QString::number(it.getSubtotal()) + "\n";
+                   + " 单价:" + QString::number(it.getPrice(), 'f', 2) + " 小计:" + QString::number(it.getSubtotal(), 'f', 2) + "\n";
         }
     }
     QMessageBox::information(this, "订单详情", txt);
+}
+
+// ------------------- 促销相关实现 -------------------
+// 在构造函数中创建 promotions tab（示例放在 AdminWindow 构造尾部或合适位置）
+void AdminWindow::createPromotionsTab() {
+    promoTab = new QWidget(this);
+    QVBoxLayout* v = new QVBoxLayout(promoTab);
+
+    promoTable = new QTableWidget(0, 4, promoTab);
+    QStringList headers;
+    headers << "id" << "name" << "type" << "policy";
+    promoTable->setHorizontalHeaderLabels(headers);
+    promoTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    promoTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    promoTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    promoTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    promoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    promoTable->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    QHBoxLayout* btnRow = new QHBoxLayout;
+    refreshPromosBtn = new QPushButton("刷新", promoTab);
+
+    addPromoBtn = new QPushButton("新增", promoTab);
+
+    deletePromoBtn = new QPushButton("删除", promoTab);
+    btnRow->addWidget(refreshPromosBtn);
+    btnRow->addWidget(addPromoBtn);
+
+    btnRow->addWidget(deletePromoBtn);
+    btnRow->addStretch();
+
+    v->addLayout(btnRow);
+    v->addWidget(promoTable);
+    tabWidget->addTab(promoTab, "促销");
+
+    // 连接信号：只连接刷新与删除（编辑/新增功能被隐藏/移除）
+    connect(refreshPromosBtn, &QPushButton::clicked, this, &AdminWindow::refreshPromotions);
+    connect(deletePromoBtn, &QPushButton::clicked, this, &AdminWindow::onDeletePromotion);
+}
+
+// helper: show simple editor dialog for add/edit
+static bool showPromotionEditor(QWidget* parent, const std::string& inName, const std::string& inType, const std::string& inPolicy, std::string& outName, std::string& outType, std::string& outPolicy) {
+    QDialog dlg(parent);
+    dlg.setWindowTitle(inName.empty() ? "新增促销" : "编辑促销");
+    QVBoxLayout* v = new QVBoxLayout(&dlg);
+
+    QHBoxLayout* row1 = new QHBoxLayout;
+    row1->addWidget(new QLabel("名称:"));
+    QLineEdit* nameEdit = new QLineEdit(QString::fromStdString(inName));
+    row1->addWidget(nameEdit);
+    v->addLayout(row1);
+
+    QHBoxLayout* row2 = new QHBoxLayout;
+    row2->addWidget(new QLabel("类型:"));
+    QLineEdit* typeEdit = new QLineEdit(QString::fromStdString(inType));
+    row2->addWidget(typeEdit);
+    v->addLayout(row2);
+
+    v->addWidget(new QLabel("policy JSON 或 policy_detail 字符串:"));
+    QTextEdit* policyEdit = new QTextEdit(QString::fromStdString(inPolicy));
+    policyEdit->setMinimumHeight(160);
+    v->addWidget(policyEdit);
+
+    QHBoxLayout* br = new QHBoxLayout;
+    QPushButton* ok = new QPushButton("确定");
+    QPushButton* cancel = new QPushButton("取消");
+    br->addStretch();
+    br->addWidget(ok);
+    br->addWidget(cancel);
+    v->addLayout(br);
+
+    // 使用 QObject::connect 避免与 winsock 的 connect 冲突
+    QObject::connect(ok, &QPushButton::clicked, &dlg, &QDialog::accept);
+    QObject::connect(cancel, &QPushButton::clicked, &dlg, &QDialog::reject);
+
+    if (dlg.exec() != QDialog::Accepted) return false;
+    outName = nameEdit->text().toStdString();
+    outType = typeEdit->text().toStdString();
+    outPolicy = policyEdit->toPlainText().toStdString();
+    return true;
+}
+
+// 显示选择促销类型
+bool AdminWindow::showPromotionTypeSelector(QWidget* parent, PromotionKind& outKind) {
+    QStringList items;
+    items << "统一折扣（X 折）" << "阶梯折扣（多档折扣）" << "满 X 减 Y";
+    bool ok;
+    QString choice = QInputDialog::getItem(parent, "选择促销类型", "促销类型:", items, 0, false, &ok);
+    if (!ok) return false;
+    if (choice == items[0]) outKind = PromotionKind::Discount;
+    else if (choice == items[1]) outKind = PromotionKind::Tiered;
+    else if (choice == items[2]) outKind = PromotionKind::FullReduction;
+    else outKind = PromotionKind::Unknown;
+    return true;
+}
+
+// 针对不同类型弹出编辑器并构建 policy JSON / policy_detail
+bool AdminWindow::showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
+                                           const std::string& inName, const nlohmann::json& inPolicyJson, const std::string& inPolicyDetail,
+                                           std::string& outName, nlohmann::json& outPolicyJson, std::string& outPolicyDetail) {
+    QDialog dlg(parent);
+    dlg.setWindowTitle(inName.empty() ? "新增促销" : "编辑促销");
+    QVBoxLayout* main = new QVBoxLayout(&dlg);
+    QFormLayout* form = new QFormLayout;
+    QLineEdit* nameEdit = new QLineEdit(QString::fromStdString(inName));
+    form->addRow(new QLabel("名称:"), nameEdit);
+
+    if (kind == PromotionKind::Discount) {
+        QDoubleSpinBox* rate = new QDoubleSpinBox;
+        rate->setRange(0.01, 10.0);
+        rate->setDecimals(4);
+        rate->setSingleStep(0.01);
+        if (inPolicyJson.contains("discount")) rate->setValue(inPolicyJson.value("discount", 1.0));
+        else if (!inPolicyDetail.empty()) {
+            try { auto p = nlohmann::json::parse(inPolicyDetail); if (p.contains("discount")) rate->setValue(p.value("discount", 1.0)); } catch(...) {}
+        }
+        form->addRow(new QLabel("折扣率（例如 0.9 表示 9 折）:"), rate);
+
+        main->addLayout(form);
+        QHBoxLayout* hb = new QHBoxLayout;
+        QPushButton* ok = new QPushButton("确定");
+        QPushButton* cancel = new QPushButton("取消");
+        hb->addStretch(); hb->addWidget(ok); hb->addWidget(cancel);
+        main->addLayout(hb);
+        QObject::connect(ok, &QPushButton::clicked, &dlg, &QDialog::accept);
+        QObject::connect(cancel, &QPushButton::clicked, &dlg, &QDialog::reject);
+
+        if (dlg.exec() != QDialog::Accepted) return false;
+        outName = nameEdit->text().toStdString();
+        outPolicyJson = nlohmann::json::object();
+        outPolicyJson["type"] = "discount";
+        outPolicyJson["discount"] = rate->value();
+        outPolicyJson["scope"] = "global";
+        outPolicyDetail.clear();
+        return true;
+    }
+    else if (kind == PromotionKind::Tiered) {
+        // 固定 3 个阶梯输入：每行一个 min_qty 与 discount（折扣率）
+        QWidget* tiersWidget = new QWidget;
+        QFormLayout* tiersLayout = new QFormLayout(tiersWidget);
+
+        QSpinBox* minQtyBoxes[3];
+        QDoubleSpinBox* discountBoxes[3];
+        for (int t = 0; t < 3; ++t) {
+            minQtyBoxes[t] = new QSpinBox;
+            minQtyBoxes[t]->setRange(0, 1000000);
+            minQtyBoxes[t]->setValue(0);
+            discountBoxes[t] = new QDoubleSpinBox;
+            discountBoxes[t]->setRange(0.0, 10.0);
+            discountBoxes[t]->setDecimals(4);
+            discountBoxes[t]->setSingleStep(0.01);
+            discountBoxes[t]->setValue(1.0); // 默认不打折
+
+            QHBoxLayout* row = new QHBoxLayout;
+            row->addWidget(new QLabel(QString("第%1阶 阈值(min_qty):").arg(t+1)));
+            row->addWidget(minQtyBoxes[t]);
+            row->addSpacing(8);
+            row->addWidget(new QLabel("折扣(例如0.9表示9折):"));
+            row->addWidget(discountBoxes[t]);
+
+            tiersLayout->addRow(row);
+        }
+
+        // 预填 tiers（如果有）
+        try {
+            if (inPolicyJson.contains("tiers") && inPolicyJson["tiers"].is_array()) {
+                auto arr = inPolicyJson["tiers"];
+                for (int t = 0; t < 3 && t < (int)arr.size(); ++t) {
+                    try {
+                        if (arr[t].contains("min_qty")) minQtyBoxes[t]->setValue(arr[t].value("min_qty", 0));
+                        if (arr[t].contains("discount")) discountBoxes[t]->setValue(arr[t].value("discount", 1.0));
+                    } catch (...) {}
+                }
+            } else if (!inPolicyDetail.empty()) {
+                try {
+                    auto parsed = nlohmann::json::parse(inPolicyDetail);
+                    if (parsed.contains("tiers") && parsed["tiers"].is_array()) {
+                        auto arr = parsed["tiers"];
+                        for (int t = 0; t < 3 && t < (int)arr.size(); ++t) {
+                            try {
+                                if (arr[t].contains("min_qty")) minQtyBoxes[t]->setValue(arr[t].value("min_qty", 0));
+                                if (arr[t].contains("discount")) discountBoxes[t]->setValue(arr[t].value("discount", 1.0));
+                            } catch (...) {}
+                        }
+                    }
+                } catch (...) {}
+            }
+        } catch (...) {}
+
+        form->addRow(new QLabel("三个阶梯（阈值 = 商品总数量；折扣 = 单项折扣率）"), tiersWidget);
+
+        main->addLayout(form);
+        QHBoxLayout* hb = new QHBoxLayout;
+        QPushButton* ok = new QPushButton("确定");
+        QPushButton* cancel = new QPushButton("取消");
+        hb->addStretch(); hb->addWidget(ok); hb->addWidget(cancel);
+        main->addLayout(hb);
+        QObject::connect(ok, &QPushButton::clicked, &dlg, &QDialog::accept);
+        QObject::connect(cancel, &QPushButton::clicked, &dlg, &QDialog::reject);
+
+        if (dlg.exec() != QDialog::Accepted) {
+            return false;
+        }
+
+        // 验证：三个阶梯的 min_qty 必须严格递增
+        int mins[3];
+        for (int t = 0; t < 3; ++t) mins[t] = minQtyBoxes[t]->value();
+        if (!(mins[0] < mins[1] && mins[1] < mins[2])) {
+            QMessageBox::warning(parent, "阶梯设置错误", "三个阶梯的阈值 min_qty 必须严格递增（例如 1 < 5 < 10）。请重新设置。");
+            return false;
+        }
+
+        // 构造 outPolicyJson：{ type: "tiered", scope: "global", tiers: [ {min_qty, discount}, ... ] }
+        outName = nameEdit->text().toStdString();
+        outPolicyJson = nlohmann::json::object();
+        outPolicyJson["type"] = "tiered";
+        outPolicyJson["scope"] = "global";
+        nlohmann::json tiers = nlohmann::json::array();
+        for (int t = 0; t < 3; ++t) {
+            nlohmann::json tier;
+            tier["min_qty"] = mins[t];
+            tier["discount"] = discountBoxes[t]->value();
+            tiers.push_back(tier);
+        }
+        outPolicyJson["tiers"] = tiers;
+        outPolicyDetail.clear();
+        return true;
+    }
+    else if (kind == PromotionKind::FullReduction) {
+        QDoubleSpinBox* threshold = new QDoubleSpinBox;
+        threshold->setRange(0.0, 1e9);
+        threshold->setDecimals(2);
+        QDoubleSpinBox* reduce = new QDoubleSpinBox;
+        reduce->setRange(0.0, 1e9);
+        reduce->setDecimals(2);
+        if (inPolicyJson.contains("threshold")) threshold->setValue(inPolicyJson.value("threshold", 0.0));
+        if (inPolicyJson.contains("reduce")) reduce->setValue(inPolicyJson.value("reduce", 0.0));
+        form->addRow(new QLabel("满 X（阈值）:"), threshold);
+        form->addRow(new QLabel("减 Y（金额）:"), reduce);
+
+        main->addLayout(form);
+        QHBoxLayout* hb = new QHBoxLayout;
+        QPushButton* ok = new QPushButton("确定");
+        QPushButton* cancel = new QPushButton("取消");
+        hb->addStretch(); hb->addWidget(ok); hb->addWidget(cancel);
+        main->addLayout(hb);
+        QObject::connect(ok, &QPushButton::clicked, &dlg, &QDialog::accept);
+        QObject::connect(cancel, &QPushButton::clicked, &dlg, &QDialog::reject);
+
+        if (dlg.exec() != QDialog::Accepted) return false;
+        outName = nameEdit->text().toStdString();
+        outPolicyJson = nlohmann::json::object();
+        outPolicyJson["type"] = "full_reduction";
+        outPolicyJson["threshold"] = threshold->value();
+        outPolicyJson["reduce"] = reduce->value();
+        outPolicyJson["scope"] = "global";
+        outPolicyDetail.clear();
+        return true;
+    }
+
+    QTextEdit* policyEdit = new QTextEdit(QString::fromStdString(inPolicyDetail));
+    form->addRow(new QLabel("policy 文本:"), policyEdit);
+    main->addLayout(form);
+    QHBoxLayout* hb = new QHBoxLayout;
+    QPushButton* ok = new QPushButton("确定");
+    QPushButton* cancel = new QPushButton("取消");
+    hb->addStretch(); hb->addWidget(ok); hb->addWidget(cancel);
+    main->addLayout(hb);
+    QObject::connect(ok, &QPushButton::clicked, &dlg, &QDialog::accept);
+    QObject::connect(cancel, &QPushButton::clicked, &dlg, &QDialog::reject);
+    if (dlg.exec() != QDialog::Accepted) return false;
+    outName = nameEdit->text().toStdString();
+    outPolicyDetail = policyEdit->toPlainText().toStdString();
+    outPolicyJson = nlohmann::json();
+    return true;
+}
+
+// 修改 onAddPromotion：先询问类型再编辑
+void AdminWindow::onAddPromotion() {
+    if (!client_) return;
+    PromotionKind kind = PromotionKind::Unknown;
+    if (!showPromotionTypeSelector(this, kind)) return;
+
+    std::string outName, outDetail;
+    nlohmann::json outPolicyJson;
+    // empty inputs for add
+    if (!showTypedPromotionEditor(this, kind, "", nlohmann::json(), "", outName, outPolicyJson, outDetail)) return;
+
+    nlohmann::json req;
+    req["name"] = outName;
+    req["type"] = outPolicyJson.value("type", std::string(""));
+    if (!outPolicyJson.is_null() && !outPolicyJson.empty()) req["policy"] = outPolicyJson;
+    else if (!outDetail.empty()) req["policy_detail"] = outDetail;
+
+    bool ok = client_->CLTaddPromotion(req);
+    QMessageBox::information(this, "新增促销", ok ? "添加成功" : "添加失败（查看日志）");
+    refreshPromotions();
+}
+
+// 修改 onEditPromotion：读取现有 policy 试图推断类型并预填编辑器
+void AdminWindow::onEditPromotion() {
+    auto sel = promoTable->selectionModel()->selectedRows();
+    if (sel.empty()) { QMessageBox::warning(this, "编辑促销", "请先选择一条促销"); return; }
+    int row = sel.first().row();
+    QString nameQ = promoTable->item(row, 1)->text();
+    QString typeQ = promoTable->item(row, 2)->text();
+    QString policyFull = promoTable->item(row, 3)->data(Qt::UserRole).toString();
+
+    // 解析现有 policy：尝试解析 JSON
+    nlohmann::json parsed;
+    std::string policyDetail;
+    PromotionKind kind = PromotionKind::Unknown;
+    try {
+        parsed = nlohmann::json::parse(policyFull.toStdString());
+        if (parsed.is_object()) {
+            std::string t = parsed.value("type", std::string(""));
+            if (t == "discount") kind = PromotionKind::Discount;
+            else if (t == "tiered") kind = PromotionKind::Tiered;
+            else if (t == "full_reduction" || t == "fullReduction") kind = PromotionKind::FullReduction;
+            else kind = PromotionKind::Unknown;
+        } else {
+            policyDetail = policyFull.toStdString();
+        }
+    } catch (...) {
+        policyDetail = policyFull.toStdString();
+    }
+
+    // 如果无法推断类型，先让管理员选
+    if (kind == PromotionKind::Unknown) {
+        if (!showPromotionTypeSelector(this, kind)) return;
+    }
+
+    std::string newName;
+    nlohmann::json newPolicyJson;
+    std::string newPolicyDetail;
+    if (!showTypedPromotionEditor(this, kind, nameQ.toStdString(), parsed, policyDetail, newName, newPolicyJson, newPolicyDetail)) return;
+
+    nlohmann::json req;
+    req["type"] = newPolicyJson.is_null() ? typeQ.toStdString() : newPolicyJson.value("type", typeQ.toStdString());
+    if (!newPolicyJson.is_null() && !newPolicyJson.empty()) req["policy"] = newPolicyJson;
+    else if (!newPolicyDetail.empty()) req["policy_detail"] = newPolicyDetail;
+
+    bool ok = client_->CLTupdatePromotion(nameQ.toStdString(), req);
+    QMessageBox::information(this, "编辑促销", ok ? "更新成功" : "更新失败（查看日志）");
+    refreshPromotions();
+}
+
+// 确保实现 AdminWindow::refreshPromotions 与 AdminWindow::onDeletePromotion（避免链接缺失）
+void AdminWindow::refreshPromotions() {
+    if (!client_) return;
+    promoTable->setRowCount(0);
+    auto rows = client_->CLTgetAllPromotionsRaw();
+    promoTable->setRowCount(static_cast<int>(rows.size()));
+    for (int i = 0; i < (int)rows.size(); ++i) {
+        const auto& r = rows[i];
+        QString id = QString::fromStdString(r.value("id", std::string("")));
+        QString name = QString::fromStdString(r.value("name", std::string("")));
+        QString type;
+        try {
+            if (r.contains("policy") && r["policy"].is_object()) {
+                type = QString::fromStdString(r["policy"].value("type", std::string("")));
+            } else {
+                type = QString::fromStdString(r.value("type", std::string("")));
+            }
+        } catch (...) {
+            type = QString::fromStdString(r.value("type", std::string("")));
+        }
+
+        QString policyStr;
+        try {
+            if (r.contains("policy")) policyStr = QString::fromStdString(r["policy"].dump());
+            else policyStr = QString::fromStdString(r.value("policy_detail", std::string("")));
+        } catch (...) {
+            policyStr = QString::fromStdString(r.value("policy_detail", std::string("")));
+        }
+
+        QTableWidgetItem* idItem = new QTableWidgetItem(id);
+        QTableWidgetItem* nameItem = new QTableWidgetItem(name);
+        QTableWidgetItem* typeItem = new QTableWidgetItem(type);
+        QTableWidgetItem* policyItem = new QTableWidgetItem(policyStr.left(200)); // 表格仅显示摘要
+        policyItem->setData(Qt::UserRole, policyStr); // 将完整 policy 存到 UserRole 备用
+
+        promoTable->setItem(i, 0, idItem);
+        promoTable->setItem(i, 1, nameItem);
+        promoTable->setItem(i, 2, typeItem);
+        promoTable->setItem(i, 3, policyItem);
+    }
+    Logger::instance().info(std::string("AdminWindow::refreshPromotions loaded ") + std::to_string(rows.size()) + " promotions");
+}
+
+void AdminWindow::onDeletePromotion() {
+    if (!client_) return;
+    auto sel = promoTable->selectionModel()->selectedRows();
+    if (sel.empty()) {
+        QMessageBox::warning(this, "删除促销", "请先选择一条促销");
+        return;
+    }
+    int row = sel.first().row();
+    if (!promoTable->item(row, 1)) {
+        QMessageBox::warning(this, "删除促销", "所选行无有效名称列");
+        return;
+    }
+    QString nameQ = promoTable->item(row, 1)->text();
+    if (QMessageBox::question(this, "删除促销", QString("确定要删除促销 “%1” 吗？").arg(nameQ)) != QMessageBox::Yes) return;
+
+    if (!client_->CLTisConnectionActive()) {
+        Logger::instance().warn("AdminWindow::onDeletePromotion: client not connected, attempting reconnect");
+        client_->CLTreconnect();
+    }
+
+    bool ok = client_->CLTdeletePromotion(nameQ.toStdString());
+    QMessageBox::information(this, "删除促销", ok ? "删除成功" : "删除失败（查看日志）");
+    refreshPromotions();
 }

@@ -634,15 +634,31 @@ bool DatabaseManager::DTBloadTemporaryCartByUserPhone(const std::string& userPho
 
 // ---------------- 促销策略（实现） ----------------
 
+static std::string escapeForSql(MYSQL* conn, const std::string& s) {
+    if (!conn) return s;
+    size_t maxLen = s.size() * 2 + 1;
+    char* buf = new char[maxLen];
+    unsigned long len = mysql_real_escape_string(conn, buf, s.c_str(), static_cast<unsigned long>(s.size()));
+    std::string out(buf, buf + len);
+    delete[] buf;
+    return out;
+}
 
 bool DatabaseManager::DTBsavePromotionStrategy(const std::string& name, const std::string& type,
-	const std::string& config, const std::string& conditions) {
-	if (!connection_) return false;
-	// 把 policy_detail 当作 JSON 字符串存储
-	std::string policy = config;
-	std::string query = "INSERT INTO promotionstrategy (name, policy_detail) VALUES ('" +
-		name + "', '" + policy + "')";
-	return DTBexecuteQuery(query);
+    const std::string& config, const std::string& conditions) {
+    if (!connection_) return false;
+    std::string escName = escapeForSql(connection_, name);
+    std::string escPolicy = escapeForSql(connection_, config);
+    // 目前表结构只存 policy_detail 与 name；保留 type/conditions 可扩展
+    std::string q = "INSERT INTO promotionstrategy (name, policy_detail) VALUES ('" + escName + "', '" + escPolicy + "')";
+    if (mysql_query(connection_, q.c_str()) == 0) {
+        // 如果数据库有触发器或约束导致插入不真正生效，检查 affected rows
+        my_ulonglong affected = mysql_affected_rows(connection_);
+        return affected > 0;
+    } else {
+        std::cerr << "MySQL insert promotionstrategy error: " << mysql_error(connection_) << " | Query: " << q << std::endl;
+        return false;
+    }
 }
 
 bool DatabaseManager::DTBupdatePromotionStrategy(const std::string& name, bool /*is_active*/) {
@@ -652,36 +668,57 @@ bool DatabaseManager::DTBupdatePromotionStrategy(const std::string& name, bool /
 	return true;
 }
 
+bool DatabaseManager::DTBdeletePromotionStrategy(const std::string& name) {
+	if (!connection_) return false;
+	std::string q = "DELETE FROM promotionstrategy WHERE name = '" + name + "'";
+	return DTBexecuteQuery(q);
+}
+
 std::map<std::string, std::string> DatabaseManager::DTBloadPromotionStrategy(const std::string& name) {
-	std::map<std::string, std::string> out;
-	if (!connection_) return out;
-	std::string q = "SELECT id, name, policy_detail FROM promotionstrategy WHERE name='" + name + "' LIMIT 1";
-	MYSQL_RES* res = DTBexecuteSelect(q);
-	if (!res) return out;
-	MYSQL_ROW row = mysql_fetch_row(res);
-	if (row) {
-		out["id"] = row[0] ? row[0] : "";
-		out["name"] = row[1] ? row[1] : "";
-		out["policy_detail"] = row[2] ? row[2] : "";
-	}
-	mysql_free_result(res);
-	return out;
+    std::map<std::string, std::string> out;
+    if (!connection_) return out;
+    std::string escName = escapeForSql(connection_, name);
+    std::string q = "SELECT id, name, policy_detail FROM promotionstrategy WHERE name='" + escName + "' LIMIT 1";
+    MYSQL_RES* res = DTBexecuteSelect(q);
+    if (!res) return out;
+    MYSQL_ROW row = mysql_fetch_row(res);
+    if (row) {
+        out["id"] = row[0] ? row[0] : "";
+        out["name"] = row[1] ? row[1] : "";
+        out["policy_detail"] = row[2] ? row[2] : "";
+    }
+    mysql_free_result(res);
+    return out;
 }
 
 std::vector<std::map<std::string, std::string>> DatabaseManager::DTBloadAllPromotionStrategies(bool /*active_only*/) {
-	std::vector<std::map<std::string, std::string>> out;
-	if (!connection_) return out;
-	std::string q = "SELECT id, name, policy_detail FROM promotionstrategy";
-	MYSQL_RES* res = DTBexecuteSelect(q);
-	if (!res) return out;
-	MYSQL_ROW row;
-	while ((row = mysql_fetch_row(res))) {
-		std::map<std::string, std::string> entry;
-		entry["id"] = row[0] ? row[0] : "";
-		entry["name"] = row[1] ? row[1] : "";
-		entry["policy_detail"] = row[2] ? row[2] : "";
-		out.push_back(std::move(entry));
-	}
-	mysql_free_result(res);
-	return out;
+ 	std::vector<std::map<std::string, std::string>> out;
+ 	if (!connection_) return out;
+ 	std::string q = "SELECT id, name, policy_detail FROM promotionstrategy";
+ 	MYSQL_RES* res = DTBexecuteSelect(q);
+ 	if (!res) return out;
+ 	MYSQL_ROW row;
+ 	while ((row = mysql_fetch_row(res))) {
+ 		std::map<std::string, std::string> entry;
+ 		entry["id"] = row[0] ? row[0] : "";
+ 		entry["name"] = row[1] ? row[1] : "";
+ 		entry["policy_detail"] = row[2] ? row[2] : "";
+ 		out.push_back(std::move(entry));
+ 	}
+ 	mysql_free_result(res);
+ 	return out;
 }
+bool DatabaseManager::DTBupdatePromotionStrategyDetail(const std::string& name, const std::string& policy_detail) {
+    if (!connection_) return false;
+    std::string escName = escapeForSql(connection_, name);
+    std::string escPolicy = escapeForSql(connection_, policy_detail);
+    std::string q = "UPDATE promotionstrategy SET policy_detail = '" + escPolicy + "' WHERE name = '" + escName + "'";
+    if (mysql_query(connection_, q.c_str()) == 0) {
+        my_ulonglong affected = mysql_affected_rows(connection_);
+        return affected > 0;
+    } else {
+        std::cerr << "MySQL update promotionstrategy error: " << mysql_error(connection_) << " | Query: " << q << std::endl;
+        return false;
+    }
+}
+

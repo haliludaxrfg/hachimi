@@ -12,13 +12,116 @@
 #ifdef _WIN32
 #include <direct.h>
 #endif
+#include <cerrno>
 
 static void ensureDirExists(const std::string& dir) {
 #ifdef _WIN32
-    _mkdir(dir.c_str());
+    int res = _mkdir(dir.c_str());
+    if (res != 0 && errno != EEXIST) {
+        Logger::instance().warn(std::string("ensureDirExists: _mkdir failed for ") + dir + " errno=" + std::to_string(errno));
+    }
 #else
-    mkdir(dir.c_str(), 0755);
+    if (mkdir(dir.c_str(), 0755) != 0 && errno != EEXIST) {
+        Logger::instance().warn(std::string("ensureDirExists: mkdir failed for ") + dir + " errno=" + std::to_string(errno));
+    }
 #endif
+}
+
+static double computeFinalFromPolicy(const nlohmann::json& policy, const nlohmann::json& items, double originalTotal);
+static std::string derivePolicyName(const nlohmann::json& policy);
+
+static void recalcCartTotalsImpl_local(TemporaryCart& cart, const nlohmann::json& policy, DatabaseManager* dbManager) {
+    // 计算原总额
+    double original_total = 0.0;
+    nlohmann::json itemsJson = nlohmann::json::array();
+    for (const auto& it : cart.items) {
+        double subtotal = it.price * static_cast<double>(it.quantity);
+        original_total += subtotal;
+        itemsJson.push_back({
+            {"good_id", it.good_id},
+            {"good_name", it.good_name},
+            {"price", it.price},
+            {"quantity", it.quantity},
+            {"subtotal", subtotal}
+            });
+    }
+
+    // 优先使用传入的 policy（若为 object）
+    double new_total = original_total;
+    if (policy.is_object()) {
+        try {
+            new_total = computeFinalFromPolicy(policy, itemsJson, original_total);
+            // 如果 discount_policy 为空，则派生一个名称写入（便于展示）
+            if (cart.discount_policy.empty()) {
+                std::string name = derivePolicyName(policy);
+                if (!name.empty()) cart.discount_policy = name;
+            }
+        }
+        catch (...) {
+            // 解析/应用 policy 失败 -> 回退为原价
+            new_total = original_total;
+        }
+    }
+    else {
+        // 否则使用服务端现有的促销引擎（按单品查询最佳策略）
+        new_total = 0.0;
+
+        // 如果没有 dbManager，则无法查询数据库促销，直接按原价
+        std::vector<std::map<std::string, std::string>> rows;
+        if (dbManager) {
+            try {
+                rows = dbManager->DTBloadAllPromotionStrategies(false);
+            }
+            catch (...) {
+                rows.clear();
+            }
+        }
+
+        for (auto& it : cart.items) {
+            double bestSubtotal = it.price * static_cast<double>(it.quantity);
+
+            // 如果有 db 数据，则解析并尝试应用适配该商品的策略
+            if (!rows.empty()) {
+                for (const auto& m : rows) {
+                    try {
+                        if (!m.count("policy_detail")) continue;
+                        json p = json::parse(m.at("policy_detail"));
+                        bool applies = false;
+                        // 全局适用
+                        if (p.contains("scope") && p["scope"].is_string() && p["scope"] == "global") applies = true;
+                        // 按 product_ids 匹配
+                        if (p.contains("product_ids") && p["product_ids"].is_array()) {
+                            for (const auto& pid : p["product_ids"]) {
+                                if (pid.is_number() && pid.get<int>() == it.good_id) { applies = true; break; }
+                                if (pid.is_string()) {
+                                    try { if (std::stoi(pid.get<std::string>()) == it.good_id) { applies = true; break; } }
+                                    catch (...) {}
+                                }
+                            }
+                        }
+                        if (!applies) continue;
+
+                        // 应用策略（使用 PromotionStrategy 辅助）
+                        json pol = p;
+                        auto strat = PromotionStrategy::fromJson(pol);
+                        double applied = strat->apply(it.price, it.quantity);
+                        if (applied < bestSubtotal) bestSubtotal = applied;
+                    }
+                    catch (...) {
+                        // 单条策略解析/应用失败则跳过
+                        continue;
+                    }
+                }
+            }
+
+            // 如果没有 dbManager 或没有匹配策略，则 bestSubtotal 保持原值
+            new_total += bestSubtotal;
+        }
+    }
+
+    cart.total_amount = original_total;
+    cart.final_amount = new_total;
+    cart.discount_amount = std::max(0.0, original_total - new_total);
 }
 
 static std::string sanitizeFileName(const std::string& s) {
@@ -108,17 +211,16 @@ Server::~Server() {
 }
 
 std::string Server::generateCartId(const std::string& userPhone) {
-    // 格式: c<timestamp_ms>_<hex-rand>
-    using namespace std::chrono;
-    uint64_t ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-
+    // 格式: cYYYYMMDDHHMMSSmmm_<hex-rand>
+    // 使用 QDateTime 获取可读的年月日时分秒与毫秒，保留随机后缀以避免冲突
+    QString dt = QDateTime::currentDateTime().toString("yyyyMMddHHmmsszzz"); // 包含毫秒
     // 线程局部随机数引擎
     static thread_local std::mt19937_64 rng((std::random_device())());
     std::uniform_int_distribution<uint64_t> dist(0, std::numeric_limits<uint64_t>::max());
     uint64_t r = dist(rng);
 
     std::ostringstream oss;
-    oss << "c" << ms << "_" << std::hex << r;
+    oss << "c" << dt.toStdString() << "_" << std::hex << r;
     std::string id = oss.str();
 
     // 确保符合 VARCHAR(64)
@@ -145,7 +247,31 @@ void Server::SERstart() {
                     qDebug() << "Server received raw:" << data;
                     QString reqStr = QString::fromUtf8(data).trimmed();
                     qDebug() << "Server processed request string:" << reqStr;
+
+                    // 记录到 Logger：每接收到一次请求就记录一条信息
+                    try {
+                        std::string recv = reqStr.toStdString();
+                        // 截断过长日志，避免 log 被淹没
+                        const size_t MaxLogLen = 1024;
+                        if (recv.size() > MaxLogLen) recv = recv.substr(0, MaxLogLen) + "...(truncated)";
+                        Logger::instance().info(std::string("Server received request: ") + recv);
+                    } catch (...) {
+                        // 记录异常不影响主流程
+                        Logger::instance().warn("Server: failed to log received request (exception)");
+                    }
+
                     std::string response = SERprocessRequest(reqStr.toStdString());
+
+                    // 记录将要发送的响应（摘要）
+                    try {
+                        std::string respSummary = response;
+                        const size_t MaxRespLog = 1024;
+                        if (respSummary.size() > MaxRespLog) respSummary = respSummary.substr(0, MaxRespLog) + "...(truncated)";
+                        Logger::instance().info(std::string("Server sending response (len=") + std::to_string(response.size()) + "): " + respSummary);
+                    } catch (...) {
+                        Logger::instance().warn("Server: failed to log response (exception)");
+                    }
+
                     // write back response (may be empty)
                     QByteArray out = QByteArray::fromStdString(response);
                     clientSocket->write(out);
@@ -169,7 +295,7 @@ std::string Server::SERprocessRequest(const std::string& request) {
         s.erase(0, s.find_first_not_of(ws));
         s.erase(s.find_last_not_of(ws) + 1);
         return s;
-        };
+    };
 
     try {
         std::string cmd;
@@ -181,6 +307,17 @@ std::string Server::SERprocessRequest(const std::string& request) {
         else {
             cmd = trim(request.substr(0, pos));
             rest = trim(request.substr(pos + 1));
+        }
+
+        // 统一记录已解析的命令与有效负载摘要
+        try {
+            std::string payload = rest;
+            const size_t MaxPayloadLog = 512;
+            if (payload.size() > MaxPayloadLog) payload = payload.substr(0, MaxPayloadLog) + "...(truncated)";
+            Logger::instance().info(std::string("Server::SERprocessRequest: cmd=") + (cmd.empty() ? "<empty>" : cmd)
+                                    + " payload=" + (payload.empty() ? "<none>" : payload));
+        } catch (...) {
+            Logger::instance().warn("Server::SERprocessRequest: failed to log command/payload");
         }
 
         // 简单命令
@@ -363,9 +500,10 @@ std::string Server::SERprocessRequest(const std::string& request) {
                 // 如果客户端发来完整 items 数组，按完整订单处理
                 if (j.is_object() && j.contains("items") && j["items"].is_array()) {
                     TemporaryCart cart;
-                    cart.cart_id = j.value("orderId", std::string());
-                    cart.user_phone = j.value("userPhone", std::string());
-                    cart.shipping_address = j.value("shippingAddress", std::string(""));
+                    // 接受多种命名风格：优先 camelCase, 回退 snake_case
+                    cart.cart_id = j.value("orderId", j.value("order_id", std::string("")));
+                    cart.user_phone = j.value("userPhone", j.value("user_phone", std::string("")));
+                    cart.shipping_address = j.value("shippingAddress", j.value("shipping_address", std::string("")));
                     cart.discount_policy = j.value("discountPolicy", std::string(""));
                     cart.items.clear();
                     double total = 0.0;
@@ -403,10 +541,54 @@ std::string Server::SERprocessRequest(const std::string& request) {
                     cart.discount_amount = 0.0;
                     cart.is_converted = false;
 
+                    // 尝试提取客户端随请求传来的 policy（兼容多种字段名）
+                    nlohmann::json providedPolicy;
+                    if (j.contains("policy")) providedPolicy = j["policy"];
+                    else if (j.contains("policy_detail")) {
+                        try { providedPolicy = nlohmann::json::parse(j.value("policy_detail", std::string(""))); } catch (...) { providedPolicy = nlohmann::json(); }
+                    } else if (j.contains("policy_str")) {
+                        try { providedPolicy = nlohmann::json::parse(j.value("policy_str", std::string(""))); } catch (...) { providedPolicy = nlohmann::json(); }
+                    } else {
+                        providedPolicy = nlohmann::json();
+                    }
+
+                    // 优先：如果客户端提供了 final_amount/discount_amount 字段，则尊重（但仍可校验）；
+                    // 次优：如果服务器上已经为该用户保存了 TemporaryCart（相同 cart_id），使用服务器保存的 final_amount（更可信）
+                    // 否则：根据 providedPolicy 或服务端促销引擎计算 final_amount
+                    bool usedServerSavedCart = false;
+                    if (j.contains("final_amount") && j.contains("discount_amount")) {
+                        // 客户端显式发送了金额（通常来自客户端本地计算或从服务器读取后传回）
+                        cart.final_amount = j.value("final_amount", cart.total_amount);
+                        cart.discount_amount = j.value("discount_amount", 0.0);
+                        if (cart.discount_policy.empty()) cart.discount_policy = j.value("discountPolicy", cart.discount_policy);
+                    } else {
+                        // 尝试加载服务器端已保存的购物车（按用户手机号），若存在且 cart_id 匹配并含 final_amount，则使用之（更可信）
+                        TemporaryCart savedCart;
+                        if (dbManager && dbManager->DTBisConnected() && dbManager->DTBloadTemporaryCartByUserPhone(cart.user_phone, savedCart)) {
+                            if (!savedCart.cart_id.empty() && savedCart.cart_id == cart.cart_id && savedCart.final_amount > 0.0) {
+                                cart.final_amount = savedCart.final_amount;
+                                cart.discount_amount = savedCart.discount_amount;
+                                if (cart.discount_policy.empty()) cart.discount_policy = savedCart.discount_policy;
+                                usedServerSavedCart = true;
+                            }
+                        }
+                        if (!usedServerSavedCart) {
+                            // 没有服务器保存的结果，按优先级：providedPolicy（若为 object）-> 服务端促销引擎进行逐项匹配
+                            Server::recalcCartTotalsImpl(cart, providedPolicy, dbManager);
+                        }
+                    }
+
                     // 构造 Order 并填充 items
                     Order o(cart, cart.cart_id, j.value("status", 1));
-                    o.setShippingAddress(cart.shipping_address);
+
+                    // 显式补全 userPhone / shippingAddress，避免 Order 构造/DB 保存遗漏
+                    if (!cart.user_phone.empty()) o.setUserPhone(cart.user_phone);
+                    if (!cart.shipping_address.empty()) o.setShippingAddress(cart.shipping_address);
+
                     o.setDiscountPolicy(cart.discount_policy);
+                    o.setTotalAmount(cart.total_amount);
+                    o.setDiscountAmount(cart.discount_amount);
+                    o.setFinalAmount(cart.final_amount);
 
                     std::vector<OrderItem> orderItems;
                     for (const auto& ci : cart.items) {
@@ -497,6 +679,22 @@ std::string Server::SERprocessRequest(const std::string& request) {
         }
 
         // ----- 购物车相关 -----
+        if (cmd == "ADD_TO_CART") {
+            try {
+                auto j = parseJson(rest);
+                if (!j.is_object()) { nlohmann::json e; e["error"] = "invalid_payload"; return e.dump(); }
+                // 兼容客户端发送的字段名：userPhone/productId/productName/price/quantity
+                std::string userPhone = j.value("userPhone", std::string(""));
+                int productId = j.value("productId", 0);
+                std::string productName = j.value("productName", std::string(""));
+                double price = j.value("price", 0.0);
+                int quantity = j.value("quantity", 0);
+                // 调用已经实现的服务器端处理函数
+                return SERaddToCart(userPhone, productId, productName, price, quantity);
+            } catch (...) {
+                nlohmann::json e; e["error"] = "参数解析失败"; return e.dump();
+            }
+        }
         if (cmd == "GET_CART") {
             return SERgetCart(rest);
         }
@@ -522,42 +720,41 @@ std::string Server::SERprocessRequest(const std::string& request) {
                 return SERsaveCart(phone, cartJson);
             }
         }
-        if (cmd == "ADD_TO_CART") {
-            // prefer json: {"userPhone":"..","productId":..,"productName":"..","price":..,"quantity":..}
-            if (!rest.empty() && rest.front() == '{') {
+        if (cmd == "SAVE_CART_WITH_POLICY") {
+            try {
                 auto j = parseJson(rest);
-                return SERaddToCart(j.value("userPhone", std::string("")),
-                    j.value("productId", 0),
-                    j.value("productName", std::string("")),
-                    j.value("price", 0.0),
-                    j.value("quantity", 0));
-            }
-            else {
-                std::istringstream iss(rest);
-                std::string phone, name; int id; double price; int qty;
-                if (!(iss >> phone >> id >> price >> qty)) { nlohmann::json e; e["error"] = "参数格式错误"; return e.dump(); }
-                // productName not supported in space-separated form
-                return SERaddToCart(phone, id, std::string(""), price, qty);
-            }
-        }
-        if (cmd == "UPDATE_CART_ITEM") {
-            if (!rest.empty() && rest.front() == '{') {
-                auto j = parseJson(rest);
-                return SERupdateCartItem(j.value("userPhone", std::string("")), j.value("productId", 0), j.value("quantity", 0));
-            }
-            else {
-                std::istringstream iss(rest); std::string phone; int pid, qty; iss >> phone >> pid >> qty;
-                return SERupdateCartItem(phone, pid, qty);
-            }
-        }
-        if (cmd == "REMOVE_FROM_CART") {
-            if (!rest.empty() && rest.front() == '{') {
-                auto j = parseJson(rest);
-                return SERremoveFromCart(j.value("userPhone", std::string("")), j.value("productId", 0));
-            }
-            else {
-                std::istringstream iss(rest); std::string phone; int pid; iss >> phone >> pid;
-                return SERremoveFromCart(phone, pid);
+                if (!j.is_object()) {
+                    nlohmann::json e; e["error"] = "invalid_payload"; return e.dump();
+                }
+                std::string userPhone = j.value("userPhone", std::string());
+                if (userPhone.empty()) {
+                    nlohmann::json e; e["error"] = "missing_userPhone"; return e.dump();
+                }
+                if (!j.contains("cart") || !j["cart"].is_object()) {
+                    nlohmann::json e; e["error"] = "missing_cart"; return e.dump();
+                }
+
+                nlohmann::json cartObj = j["cart"];
+
+                // 如果客户端同时传来 policyJson（字符串），解析并放入 cartObj["policy"]
+                std::string policyJsonStr = j.value("policyJson", std::string());
+                if (!policyJsonStr.empty()) {
+                    try {
+                        cartObj["policy"] = nlohmann::json::parse(policyJsonStr);
+                    } catch (...) {
+                        // 若解析失败，则保留为字符串形式（SERsaveCart 内部也会容错）
+                        cartObj["policy"] = policyJsonStr;
+                    }
+                }
+
+                Logger::instance().info("Server: handling SAVE_CART_WITH_POLICY for userPhone=" + userPhone);
+                // 复用现有保存逻辑（SERsaveCart 会从 cart JSON 中提取 policy 并调用 recalc）
+                return SERsaveCart(userPhone, cartObj.dump());
+            } catch (const std::exception& ex) {
+                Logger::instance().fail(std::string("Server SAVE_CART_WITH_POLICY 异常: ") + ex.what());
+                nlohmann::json err; err["error"] = "exception"; err["message"] = ex.what(); return err.dump();
+            } catch (...) {
+                nlohmann::json err; err["error"] = "unknown_exception"; return err.dump();
             }
         }
 
@@ -568,6 +765,30 @@ std::string Server::SERprocessRequest(const std::string& request) {
             catch (...) { nlohmann::json e; e["error"] = "参数解析失败"; return e.dump(); }
         }
         if (cmd == "UPDATE_CART_FOR_PROMOTIONS") return SERupdateCartForPromotions(rest);
+        // Promotion admin operations (管理员增删改查)
+        if (cmd == "ADD_PROMOTION") {
+            // rest: json { "name": "...", "policy": { ... } , "type": "...", "conditions": "..." }
+            try {
+                auto j = parseJson(rest);
+                if (!j.is_object()) { nlohmann::json e; e["error"] = "参数缺失或格式错误"; return e.dump(); }
+                return SERaddPromotion(j);
+            } catch (...) { nlohmann::json e; e["error"] = "参数解析失败"; return e.dump(); }
+        }
+        if (cmd == "UPDATE_PROMOTION") {
+            try {
+                auto j = parseJson(rest);
+                if (!j.is_object()) { nlohmann::json e; e["error"] = "参数缺失或格式错误"; return e.dump(); }
+                return SERupdatePromotion(j);
+            } catch (...) { nlohmann::json e; e["error"] = "参数解析失败"; return e.dump(); }
+        }
+        if (cmd == "DELETE_PROMOTION") {
+            try {
+                auto j = parseJson(rest);
+                std::string name = j.is_object() ? j.value("name", std::string("")) : std::string();
+                if (name.empty()) { nlohmann::json e; e["error"] = "missing_name"; return e.dump(); }
+                return SERdeletePromotion(name);
+            } catch (...) { nlohmann::json e; e["error"] = "参数解析失败"; return e.dump(); }
+        }
 
         Logger::instance().warn("Server 收到未知请求: " + request);
         nlohmann::json r; r["error"] = "UNKNOWN_COMMAND"; r["request"] = request;
@@ -976,7 +1197,7 @@ std::string Server::SERupdateUser(const std::string & phone, const std::string &
     
 }
 
-// ---------- Order APIs (basic) ----------
+// ---------- 订单相关 ----------
 std::string Server::SERgetAllOrders(const std::string& userPhone) {
     if (!dbManager) { Logger::instance().fail("Server SERgetAllOrders: dbManager is null"); nlohmann::json e; e["error"] = "服务器内部错误"; return e.dump(); }
     if (!dbManager->DTBisConnected() && !dbManager->DTBinitialize()) { Logger::instance().fail("Server SERgetAllOrders: 数据库未连接"); nlohmann::json e; e["error"] = "数据库未连接"; return e.dump(); }
@@ -985,7 +1206,8 @@ std::string Server::SERgetAllOrders(const std::string& userPhone) {
         if (userPhone.empty()) {
             // 管理员/全局调用：当 userPhone 为空时，返回最近的订单（可改为 DTBloadAllOrders 若实现）
             orders = dbManager->DTBloadRecentOrders(200);
-        } else {
+        }
+        else {
             orders = dbManager->DTBloadOrdersByUser(userPhone);
         }
         nlohmann::json arr = nlohmann::json::array();
@@ -993,35 +1215,65 @@ std::string Server::SERgetAllOrders(const std::string& userPhone) {
             nlohmann::json jo;
             jo["order_id"] = o.getOrderId();
             jo["user_phone"] = o.getUserPhone();
+            // 新增：返回收货地址，兼容客户端读取 shipping_address 或 shippingAddress
+            jo["shipping_address"] = o.getShippingAddress();
             jo["status"] = o.getStatus();
+            // 返回金额信息以便客户端显示或做回退判断
+            jo["total_amount"] = o.getTotalAmount();
+            jo["discount_amount"] = o.getDiscountAmount();
             jo["final_amount"] = o.getFinalAmount();
             arr.push_back(jo);
         }
         return arr.dump();
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception& e) {
         Logger::instance().fail(std::string("Server SERgetAllOrders 异常: ") + e.what());
         nlohmann::json err; err["error"] = "查询失败"; err["message"] = e.what(); return err.dump();
     }
 }
 
 std::string Server::SERgetOrderDetail(const std::string& orderId, const std::string& userPhone) {
-    if (!dbManager) { Logger::instance().fail("Server SERgetOrderDetail: dbManager is null"); nlohmann::json e; e["error"] = "服务器内部错误"; return e.dump(); }
-    if (!dbManager->DTBisConnected() && !dbManager->DTBinitialize()) { Logger::instance().fail("Server SERgetOrderDetail: 数据库未连接"); nlohmann::json e; e["error"] = "数据库未连接"; return e.dump(); }
+    if (!dbManager) { Logger::instance().fail(std::string("Server SERgetOrderDetail: dbManager is null")); nlohmann::json e; e["error"] = "服务器内部错误"; return e.dump(); }
+    if (!dbManager->DTBisConnected() && !dbManager->DTBinitialize()) { Logger::instance().fail(std::string("Server SERgetOrderDetail: 数据库未连接")); nlohmann::json e; e["error"] = "数据库未连接"; return e.dump(); }
     try {
         Order o;
         if (!dbManager->DTBloadOrder(orderId, o)) { nlohmann::json r; r["error"] = "未找到订单"; return r.dump(); }
+
+        // 可选：校验请求手机号与订单手机号是否匹配（如果需要权限控制）
+        if (!userPhone.empty() && o.getUserPhone() != userPhone) {
+            // 若不希望暴露，则返回 forbidden；否则可注释掉以下两行以允许管理员查看
+            // nlohmann::json r; r["error"] = "forbidden"; r["message"] = "手机号与订单不匹配"; return r.dump();
+        }
+
         nlohmann::json jo;
         jo["order_id"] = o.getOrderId();
+        jo["user_phone"] = o.getUserPhone();                 // 新增：返回手机号
+        jo["shipping_address"] = o.getShippingAddress();     // 新增：返回收货地址
         jo["status"] = o.getStatus();
+        jo["total_amount"] = o.getTotalAmount();            // 建议返回：总金额
+        jo["discount_amount"] = o.getDiscountAmount();      // 建议返回：优惠金额
         jo["final_amount"] = o.getFinalAmount();
+        jo["discount_policy"] = o.getDiscountPolicy();      // 建议返回：使用的优惠策略
+
         // items
         nlohmann::json items = nlohmann::json::array();
         for (const auto& it : o.getItems()) {
-            items.push_back({{"good_id", it.getGoodId()}, {"good_name", it.getGoodName()}, {"price", it.getPrice()}, {"quantity", it.getQuantity()}, {"subtotal", it.getSubtotal()}});
+            items.push_back({
+                {"good_id", it.getGoodId()},
+                {"good_name", it.getGoodName()},
+                {"price", it.getPrice()},
+                {"quantity", it.getQuantity()},
+                {"subtotal", it.getSubtotal()}
+                });
         }
         jo["items"] = items;
+
         return jo.dump();
-    } catch (const std::exception& e) { Logger::instance().fail(std::string("Server SERgetOrderDetail 异常: ") + e.what()); nlohmann::json err; err["error"] = "查询失败"; err["message"] = e.what(); return err.dump(); }
+    }
+    catch (const std::exception& e) {
+        Logger::instance().fail(std::string("Server SERgetOrderDetail 异常: ") + e.what());
+        nlohmann::json err; err["error"] = "查询失败"; err["message"] = e.what(); return err.dump();
+    }
 }
 
 std::string Server::SERupdateOrderStatus(const std::string& orderId, const std::string& userPhone, int newStatus) {
@@ -1045,6 +1297,8 @@ std::string Server::SERaddSettledOrder(const std::string& orderId, const std::st
 
         Order o(TemporaryCart(), orderId);
         o.setStatus(status);
+        // 补充：设置 userPhone（来自参数）
+        if (!userPhone.empty()) o.setUserPhone(userPhone);
         o.setShippingAddress("");
         o.setDiscountPolicy(discountPolicy);
         OrderItem it; it.setOrderId(orderId); it.setGoodId(productId); it.setGoodName(productName); it.setPrice(g.getPrice()); it.setQuantity(quantity); it.setSubtotal(g.getPrice() * quantity);
@@ -1055,7 +1309,8 @@ std::string Server::SERaddSettledOrder(const std::string& orderId, const std::st
         int newStock = g.getStock() - quantity;
         if (newStock < 0) newStock = 0;
         dbManager->DTBupdateGoodStock(productId, newStock);
-        nlohmann::json ok; ok["result"] = "added"; ok["order_id"] = orderId; return ok.dump();
+        nlohmann::json ok; ok["result"] = "added"; ok["order_id"] = orderId;
+        return ok.dump();
     } catch (const std::exception& e) { Logger::instance().fail(std::string("Server SERaddSettledOrder 异常: ") + e.what()); nlohmann::json err; err["error"] = "添加失败"; err["message"] = e.what(); return err.dump(); }
 }
 
@@ -1195,6 +1450,7 @@ std::string Server::SERgetCart(const std::string& userPhone) {
     }
 }
 
+// 替换整个 Server::SERsaveCart 函数，确保如果客户端随 cart 传入 policy，则服务端使用该 policy 计算 totals（否则回退到服务端促销引擎）。
 std::string Server::SERsaveCart(const std::string& userPhone, const std::string& cartData) {
     if (!dbManager) { Logger::instance().fail("Server SERsaveCart: dbManager is null"); json e; e["error"] = "服务器内部错误"; return e.dump(); }
     if (!dbManager->DTBisConnected() && !dbManager->DTBinitialize()) { Logger::instance().fail("Server SERsaveCart: 数据库未连接"); json e; e["error"] = "数据库未连接"; return e.dump(); }
@@ -1219,8 +1475,24 @@ std::string Server::SERsaveCart(const std::string& userPhone, const std::string&
                 cart.items.push_back(ci);
             }
         }
-        // 计算 totals
-        recalcCartTotals(cart);
+
+        // 提取可能随 cartData 一并发送的 policy（兼容多种字段名）
+        nlohmann::json parsedPolicy;
+        if (j.contains("policy")) {
+            parsedPolicy = j["policy"];
+        } else if (j.contains("policy_str")) {
+            std::string ps = j.value("policy_str", std::string(""));
+            try { parsedPolicy = nlohmann::json::parse(ps); } catch (...) { parsedPolicy = nlohmann::json(); }
+        } else if (j.contains("policy_detail")) {
+            std::string ps = j.value("policy_detail", std::string(""));
+            try { parsedPolicy = nlohmann::json::parse(ps); } catch (...) { parsedPolicy = nlohmann::json(); }
+        } else {
+            parsedPolicy = nlohmann::json();
+        }
+
+        // 使用可能的 policy 进行 recalc（policy 为空时行为与之前一致）
+        Server::recalcCartTotalsImpl(cart, parsedPolicy, dbManager);
+
         // save or update
         if (!dbManager->DTBsaveTemporaryCart(cart)) {
             if (!dbManager->DTBupdateTemporaryCart(cart)) {
@@ -1355,42 +1627,156 @@ std::string Server::SERgetAllPromotions() {
     return arr.dump();
 }
 
-std::string Server::SERgetPromotionsByProductId(int productId) {
-    if (!dbManager) return std::string("{\"error\":\"db not available\"}");
-    auto rows = dbManager->DTBloadAllPromotionStrategies(false);
-    json arr = json::array();
-    for (const auto& m : rows) {
-        try {
-            if (!m.count("policy_detail")) continue;
-            json p = json::parse(m.at("policy_detail"));
-            bool applies = false;
-            if (p.contains("scope") && p["scope"].is_string() && p["scope"] == "global") applies = true;
-            if (p.contains("product_ids") && p["product_ids"].is_array()) {
-                for (const auto& pid : p["product_ids"]) {
-                    if (pid.is_number() && pid.get<int>() == productId) { applies = true; break; }
-                    if (pid.is_string()) {
-                        try { if (std::stoi(pid.get<std::string>()) == productId) { applies = true; break; } }
-                        catch (...) {}
-                    }
-                }
+// 添加促销：管理员使用。输入 JSON（包含 name 与 policy 字段）
+std::string Server::SERaddPromotion(const nlohmann::json& j) {
+    if (!dbManager) { nlohmann::json e; e["error"] = "db not available"; return e.dump(); }
+    try {
+        std::string name = j.value("name", std::string(""));
+        if (name.empty()) { nlohmann::json e; e["error"] = "missing_name"; return e.dump(); }
+        // policy 可以是对象或字符串，存储为字符串
+        std::string policy;
+        if (j.contains("policy")) {
+            try { policy = j["policy"].is_string() ? j["policy"].get<std::string>() : j["policy"].dump(); }
+            catch (...) { policy = j["policy"].dump(); }
+        } else policy = j.value("policy_detail", std::string(""));
+        std::string type = j.value("type", std::string(""));
+        std::string conditions = j.value("conditions", std::string(""));
+
+        if (!dbManager->DTBsavePromotionStrategy(name, type, policy, conditions)) {
+            nlohmann::json r; r["error"] = "save_failed"; return r.dump();
+        }
+        nlohmann::json ok; ok["result"] = "added"; ok["name"] = name; return ok.dump();
+    } catch (const std::exception& ex) {
+        nlohmann::json err; err["error"] = "exception"; err["message"] = ex.what(); return err.dump();
+    }
+}
+
+// 更新促销（按 name 更新 policy_detail）
+std::string Server::SERupdatePromotion(const nlohmann::json& j) {
+    if (!dbManager) { nlohmann::json e; e["error"] = "db not available"; return e.dump(); }
+    try {
+        std::string name = j.value("name", std::string(""));
+        if (name.empty()) { nlohmann::json e; e["error"] = "missing_name"; return e.dump(); }
+
+        std::string newName = j.value("new_name", std::string("")); // 支持重命名：传 new_name 即可
+        // 接受 policy 对象或 policy_detail 字符串
+        std::string policy;
+        if (j.contains("policy")) {
+            try { policy = j["policy"].is_string() ? j["policy"].get<std::string>() : j["policy"].dump(); }
+            catch (...) { policy = j["policy"].dump(); }
+        } else policy = j.value("policy_detail", std::string(""));
+
+        std::string type = j.value("type", std::string(""));
+        std::string conditions = j.value("conditions", std::string(""));
+
+        // 如果请求包含 new_name 且与现有 name 不同 -> 执行重命名（同时可更新 policy/type/conditions）
+        if (!newName.empty() && newName != name) {
+            // 读取现有记录以尽量保全未传入的字段
+            std::map<std::string, std::string> existing = dbManager->DTBloadPromotionStrategy(name);
+            if (existing.empty()) {
+                nlohmann::json err; err["error"] = "not_found"; err["message"] = "原策略未找到"; return err.dump();
             }
-            if (applies) {
-                json obj;
-                obj["id"] = m.count("id") ? m.at("id") : "";
-                obj["name"] = m.count("name") ? m.at("name") : "";
-                obj["policy"] = p;
-                arr.push_back(obj);
+
+            std::string finalPolicy = !policy.empty() ? policy : (existing.count("policy_detail") ? existing.at("policy_detail") : std::string(""));
+            std::string finalType = !type.empty() ? type : (existing.count("type") ? existing.at("type") : std::string(""));
+            std::string finalConditions = !conditions.empty() ? conditions : (existing.count("conditions") ? existing.at("conditions") : std::string(""));
+
+            // 尝试保存新名字的策略
+            if (!dbManager->DTBsavePromotionStrategy(newName, finalType, finalPolicy, finalConditions)) {
+                nlohmann::json err; err["error"] = "save_new_failed"; err["message"] = "保存新策略名失败"; return err.dump();
+            }
+            // 尝试删除旧条目（若删除失败，仅记录警告，但返回成功）
+            if (!dbManager->DTBdeletePromotionStrategy(name)) {
+                Logger::instance().warn("Server SERupdatePromotion: rename succeeded but failed to delete old promotion: " + name);
+            }
+            nlohmann::json ok; ok["result"] = "renamed"; ok["old_name"] = name; ok["new_name"] = newName; return ok.dump();
+        }
+
+        // 否则按原来逻辑更新 policy_detail（如果更新失败则尝试保存）
+        if (!dbManager->DTBupdatePromotionStrategyDetail(name, policy)) {
+            if (!dbManager->DTBsavePromotionStrategy(name, type, policy, conditions)) {
+                nlohmann::json r; r["error"] = "update_failed"; return r.dump();
             }
         }
-        catch (...) { continue; }
+        nlohmann::json ok; ok["result"] = "updated"; ok["name"] = name; return ok.dump();
+    } catch (const std::exception& ex) {
+        nlohmann::json err; err["error"] = "exception"; err["message"] = ex.what(); return err.dump();
+    } catch (...) {
+        nlohmann::json err; err["error"] = "unknown_exception"; return err.dump();
     }
-    return arr.dump();
+}
+
+// 删除促销（按 name）
+std::string Server::SERdeletePromotion(const std::string& name) {
+    if (!dbManager) { nlohmann::json e; e["error"] = "db not available"; return e.dump(); }
+    try {
+        if (!dbManager->DTBdeletePromotionStrategy(name)) {
+            nlohmann::json r; r["error"] = "delete_failed"; return r.dump();
+        }
+        nlohmann::json ok; ok["result"] = "deleted"; ok["name"] = name; return ok.dump();
+    } catch (const std::exception& ex) {
+        nlohmann::json err; err["error"] = "exception"; err["message"] = ex.what(); return err.dump();
+    }
+}
+
+// --------- Promotions helpers: implementations added to resolve linker errors ----------
+std::string Server::SERgetPromotionsByProductId(int productId) {
+    if (!dbManager) {
+        Logger::instance().warn("Server SERgetPromotionsByProductId: dbManager is null");
+        return std::string("{\"error\":\"db not available\"}");
+    }
+    try {
+        auto rows = dbManager->DTBloadAllPromotionStrategies(false);
+        json arr = json::array();
+        for (const auto& m : rows) {
+            try {
+                if (!m.count("policy_detail")) continue;
+                json p = json::parse(m.at("policy_detail"));
+                bool applies = false;
+                // 全局适用
+                if (p.contains("scope") && p["scope"].is_string() && p["scope"] == "global") applies = true;
+                // 按 product_ids 匹配
+                if (p.contains("product_ids") && p["product_ids"].is_array()) {
+                    for (const auto& pid : p["product_ids"]) {
+                        if (pid.is_number() && pid.get<int>() == productId) { applies = true; break; }
+                        if (pid.is_string()) {
+                            try { if (std::stoi(pid.get<std::string>()) == productId) { applies = true; break; } }
+                            catch (...) {}
+                        }
+                    }
+                }
+                if (applies) {
+                    json obj;
+                    obj["id"] = m.count("id") ? m.at("id") : "";
+                    obj["name"] = m.count("name") ? m.at("name") : "";
+                    obj["policy"] = p;
+                    arr.push_back(obj);
+                }
+            } catch (const std::exception& ex) {
+                Logger::instance().warn(std::string("Server SERgetPromotionsByProductId: skip policy parse error: ") + ex.what());
+                continue;
+            } catch (...) {
+                continue;
+            }
+        }
+        return arr.dump();
+    } catch (const std::exception& ex) {
+        Logger::instance().fail(std::string("Server SERgetPromotionsByProductId 异常: ") + ex.what());
+        json err; err["error"] = "exception"; err["message"] = ex.what(); return err.dump();
+    } catch (...) {
+        json err; err["error"] = "unknown_exception"; return err.dump();
+    }
 }
 
 std::string Server::SERupdateCartForPromotions(const std::string& userPhone) {
-    if (!dbManager) return std::string("{\"error\":\"db not available\"}");
+    if (!dbManager) {
+        Logger::instance().warn("Server SERupdateCartForPromotions: dbManager is null");
+        return std::string("{\"error\":\"db not available\"}");
+    }
+
     TemporaryCart cart;
     if (!dbManager->DTBloadTemporaryCartByUserPhone(userPhone, cart)) {
+        Logger::instance().info("Server SERupdateCartForPromotions: cart not found for userPhone=" + userPhone);
         return std::string("{\"error\":\"cart_not_found\"}");
     }
 
@@ -1399,8 +1785,8 @@ std::string Server::SERupdateCartForPromotions(const std::string& userPhone) {
 
     for (auto& it : cart.items) {
         double bestSubtotal = it.price * static_cast<double>(it.quantity);
-        std::string promoResp = SERgetPromotionsByProductId(it.good_id);
         try {
+            std::string promoResp = SERgetPromotionsByProductId(it.good_id);
             json parr = json::parse(promoResp);
             if (parr.is_array()) {
                 for (const auto& p : parr) {
@@ -1409,12 +1795,16 @@ std::string Server::SERupdateCartForPromotions(const std::string& userPhone) {
                         auto strat = PromotionStrategy::fromJson(policy);
                         double applied = strat->apply(it.price, it.quantity);
                         if (applied < bestSubtotal) bestSubtotal = applied;
+                    } catch (...) {
+                        // 单条策略解析/应用失败则跳过
+                        continue;
                     }
-                    catch (...) { continue; }
                 }
             }
+        } catch (...) {
+            // 如果 promotions 查询或解析失败，默认使用原始小计
+            Logger::instance().warn("Server SERupdateCartForPromotions: failed to evaluate promotions for good_id=" + std::to_string(it.good_id));
         }
-        catch (...) {}
         new_total += bestSubtotal;
     }
 
@@ -1422,8 +1812,12 @@ std::string Server::SERupdateCartForPromotions(const std::string& userPhone) {
     cart.final_amount = new_total;
     cart.total_amount = original_total;
 
+    // 尝试更新数据库，失败则尝试插入
     if (!dbManager->DTBupdateTemporaryCart(cart)) {
-        dbManager->DTBsaveTemporaryCart(cart);
+        if (!dbManager->DTBsaveTemporaryCart(cart)) {
+            Logger::instance().fail("Server SERupdateCartForPromotions: failed to persist updated cart for user " + userPhone);
+            json err; err["error"] = "persist_failed"; return err.dump();
+        }
     }
 
     json resp;
@@ -1431,19 +1825,82 @@ std::string Server::SERupdateCartForPromotions(const std::string& userPhone) {
     resp["original_total"] = original_total;
     resp["final_amount"] = cart.final_amount;
     resp["discount_amount"] = cart.discount_amount;
+    Logger::instance().info("Server SERupdateCartForPromotions: updated cart for userPhone=" + userPhone + " original=" + std::to_string(original_total) + " final=" + std::to_string(cart.final_amount));
     return resp.dump();
 }
 
-// 添加此实现以匹配 Server.h 中的声明：static void recalcCartTotals(TemporaryCart&)
-void Server::recalcCartTotals(TemporaryCart& cart) {
-    double total = 0.0;
-    for (auto& it : cart.items) {
-        // 计算每项小计，覆盖可能不正确的 subtotal
-        it.subtotal = it.price * static_cast<double>(it.quantity);
-        total += it.subtotal;
+// 新增：根据 policy JSON 计算折后金额（放到 Server.cpp 顶部的辅助函数区）
+static double computeFinalFromPolicy(const nlohmann::json& policy, const nlohmann::json& items, double originalTotal) {
+    if (!policy.is_object()) return originalTotal;
+    std::string type = policy.value("type", std::string(""));
+    if (type == "discount") {
+        double d = policy.value("discount", 1.0);
+        return originalTotal * d;
+    } else if (type == "full_reduction") {
+        double threshold = policy.value("threshold", 0.0);
+        double reduce = policy.value("reduce", 0.0);
+        if (originalTotal >= threshold) return std::max(0.0, originalTotal - reduce);
+        return originalTotal;
+    } else if (type == "tiered") {
+        // 计算总数量
+        int totalQty = 0;
+        for (const auto& it : items) {
+            totalQty += it.value("quantity", 0);
+        }
+        double applied = 1.0;
+        if (policy.contains("tiers") && policy["tiers"].is_array()) {
+            for (const auto &tier : policy["tiers"]) {
+                int minq = tier.value("min_qty", 0);
+                double disc = tier.value("discount", 1.0);
+                if (totalQty >= minq) applied = disc;
+            }
+        }
+        return originalTotal * applied;
     }
-    cart.total_amount = total;
-    // 默认 final_amount 等于计算后的总额（如需应用促销策略可在别处调整）
-    cart.final_amount = total;
-    // discount_amount 保持原值或由促销逻辑更新
+    return originalTotal;
+}
+
+// 辅助：把 policy JSON 转成可读名称（如果客户端没有传名字）
+// 简单映射：discount -> "X%off", full_reduction -> "满<thr>减<red>"
+static std::string derivePolicyName(const nlohmann::json& policy) {
+    if (!policy.is_object()) return std::string();
+    std::string type = policy.value("type", std::string(""));
+    if (type == "discount") {
+        double d = policy.value("discount", 1.0);
+        int pct = int(d * 100 + 0.5);
+        return std::to_string(pct) + "%off";
+    } else if (type == "full_reduction") {
+        double thr = policy.value("threshold", 0.0);
+        double red = policy.value("reduce", 0.0);
+        std::ostringstream oss;
+        oss << "满" << (long)thr << "减" << (long)red;
+        return oss.str();
+    } else if (type == "tiered") {
+        return "tiered";
+    }
+    return std::string();
+}
+
+// ---------- 新增：基于 policy 的 recalc 实现（文件作用域 helper） ----------
+/*
+  修改点：
+  - 增加第三个参数 DatabaseManager* dbManager（默认 nullptr），
+    以便在文件作用域函数中访问数据库中的促销策略（避免使用 this 或调用非静态成员）。
+  - 在没有 dbManager 时保留回退行为（不应用任何促销）。
+*/
+
+// ---------- 替换：Server::recalcCartTotals 调用到文件作用域实现 ----------
+void Server::recalcCartTotals(TemporaryCart& cart) {
+    // 默认不使用客户端 policy（保留旧行为）
+    // 将当前实例的 dbManager 传入文件作用域实现，避免在文件作用域使用 this
+    Server::recalcCartTotalsImpl(cart, nlohmann::json(), dbManager);
+}
+
+// 添加：确保目录存在的实现（放在文件顶部辅助函数区，靠近其他静态辅助函数）
+
+
+// 添加：实现 Server::recalcCartTotalsImpl，桥接到文件作用域实现 recalcCartTotals
+void Server::recalcCartTotalsImpl(TemporaryCart& cart, const nlohmann::json& policy, DatabaseManager* dbManager) {
+    // 调用局部实现，保留原有逻辑
+    recalcCartTotalsImpl_local(cart, policy, dbManager);
 }

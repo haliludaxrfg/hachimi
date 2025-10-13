@@ -1,14 +1,14 @@
 #pragma once
 #include <QWidget>
 #include <QTabWidget>
-#include <QPushButton>
-#include <QVBoxLayout>
 #include <QTableWidget>
-#include <QLabel>
+#include <QPushButton>
 #include <QLineEdit>
 #include "Client.h"
 #include "TemporaryCart.h"
+#include <nlohmann/json.hpp>
 
+// 保留原有注释结构
 class AdminWindow : public QWidget {
     Q_OBJECT
 public:
@@ -19,22 +19,25 @@ signals:
     void backRequested(); // 返回信号
 
 private slots:
+    // 用户相关
     void refreshUsers();
 	void onAddUser();
 	void onEditUser();
     void onDeleteUser();
     void onSearchUser(); // 新增：依据手机号查询用户
+
+    // 商品相关
     void refreshGoods();
     void onAddGood();
     void onEditGood();
     void onDeleteGood();
-    void refreshOrders();
 
+    // 订单相关
+    void refreshOrders();
     // 新增：订单操作槽
     void onReturnOrder();
     void onRepairOrder();
     void onDeleteOrder();
-
     // 新增：查看订单详情（管理员）
     void onViewOrderDetail();
 
@@ -46,7 +49,14 @@ private slots:
     void onEditCartItem();
     void onRemoveCartItem();
 
+    // Promotions
+    void refreshPromotions();
+    void onAddPromotion();
+    void onEditPromotion();
+    void onDeletePromotion();
+
 private:
+    // UI 主控件
     QTabWidget* tabWidget;
     QWidget* userTab;
     QWidget* goodTab;
@@ -65,12 +75,14 @@ private:
     // 新增：返回身份选择按钮
     QPushButton* returnIdentityBtn;
 
+    // 商品 UI
     QTableWidget* goodsTable;
     QPushButton* refreshGoodsBtn;
     QPushButton* addGoodBtn;
     QPushButton* editGoodBtn;
     QPushButton* deleteGoodBtn;
 
+    // 订单 UI
     QTableWidget* ordersTable;
     QPushButton* refreshOrdersBtn;
     // 新增：订单操作按钮
@@ -90,4 +102,24 @@ private:
 
     // 当前加载的购物车缓存
     TemporaryCart currentCart_;
+
+    // Promotions UI
+    QWidget* promoTab;
+    QTableWidget* promoTable;
+    QPushButton* refreshPromosBtn;
+    QPushButton* addPromoBtn;
+    QPushButton* editPromoBtn;
+    QPushButton* deletePromoBtn;
+
+    // helper: 在 cpp 中实现 createPromotionsTab()
+    void createPromotionsTab();
+
+    // Promotion 编辑辅助类型与方法
+    enum class PromotionKind { Discount, Tiered, FullReduction, Unknown };
+    // 显示选择促销类型对话框
+    static bool showPromotionTypeSelector(QWidget* parent, PromotionKind& outKind);
+    // 根据促销类型弹出专用编辑器，返回 true + policyJson 填充；若返回 false 则取消
+    static bool showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
+                                         const std::string& inName, const nlohmann::json& inPolicyJson, const std::string& inPolicyDetail,
+                                         std::string& outName, nlohmann::json& outPolicyJson, std::string& outPolicyDetail);
 };

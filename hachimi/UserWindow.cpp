@@ -9,6 +9,13 @@
 #include <QDateTime>
 #include <QFormLayout>
 #include <random>
+#include <nlohmann/json.hpp>
+#include <QComboBox>
+#include <algorithm>
+#include <QDialog>
+#include <thread>
+#include <chrono>
+
 // 在文件顶部 includes 之后加入与 AdminWindow 相同的状态映射辅助函数（UI 文件内局部）
 static QString orderStatusToText(int status) {
     switch (status) {
@@ -21,6 +28,29 @@ static QString orderStatusToText(int status) {
     default: return QString::number(status);
     }
 }
+
+// 简单的价格展示对话框（复用在显示原价/折后价）
+class PriceWindow : public QDialog {
+public:
+    PriceWindow(const QString &title, double amount, QWidget *parent = nullptr)
+        : QDialog(parent)
+    {
+        setWindowTitle(title);
+        QVBoxLayout* l = new QVBoxLayout(this);
+        QLabel* label = new QLabel(QString::number(amount, 'f', 2), this);
+        label->setAlignment(Qt::AlignCenter);
+        QFont f = label->font();
+        f.setPointSize(14);
+        f.setBold(true);
+        label->setFont(f);
+        l->addWidget(label);
+        QPushButton* closeBtn = new QPushButton("关闭", this);
+        connect(closeBtn, &QPushButton::clicked, this, &QDialog::accept);
+        l->addWidget(closeBtn, 0, Qt::AlignCenter);
+        setLayout(l);
+        setFixedSize(300, 150);
+    }
+};
 
 UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent)
     : QWidget(parent), phone_(phone), client_(client)
@@ -85,11 +115,36 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     modifyCartBtn = new QPushButton("修改数量");
     removeCartBtn = new QPushButton("删除商品");
     checkoutBtn = new QPushButton("结算（生成订单）");
+    showOriginalBtn = new QPushButton("查看原价总额");
+    showDiscountedBtn = new QPushButton("查看折后总额");
     cartBtnLayout->addWidget(refreshCartBtn);
     cartBtnLayout->addWidget(modifyCartBtn);
     cartBtnLayout->addWidget(removeCartBtn);
     cartBtnLayout->addWidget(checkoutBtn);
+    cartBtnLayout->addWidget(showOriginalBtn);
+    cartBtnLayout->addWidget(showDiscountedBtn);
     goodsLayout->addLayout(cartBtnLayout);
+
+    // 创建促销控件并连接（放到购物车区域下面）
+    promoCombo = new QComboBox();
+    promoCombo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    applyPromoBtn = new QPushButton("应用促销");
+    clearPromoBtn = new QPushButton("清除促销");
+    {
+        QHBoxLayout* promoRow = new QHBoxLayout;
+        promoRow->addWidget(new QLabel("可用促销:"));
+        promoRow->addWidget(promoCombo);
+        promoRow->addWidget(applyPromoBtn);
+        promoRow->addWidget(clearPromoBtn);
+        QWidget* promoWidget = new QWidget;
+        promoWidget->setLayout(promoRow);
+        // 将促销控件放在购物车区域下面（在 cart 部分添加之后会显示在下方）
+        goodsLayout->addWidget(promoWidget);
+    }
+    connect(applyPromoBtn, &QPushButton::clicked, this, &UserWindow::onApplyPromotion);
+    connect(clearPromoBtn, &QPushButton::clicked, this, &UserWindow::onClearPromotion);
+    // 初次加载促销
+    refreshPromotions();
 
     tabWidget->addTab(goodsTab, "商品与购物车");
 
@@ -97,9 +152,9 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     orderTab = new QWidget;
     QVBoxLayout* orderLayout = new QVBoxLayout(orderTab);
     orderTable = new QTableWidget;
-    // 删除显示手机号列：只保留 订单ID, 状态, 实付金额 三列
-    orderTable->setColumnCount(3);
-    orderTable->setHorizontalHeaderLabels(QStringList() << "订单ID" << "状态" << "实付金额");
+    // 改为 4 列：订单ID / 状态 / 实付金额 / 地址
+    orderTable->setColumnCount(4);
+    orderTable->setHorizontalHeaderLabels(QStringList() << "订单ID" << "状态" << "实付金额" << "地址");
     orderTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     orderLayout->addWidget(orderTable);
 
@@ -139,6 +194,8 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     connect(modifyCartBtn, &QPushButton::clicked, this, &UserWindow::onModifyCartItem);
     connect(removeCartBtn, &QPushButton::clicked, this, &UserWindow::onRemoveCartItem);
     connect(checkoutBtn, &QPushButton::clicked, this, &UserWindow::onCheckout);
+    connect(showOriginalBtn, &QPushButton::clicked, this, &UserWindow::onShowOriginalTotal);
+    connect(showDiscountedBtn, &QPushButton::clicked, this, &UserWindow::onShowDiscountedTotal);
 
     // 新增连接：保存与注销
     connect(saveInfoBtn, &QPushButton::clicked, this, &UserWindow::onSaveUserInfo);
@@ -244,6 +301,7 @@ void UserWindow::onAddToCart() {
     refreshCart();
 }
 
+// 替换现有 refreshCart()，在 cart.shipping_address 为空时尝试从账号填充并保存
 void UserWindow::refreshCart() {
     cartTable->setRowCount(0);
     if (!client_) {
@@ -255,8 +313,26 @@ void UserWindow::refreshCart() {
     TemporaryCart cart = client_->CLTgetCartForUser(phone_);
     Logger::instance().info(std::string("UserWindow::refreshCart: got cart_id=") + cart.cart_id + ", items=" + std::to_string(cart.items.size()));
 
-    if (cart.cart_id.empty() && cart.items.empty()) {
-        Logger::instance().info("UserWindow::refreshCart: cart is empty or not found for user " + phone_);
+    // 如果购物车没有收货地址，尝试用手机号在账户列表中查找并填充
+    if (cart.shipping_address.empty()) {
+        try {
+            auto users = client_->CLTgetAllAccounts();
+            for (const auto& u : users) {
+                if (u.getPhone() == phone_) {
+                    cart.shipping_address = u.getAddress();
+                    Logger::instance().info(std::string("UserWindow::refreshCart: filled shipping_address from account: ") + cart.shipping_address);
+                    break;
+                }
+            }
+            // 若找到了地址，保存回服务器（避免下次仍为空）
+            if (!cart.shipping_address.empty()) {
+                if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+                bool saved = client_->CLTsaveCartForUserWithPolicy(cart, std::string());
+                Logger::instance().info(std::string("UserWindow::refreshCart: saved cart with filled address returned ") + (saved ? "true" : "false"));
+            }
+        } catch (...) {
+            Logger::instance().warn("UserWindow::refreshCart: failed to auto-fill shipping_address from accounts");
+        }
     }
 
     cartTable->setRowCount((int)cart.items.size());
@@ -269,52 +345,129 @@ void UserWindow::refreshCart() {
         cartTable->setItem(i, 3, new QTableWidgetItem(QString::number(it.quantity)));
         cartTable->setItem(i, 4, new QTableWidgetItem(QString::number(it.subtotal)));
     }
+
+    // 刷新促销列表
+    refreshPromotions();
 }
 
-void UserWindow::onCheckout() {
+void UserWindow::onShowOriginalTotal() {
     if (!client_) return;
-
-    // 后备：若 phone_ 为空则从界面读取（防止构造时未传入）
-    if (phone_.empty()) {
-        phone_ = phoneEdit->text().toStdString();
-        Logger::instance().info(std::string("UserWindow::onCheckout: phone_ was empty, fallback to phoneEdit: ") + phone_);
-    }
-
     TemporaryCart cart = client_->CLTgetCartForUser(phone_);
-    if (cart.items.empty()) {
-        QMessageBox::information(this, "结算", "购物车为空");
+    double original = 0.0;
+    for (const auto &it : cart.items) original += it.price * it.quantity;
+    PriceWindow dlg("全部原价总额", original, this);
+    dlg.exec();
+}
+
+void UserWindow::onShowDiscountedTotal() {
+    if (!client_) return;
+    TemporaryCart cart = client_->CLTgetCartForUser(phone_);
+    double original = 0.0;
+    for (const auto &it : cart.items) original += it.price * it.quantity;
+    // 优先使用服务器/购物车计算出的 final_amount；若为 0 则视为未应用促销，使用 original
+    double discounted = (cart.final_amount > 0.0) ? cart.final_amount : original;
+    PriceWindow dlg("全部折后总额", discounted, this);
+    dlg.exec();
+}
+
+// 从服务器加载促销 JSON 并填充下拉（只读给用户选择）
+void UserWindow::refreshPromotions() {
+    promoCombo->clear();
+    if (!client_) return;
+    auto raws = client_->CLTgetAllPromotionsRaw();
+    // 第一项占位（不使用促销）
+    promoCombo->addItem("-- 使用默认促销(下面首个) --", QString());
+    for (const auto &r : raws) {
+        std::string name = r.value("name", std::string(""));
+        std::string policyStr;
+        try {
+            if (r.contains("policy")) policyStr = r["policy"].dump();
+            else policyStr = r.value("policy_detail", std::string(""));
+        } catch (...) { policyStr = r.value("policy_detail", std::string("")); }
+        QString display = QString::fromStdString(name.empty() ? ("policy:" + policyStr.substr(0, (std::min)(policyStr.size(), static_cast<size_t>(60)))) : name);
+        promoCombo->addItem(display, QString::fromStdString(policyStr));
+    }
+    // 强制把下拉恢复到“-- 不使用促销 --”，避免保留上次选择导致默认意外选中某个促销
+    promoCombo->setCurrentIndex(0);
+}
+
+// 应用所选促销到当前购物车（本地计算 -> 保存）
+void UserWindow::onApplyPromotion() {
+    if (!client_) return;
+    int idx = promoCombo->currentIndex();
+    if (idx <= 0) { QMessageBox::information(this, "应用促销", "请选择有效的促销"); return; }
+    QString policyStr = promoCombo->itemData(idx).toString();
+    if (policyStr.isEmpty()) { QMessageBox::warning(this, "应用促销", "所选促销数据为空"); return; }
+
+    nlohmann::json policy;
+    try { policy = nlohmann::json::parse(policyStr.toStdString()); }
+    catch (...) { QMessageBox::warning(this, "应用促销", "促销 policy 解析失败"); return; }
+
+    // 获取当前购物车
+    TemporaryCart cart = client_->CLTgetCartForUser(phone_);
+    if (cart.items.empty()) { QMessageBox::information(this, "应用促销", "购物车为空"); return; }
+
+    // 计算原总额与新总额，支持三类策略：discount、full_reduction、tiered
+    double original = 0.0;
+    int totalQty = 0;
+    for (const auto &it : cart.items) { original += it.price * it.quantity; totalQty += it.quantity; }
+    double newTotal = original;
+
+    std::string t = policy.value("type", std::string(""));
+    if (t == "discount") {
+        double d = policy.value("discount", 1.0);
+        newTotal = 0.0;
+        for (const auto &it : cart.items) newTotal += it.price * it.quantity * d;
+    } else if (t == "full_reduction") {
+        double threshold = policy.value("threshold", 0.0);
+        double reduce = policy.value("reduce", 0.0);
+        if (original >= threshold) newTotal = (std::max)(0.0, original - reduce);
+        else newTotal = original;
+    } else if (t == "tiered") {
+        double appliedDiscount = 1.0;
+        if (policy.contains("tiers") && policy["tiers"].is_array()) {
+            for (const auto &tier : policy["tiers"]) {
+                int minq = tier.value("min_qty", 0);
+                double disc = tier.value("discount", 1.0);
+                if (totalQty >= minq) appliedDiscount = disc;
+            }
+        }
+        newTotal = 0.0;
+        for (const auto &it : cart.items) newTotal += it.price * it.quantity * appliedDiscount;
+    } else {
+        QMessageBox::warning(this, "应用促销", "不支持的促销类型，无法在客户端应用");
         return;
     }
 
-    // 不再直接复用 cart.cart_id（可能已使用），改为客户端生成唯一订单 id
-    // 格式：o<timestamp_ms>_<rand>
-    qint64 ms = QDateTime::currentMSecsSinceEpoch();
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<uint32_t> dist;
-    uint32_t r = dist(gen);
-    QString orderId = QString("o%1_%2").arg(ms).arg(r, 8, 16, QChar('0'));
+    cart.discount_policy = promoCombo->currentText().toStdString();
+    cart.total_amount = original;
+    cart.final_amount = newTotal;
+    cart.discount_amount = (std::max)(0.0, original - newTotal);
 
-    Order order(cart, orderId.toStdString(), 1);
-    // 确保 order 带上手机号
-    if (order.getUserPhone().empty()) order.setUserPhone(phone_);
-
-    // 记录发送内容（便于排查）
-    Logger::instance().info(std::string("UserWindow::onCheckout: sending ADD_SETTLED_ORDER for orderId=") + orderId.toStdString() + " userPhone=" + phone_);
-
-    bool ok = client_->CLTaddSettledOrder(order);
-    Logger::instance().info(std::string("UserWindow::onCheckout: CLTaddSettledOrder returned ") + (ok ? "true" : "false"));
-
+    // 保存到服务器时把 policy JSON 一并发送，避免服务端无法识别仅靠名称的情况
+    if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+    bool ok = client_->CLTsaveCartForUserWithPolicy(cart, policyStr.toStdString());
     if (ok) {
-        QMessageBox::information(this, "结算", "结算成功（已提交订单）");
-        // 清空购物车：用后台接口删除购物车内商品
-        for (const auto& it : cart.items) {
-            client_->CLTremoveFromCart(phone_, it.good_id);
-        }
-        refreshCart();
+        QMessageBox::information(this, "应用促销", "促销已应用并保存到购物车（含策略数据）");
     } else {
-        QMessageBox::warning(this, "结算", "结算失败，请查看 log.txt 获取详细信息");
+        QMessageBox::information(this, "应用促销", "促销已在界面应用，但保存到服务器失败（请查看日志）");
     }
+    refreshCart();
+}
+
+// 清除购物车中的促销信息
+void UserWindow::onClearPromotion() {
+    if (!client_) return;
+    TemporaryCart cart = client_->CLTgetCartForUser(phone_);
+    if (cart.items.empty()) { QMessageBox::information(this, "清除促销", "购物车为空"); return; }
+    cart.discount_policy.clear();
+    cart.final_amount = cart.total_amount;
+    cart.discount_amount = 0.0;
+    if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+    // 改为调用带策略的保存接口，传空策略字符串表示不使用任何策略
+    bool ok = client_->CLTsaveCartForUserWithPolicy(cart, std::string());
+    QMessageBox::information(this, "清除促销", ok ? "已清除并保存" : "清除成功但保存失败");
+    refreshCart();
 }
 
 // 保存用户信息（密码/地址），手机号不可修改
@@ -531,6 +684,7 @@ void UserWindow::onModifyCartItem() {
             return;
         }
         // 调用删除逻辑（含重试）
+// ----------------- 新增槽实现：订单相关 -----------------
         int attempts = 0;
         bool removed = false;
         for (; attempts < 2; ++attempts) {
@@ -635,17 +789,14 @@ void UserWindow::onRemoveCartItem() {
     } else {
         QMessageBox::warning(this, "删除商品", "删除失败（查看日志）");
     }
-    refreshCart();
 }
-
-// ----------------- 新增槽实现：订单相关 -----------------
 
 void UserWindow::refreshOrders() {
     if (!client_) return;
     orderTable->setRowCount(0);
     auto orders = client_->CLTgetAllOrders(phone_);
     orderTable->setRowCount((int)orders.size());
-    for (int i = 0; i < (int)orders.size(); ++i) {
+    for (int i = 0; i < (int)orders.size(); i++) {
         const Order& o = orders[i];
         // 订单ID 列 —— 将 userPhone 隐藏存为 UserRole 以备需要，但不显示
         QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(o.getOrderId()));
@@ -657,6 +808,11 @@ void UserWindow::refreshOrders() {
 
         // 实付金额列（使用 final amount）
         orderTable->setItem(i, 2, new QTableWidgetItem(QString::number(o.getFinalAmount())));
+
+        // 地址列 —— 新增：把订单的 shipping_address 填入表格，并将地址也以 UserRole 存储以便后续直接读取
+        QTableWidgetItem* addrItem = new QTableWidgetItem(QString::fromStdString(o.getShippingAddress()));
+        addrItem->setData(Qt::UserRole, QString::fromStdString(o.getShippingAddress()));
+        orderTable->setItem(i, 3, addrItem);
     }
 }
 
@@ -669,17 +825,24 @@ void UserWindow::onViewOrderDetail() {
     Order detail;
     bool ok = client_->CLTgetOrderDetail(oid.toStdString(), phone_, detail);
     if (!ok) { QMessageBox::warning(this, "查看订单", "获取订单详情失败"); return; }
-    // 构造显示文本
+
+    // 计算原价总额（如果 server 未返回或为 0，则用项求和作为回退）
+    double computedTotal = 0.0;
+    for (const auto& it : detail.getItems()) computedTotal += it.getPrice() * it.getQuantity();
+    double totalToShow = detail.getTotalAmount();
+    if (totalToShow <= 0.005) totalToShow = computedTotal;
+
+    // 构造显示文本（金额格式保留两位小数）
     QString txt;
     txt += "订单ID: " + QString::fromStdString(detail.getOrderId()) + "\n";
     txt += "手机号: " + QString::fromStdString(detail.getUserPhone()) + "\n";
     txt += "地址: " + QString::fromStdString(detail.getShippingAddress()) + "\n";
-    txt += "状态: " + QString::number(detail.getStatus()) + "\n";
-    txt += "总额: " + QString::number(detail.getTotalAmount()) + "  实付: " + QString::number(detail.getFinalAmount()) + "\n\n";
+    txt += "状态: " + orderStatusToText(detail.getStatus()) + "\n";
+    txt += "总额: " + QString::number(totalToShow, 'f', 2) + "  实付: " + QString::number(detail.getFinalAmount(), 'f', 2) + "\n\n";
     txt += "订单项:\n";
     for (const auto& it : detail.getItems()) {
         txt += QString::fromStdString(it.getGoodName()) + " (id:" + QString::number(it.getGoodId()) + ") x" + QString::number(it.getQuantity())
-               + " 单价:" + QString::number(it.getPrice()) + " 小计:" + QString::number(it.getSubtotal()) + "\n";
+               + " 单价:" + QString::number(it.getPrice(), 'f', 2) + " 小计:" + QString::number(it.getSubtotal(), 'f', 2) + "\n";
     }
     QMessageBox::information(this, "订单详情", txt);
 }
@@ -717,5 +880,161 @@ void UserWindow::onDeleteOrder() {
     if (QMessageBox::question(this, "删除订单", "确认删除订单 " + oid + " ? 该操作可能不可恢复") != QMessageBox::Yes) return;
     bool ok = client_->CLTdeleteSettledOrder(oid.toStdString(), phone_);
     QMessageBox::information(this, "删除订单", ok ? "删除成功" : "删除失败（查看日志）");
+    refreshOrders();
+}
+
+void UserWindow::onCheckout() {
+    Logger::instance().info("UserWindow::onCheckout called");
+    if (!client_) {
+        Logger::instance().warn("UserWindow::onCheckout: client_ is null");
+        return;
+    }
+
+    // 确保连接
+    if (!client_->CLTisConnectionActive()) {
+        Logger::instance().warn("UserWindow::onCheckout: client not connected, attempting reconnect");
+        client_->CLTreconnect();
+    }
+
+    // 1) 读取当前购物车
+    TemporaryCart cart = client_->CLTgetCartForUser(phone_);
+    if (cart.items.empty()) {
+        QMessageBox::information(this, "结算", "购物车为空，无法结算");
+        return;
+    }
+
+    // 2) 确保有收货地址：先用账号填充，找不到则要求用户输入
+    if (cart.shipping_address.empty()) {
+        try {
+            auto users = client_->CLTgetAllAccounts();
+            for (const auto& u : users) {
+                if (u.getPhone() == phone_) {
+                    cart.shipping_address = u.getAddress();
+                    Logger::instance().info(std::string("UserWindow::onCheckout: filled shipping_address from account: ") + cart.shipping_address);
+                    break;
+                }
+            }
+        }
+        catch (...) {
+            Logger::instance().warn("UserWindow::onCheckout: failed to fetch accounts when filling address");
+        }
+    }
+    if (cart.shipping_address.empty()) {
+        bool ok;
+        QString addr = QInputDialog::getText(this, "收货地址", "请输入或确认收货地址:", QLineEdit::Normal, QString(), &ok);
+        if (!ok) {
+            Logger::instance().info("UserWindow::onCheckout: user cancelled address input");
+            return;
+        }
+        addr = addr.trimmed();
+        if (addr.isEmpty()) {
+            QMessageBox::warning(this, "结算", "收货地址不能为空");
+            return;
+        }
+        cart.shipping_address = addr.toStdString();
+        // 尝试保存回服务器（最好保存，以便下一次复用）
+        if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+        bool saved = client_->CLTsaveCartForUserWithPolicy(cart, std::string());
+        Logger::instance().info(std::string("UserWindow::onCheckout: saved cart with user-entered address -> ") + (saved ? "true" : "false"));
+    }
+
+    // 3) 如果用户未主动选择促销，先请求服务器评估促销并短轮询等待更新
+    if (cart.discount_policy.empty()) {
+        Logger::instance().info("UserWindow::onCheckout: skipping server auto-promote (configured to not request server evaluation)");
+    }
+    else {
+        Logger::instance().info("UserWindow::onCheckout: cart already has discount_policy=\"" + cart.discount_policy + "\" -> using existing policy");
+    }
+
+    // 短轮询等待服务器把促销/价格写回购物车（最多等待约 1s）
+    TemporaryCart updatedCart;
+    const int maxAttempts = 10;
+    const double EPS = 1e-4;
+    for (int attempt = 0; attempt < maxAttempts; ++attempt) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+        updatedCart = client_->CLTgetCartForUser(phone_);
+        // 判断是否更新：比较 final_amount, discount_amount, discount_policy（字符串）或 items 数量
+        bool changed = false;
+        if (std::fabs(updatedCart.final_amount - cart.final_amount) > EPS) changed = true;
+        if (std::fabs(updatedCart.discount_amount - cart.discount_amount) > EPS) changed = true;
+        if (updatedCart.discount_policy != cart.discount_policy) changed = true;
+        if (updatedCart.items.size() != cart.items.size()) changed = true;
+        if (changed) {
+            Logger::instance().info("UserWindow::onCheckout: detected updated cart from server");
+            break;
+        }
+    }
+    TemporaryCart useCart = (!updatedCart.items.empty()) ? updatedCart : cart;
+
+    // 4) 使用服务器最终结果（或本地已保存策略）计算应付金额并向用户确认
+    double payable = (useCart.final_amount > 0.0) ? useCart.final_amount : useCart.total_amount;
+    QString confirmMsg = QString("确认结算当前购物车？应付金额：%1\n收货地址：%2").arg(payable).arg(QString::fromStdString(useCart.shipping_address));
+    if (QMessageBox::question(this, "确认结算", confirmMsg) != QMessageBox::Yes) {
+        Logger::instance().info("UserWindow::onCheckout: user cancelled checkout");
+        return;
+    }
+
+    // 5) 生成订单ID（优先用 cart_id）
+    // 确保拿到服务器最新的 cart_id（避免使用本地空 id 导致 fallback orderId）
+    if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+    try {
+        TemporaryCart fresh = client_->CLTgetCartForUser(phone_);
+        if (!fresh.cart_id.empty()) {
+            useCart.cart_id = fresh.cart_id;
+            Logger::instance().info(std::string("UserWindow::onCheckout: refreshed cart_id from server -> ") + useCart.cart_id);
+        } else {
+            Logger::instance().info("UserWindow::onCheckout: server returned empty cart_id on refresh");
+        }
+    } catch (...) {
+        Logger::instance().warn("UserWindow::onCheckout: failed to refresh cart before order id generation");
+    }
+
+    QString oid;
+    if (!useCart.cart_id.empty()) {
+        oid = QString::fromStdString(useCart.cart_id);
+        Logger::instance().info(std::string("UserWindow::onCheckout: using cart.cart_id as order id: ") + useCart.cart_id);
+    }
+    else {
+        oid = QDateTime::currentDateTime().toString("yyyyMMddHHmmsszzz");
+        std::mt19937 rng((unsigned)QDateTime::currentMSecsSinceEpoch());
+        std::uniform_int_distribution<int> dist(0, 9999);
+        oid += QString::number(dist(rng));
+        Logger::instance().info(std::string("UserWindow::onCheckout: generated fallback order id: ") + oid.toStdString());
+    }
+
+    // 6) 构造 Order 并发送（把 useCart 的 shipping_address / discount_policy / final_amount 等都带上）
+    Order order(useCart, oid.toStdString(), 1);
+    order.setOrderId(oid.toStdString());
+    order.setUserPhone(phone_);
+    order.setShippingAddress(useCart.shipping_address);
+    order.setDiscountPolicy(useCart.discount_policy);
+    order.setTotalAmount(useCart.total_amount);
+    order.setDiscountAmount(useCart.discount_amount);
+    order.setFinalAmount(useCart.final_amount);
+
+    if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+    Logger::instance().info(std::string("UserWindow::onCheckout: sending order ") + oid.toStdString() + " for user " + phone_);
+    bool ok = client_->CLTaddSettledOrder(order);
+    Logger::instance().info(std::string("UserWindow::onCheckout CLTaddSettledOrder returned ") + (ok ? "true" : "false"));
+    if (!ok) {
+        QMessageBox::warning(this, "结算", "生成订单失败（查看日志获取详细信息）");
+        return;
+    }
+
+    // 7) 清空并保存购物车（与之前行为保持一致）
+    TemporaryCart emptyCart = useCart;
+    emptyCart.items.clear();
+    emptyCart.total_amount = 0.0;
+    emptyCart.discount_amount = 0.0;
+    emptyCart.final_amount = 0.0;
+    emptyCart.discount_policy.clear();
+    emptyCart.cart_id.clear();
+    emptyCart.is_converted = true;
+    bool saved = client_->CLTsaveCartForUserWithPolicy(emptyCart, std::string());
+    Logger::instance().info(std::string("UserWindow::onCheckout CLTsaveCartForUser returned ") + (saved ? "true" : "false"));
+
+    QMessageBox::information(this, "结算", "订单已生成");
+    refreshCart();
     refreshOrders();
 }
