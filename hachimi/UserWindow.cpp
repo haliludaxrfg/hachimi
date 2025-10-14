@@ -364,6 +364,177 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     applyTheme_UserWindow(s_darkMode_UserWindow);
 }
 
+void UserWindow::onReturnToIdentitySelection() {
+    Logger::instance().info("UserWindow::onReturnToIdentitySelection called");
+    emit backRequested();
+    this->close();
+}
+
+//
+//user
+
+
+// 保存用户信息（密码/地址），手机号不可修改
+void UserWindow::onSaveUserInfo() {
+    Logger::instance().info("UserWindow::onSaveUserInfo called");
+    if (!client_) return;
+
+    QString uiPwd = passwordEdit->text().trimmed();   // new password entered by user (may be empty)
+    QString uiAddr = addressEdit->text().trimmed();   // address field (may be empty meaning "no change")
+
+    // 若连接断开，尝试重连一次
+    if (!client_->CLTisConnectionActive()) {
+        Logger::instance().warn("UserWindow::onSaveUserInfo: client not connected, attempting reconnect");
+        client_->CLTreconnect();
+    }
+
+    // 获取服务器上当前用户信息（用于判断地址是否被修改 / 填充空地址）
+    QString serverAddr;
+    {
+        auto users = client_->CLTgetAllAccounts();
+        for (const auto& u : users) {
+            if (u.getPhone() == phone_) {
+                serverAddr = QString::fromStdString(u.getAddress());
+                break;
+            }
+        }
+    }
+
+    // 判断用户是否真正修改了地址：
+    bool addressModified = false;
+    QString newAddr = uiAddr;
+    if (uiAddr.isEmpty()) {
+        // 空表示不修改地址，使用服务器当前地址作为占位（不视为修改）
+        newAddr = serverAddr;
+        addressModified = false;
+    }
+    else {
+        // 非空且不同于服务器上的地址视为修改
+        addressModified = (uiAddr != serverAddr);
+        newAddr = uiAddr;
+    }
+
+    // 情况 A: 未填写新密码 —— 仅更新地址（可能没改则也会调用，但服务器会更新或保持不变）
+    if (uiPwd.isEmpty()) {
+        // 地址最终不能为空（服务器上也可能为空），做个基本检查
+        if (newAddr.isEmpty()) {
+            QMessageBox::warning(this, "保存修改", "地址不能为空（请在地址栏输入或先在服务器端设置地址）");
+            return;
+        }
+        // 使用当前已知密码（currentPassword_）进行认证并更新
+        bool res = client_->CLTupdateUser(phone_, currentPassword_, newAddr.toStdString());
+        Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateUser(return) ") + (res ? "true" : "false"));
+        if (res) {
+            QMessageBox::information(this, "保存修改", "保存成功");
+            // 不改 currentPassword_
+            passwordEdit->clear();
+        }
+        else {
+            QMessageBox::warning(this, "保存修改", "保存失败，请检查网络或稍后重试");
+        }
+        return;
+    }
+
+    // 情况 B: 填写了新密码 —— 需要输入旧密码进行验证
+    bool ok;
+    QString oldPwd = QInputDialog::getText(this, "验证原密码", "请输入原密码以确认修改密码:", QLineEdit::Password, "", &ok);
+    if (!ok) return;
+    if (oldPwd.isEmpty()) {
+        QMessageBox::warning(this, "保存修改", "请输入原密码以确认修改");
+        return;
+    }
+
+    // 分两条路径：
+    // B1: 仅改密码（地址未被修改） => 直接调用修改密码接口
+    if (!addressModified) {
+        bool passChanged = client_->CLTupdateAccountPassword(phone_, oldPwd.toStdString(), uiPwd.toStdString());
+        Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateAccountPassword returned ") + (passChanged ? "true" : "false"));
+        if (!passChanged) {
+            QMessageBox::warning(this, "修改密码", "修改密码失败（原密码错误或服务器错误）");
+            return;
+        }
+        // 密码改成功
+        currentPassword_ = uiPwd.toStdString();
+        passwordEdit->clear();
+        QMessageBox::information(this, "修改密码", "密码已更新");
+        return;
+    }
+
+    // B2: 同时改地址和密码（或仅认为地址被修改）：
+    // 先使用旧密码更新地址（认证并修改地址），再修改密码
+    // 先保存当前服务器地址以便回滚（可选）
+    QString prevAddr = serverAddr;
+
+    // 1) 用旧密码更新地址
+    bool addrUpdated = client_->CLTupdateUser(phone_, oldPwd.toStdString(), newAddr.toStdString());
+    Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateUser(before pwd change) returned ") + (addrUpdated ? "true" : "false"));
+    if (!addrUpdated) {
+        QMessageBox::warning(this, "保存修改", "地址更新失败（请检查原密码或网络），已取消密码修改流程。");
+        return;
+    }
+
+    // 2) 修改密码
+    bool passChanged = client_->CLTupdateAccountPassword(phone_, oldPwd.toStdString(), uiPwd.toStdString());
+    Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateAccountPassword returned ") + (passChanged ? "true" : "false"));
+    if (!passChanged) {
+        // 尝试回滚地址到 prevAddr（若可用）
+        bool rolledBack = false;
+        if (!prevAddr.isEmpty()) {
+            rolledBack = client_->CLTupdateUser(phone_, oldPwd.toStdString(), prevAddr.toStdString());
+            Logger::instance().info(std::string("UserWindow::onSaveUserInfo rollback CLTupdateUser returned ") + (rolledBack ? "true" : "false"));
+        }
+        QString msg = "修改密码失败。";
+        if (!rolledBack && !prevAddr.isEmpty()) msg += " 注意：地址可能已被修改且回滚失败，请联系管理员处理。";
+        QMessageBox::warning(this, "修改密码", msg);
+        return;
+    }
+
+    // 如果两步都成功
+    currentPassword_ = uiPwd.toStdString();
+    passwordEdit->clear();
+    QMessageBox::information(this, "保存修改", "密码与地址均已更新");
+}
+
+// 注销（删除当前手机号的用户）
+void UserWindow::onDeleteAccount() {
+    Logger::instance().info("UserWindow::onDeleteAccount called");
+    if (!client_) return;
+
+    if (QMessageBox::question(this, "注销账号", "确认要注销并删除此账号？此操作不可恢复。") != QMessageBox::Yes) {
+        return;
+    }
+
+    // 要求用户输入密码以确认删除
+    bool ok;
+    QString pwd = QInputDialog::getText(this, "验证密码", "请输入账号密码以确认删除:", QLineEdit::Password, "", &ok);
+    if (!ok) return;
+    if (pwd.isEmpty()) {
+        QMessageBox::warning(this, "注销账号", "请输入密码以确认");
+        return;
+    }
+
+    // 若连接断开，尝试重连一次
+    if (!client_->CLTisConnectionActive()) {
+        Logger::instance().warn("UserWindow::onDeleteAccount: client not connected, attempting reconnect");
+        client_->CLTreconnect();
+    }
+
+    bool success = client_->CLTdeleteAccount(phone_, pwd.toStdString());
+    Logger::instance().info(std::string("UserWindow::onDeleteAccount CLTdeleteAccount returned ") + (success ? "true" : "false"));
+    if (success) {
+        QMessageBox::information(this, "注销账号", "账号已成功删除，窗口将关闭并返回登录界面。");
+        // 发出信号，通知上层（例如 main.cpp）返回登录界面
+        emit accountDeleted();
+        this->close();
+    }
+    else {
+        QMessageBox::warning(this, "注销账号", "删除账号失败（密码错误或服务器错误）");
+    }
+}
+
+//
+//good
+
 void UserWindow::refreshGoods() {
     goodsTable->setRowCount(0);
     if (!client_) return;
@@ -408,6 +579,21 @@ void UserWindow::refreshGoods() {
     }
 }
 
+void UserWindow::onApplyGoodsFilter() {
+    // 直接刷新商品表格即可读取筛选条件并应用
+    refreshGoods();
+}
+
+void UserWindow::onClearGoodsFilter() {
+    if (goodsNameFilterEdit) goodsNameFilterEdit->clear();
+    if (priceMinSpin) priceMinSpin->setValue(0.0);
+    if (priceMaxSpin) priceMaxSpin->setValue(1e9);
+    if (categoryFilterEdit) categoryFilterEdit->clear();
+    refreshGoods();
+}
+
+//
+//cart and promotion
 void UserWindow::onAddToCart() {
     if (!client_) return;
     auto items = goodsTable->selectedItems();
@@ -457,7 +643,7 @@ void UserWindow::onAddToCart() {
     refreshCart();
 }
 
-// 替换现有 refreshCart()，在 cart.shipping_address 为空时尝试从账号填充并保存
+
 void UserWindow::refreshCart() {
     cartTable->setRowCount(0);
     if (!client_) {
@@ -504,7 +690,7 @@ void UserWindow::refreshCart() {
 
     // 刷新促销列表
     refreshPromotions();
-}
+}// 替换现有 refreshCart()，在 cart.shipping_address 为空时尝试从账号填充并保存
 
 void UserWindow::onShowOriginalTotal() {
     if (!client_) return;
@@ -624,169 +810,6 @@ void UserWindow::onClearPromotion() {
     bool ok = client_->CLTsaveCartForUserWithPolicy(cart, std::string());
     QMessageBox::information(this, "清除促销", ok ? "已清除并保存" : "清除成功但保存失败");
     refreshCart();
-}
-
-// 保存用户信息（密码/地址），手机号不可修改
-void UserWindow::onSaveUserInfo() {
-    Logger::instance().info("UserWindow::onSaveUserInfo called");
-    if (!client_) return;
-
-    QString uiPwd = passwordEdit->text().trimmed();   // new password entered by user (may be empty)
-    QString uiAddr = addressEdit->text().trimmed();   // address field (may be empty meaning "no change")
-
-    // 若连接断开，尝试重连一次
-    if (!client_->CLTisConnectionActive()) {
-        Logger::instance().warn("UserWindow::onSaveUserInfo: client not connected, attempting reconnect");
-        client_->CLTreconnect();
-    }
-
-    // 获取服务器上当前用户信息（用于判断地址是否被修改 / 填充空地址）
-    QString serverAddr;
-    {
-        auto users = client_->CLTgetAllAccounts();
-        for (const auto& u : users) {
-            if (u.getPhone() == phone_) {
-                serverAddr = QString::fromStdString(u.getAddress());
-                break;
-            }
-        }
-    }
-
-    // 判断用户是否真正修改了地址：
-    bool addressModified = false;
-    QString newAddr = uiAddr;
-    if (uiAddr.isEmpty()) {
-        // 空表示不修改地址，使用服务器当前地址作为占位（不视为修改）
-        newAddr = serverAddr;
-        addressModified = false;
-    } else {
-        // 非空且不同于服务器上的地址视为修改
-        addressModified = (uiAddr != serverAddr);
-        newAddr = uiAddr;
-    }
-
-    // 情况 A: 未填写新密码 —— 仅更新地址（可能没改则也会调用，但服务器会更新或保持不变）
-    if (uiPwd.isEmpty()) {
-        // 地址最终不能为空（服务器上也可能为空），做个基本检查
-        if (newAddr.isEmpty()) {
-            QMessageBox::warning(this, "保存修改", "地址不能为空（请在地址栏输入或先在服务器端设置地址）");
-            return;
-        }
-        // 使用当前已知密码（currentPassword_）进行认证并更新
-        bool res = client_->CLTupdateUser(phone_, currentPassword_, newAddr.toStdString());
-        Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateUser(return) ") + (res ? "true" : "false"));
-        if (res) {
-            QMessageBox::information(this, "保存修改", "保存成功");
-            // 不改 currentPassword_
-            passwordEdit->clear();
-        } else {
-            QMessageBox::warning(this, "保存修改", "保存失败，请检查网络或稍后重试");
-        }
-        return;
-    }
-
-    // 情况 B: 填写了新密码 —— 需要输入旧密码进行验证
-    bool ok;
-    QString oldPwd = QInputDialog::getText(this, "验证原密码", "请输入原密码以确认修改密码:", QLineEdit::Password, "", &ok);
-    if (!ok) return;
-    if (oldPwd.isEmpty()) {
-        QMessageBox::warning(this, "保存修改", "请输入原密码以确认修改");
-        return;
-    }
-
-    // 分两条路径：
-    // B1: 仅改密码（地址未被修改） => 直接调用修改密码接口
-    if (!addressModified) {
-        bool passChanged = client_->CLTupdateAccountPassword(phone_, oldPwd.toStdString(), uiPwd.toStdString());
-        Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateAccountPassword returned ") + (passChanged ? "true" : "false"));
-        if (!passChanged) {
-            QMessageBox::warning(this, "修改密码", "修改密码失败（原密码错误或服务器错误）");
-            return;
-        }
-        // 密码改成功
-        currentPassword_ = uiPwd.toStdString();
-        passwordEdit->clear();
-        QMessageBox::information(this, "修改密码", "密码已更新");
-        return;
-    }
-
-    // B2: 同时改地址和密码（或仅认为地址被修改）：
-    // 先使用旧密码更新地址（认证并修改地址），再修改密码
-    // 先保存当前服务器地址以便回滚（可选）
-    QString prevAddr = serverAddr;
-
-    // 1) 用旧密码更新地址
-    bool addrUpdated = client_->CLTupdateUser(phone_, oldPwd.toStdString(), newAddr.toStdString());
-    Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateUser(before pwd change) returned ") + (addrUpdated ? "true" : "false"));
-    if (!addrUpdated) {
-        QMessageBox::warning(this, "保存修改", "地址更新失败（请检查原密码或网络），已取消密码修改流程。");
-        return;
-    }
-
-    // 2) 修改密码
-    bool passChanged = client_->CLTupdateAccountPassword(phone_, oldPwd.toStdString(), uiPwd.toStdString());
-    Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateAccountPassword returned ") + (passChanged ? "true" : "false"));
-    if (!passChanged) {
-        // 尝试回滚地址到 prevAddr（若可用）
-        bool rolledBack = false;
-        if (!prevAddr.isEmpty()) {
-            rolledBack = client_->CLTupdateUser(phone_, oldPwd.toStdString(), prevAddr.toStdString());
-            Logger::instance().info(std::string("UserWindow::onSaveUserInfo rollback CLTupdateUser returned ") + (rolledBack ? "true" : "false"));
-        }
-        QString msg = "修改密码失败。";
-        if (!rolledBack && !prevAddr.isEmpty()) msg += " 注意：地址可能已被修改且回滚失败，请联系管理员处理。";
-        QMessageBox::warning(this, "修改密码", msg);
-        return;
-    }
-
-    // 如果两步都成功
-    currentPassword_ = uiPwd.toStdString();
-    passwordEdit->clear();
-    QMessageBox::information(this, "保存修改", "密码与地址均已更新");
-}
-
-// 注销（删除当前手机号的用户）
-void UserWindow::onDeleteAccount() {
-    Logger::instance().info("UserWindow::onDeleteAccount called");
-    if (!client_) return;
-
-    if (QMessageBox::question(this, "注销账号", "确认要注销并删除此账号？此操作不可恢复。") != QMessageBox::Yes) {
-        return;
-    }
-
-    // 要求用户输入密码以确认删除
-    bool ok;
-    QString pwd = QInputDialog::getText(this, "验证密码", "请输入账号密码以确认删除:", QLineEdit::Password, "", &ok);
-    if (!ok) return;
-    if (pwd.isEmpty()) {
-        QMessageBox::warning(this, "注销账号", "请输入密码以确认");
-        return;
-    }
-
-    // 若连接断开，尝试重连一次
-    if (!client_->CLTisConnectionActive()) {
-        Logger::instance().warn("UserWindow::onDeleteAccount: client not connected, attempting reconnect");
-        client_->CLTreconnect();
-    }
-
-    bool success = client_->CLTdeleteAccount(phone_, pwd.toStdString());
-    Logger::instance().info(std::string("UserWindow::onDeleteAccount CLTdeleteAccount returned ") + (success ? "true" : "false"));
-    if (success) {
-        QMessageBox::information(this, "注销账号", "账号已成功删除，窗口将关闭并返回登录界面。");
-        // 发出信号，通知上层（例如 main.cpp）返回登录界面
-        emit accountDeleted();
-        this->close();
-    }
-    else {
-        QMessageBox::warning(this, "注销账号", "删除账号失败（密码错误或服务器错误）");
-    }
-}
-
-// 新增：返回身份选择界面槽实现
-void UserWindow::onReturnToIdentitySelection() {
-    Logger::instance().info("UserWindow::onReturnToIdentitySelection called");
-    emit backRequested();
-    this->close();
 }
 
 // 修改购物车商品数量（已增强日志、重连与重试逻辑）
@@ -946,98 +969,7 @@ void UserWindow::onRemoveCartItem() {
     }
 }
 
-void UserWindow::refreshOrders() {
-    if (!client_) return;
-    orderTable->setRowCount(0);
-    auto orders = client_->CLTgetAllOrders(phone_);
-    orderTable->setRowCount((int)orders.size());
-    for (int i = 0; i < (int)orders.size(); i++) {
-        const Order& o = orders[i];
-        // 订单ID 列 —— 将 userPhone 隐藏存为 UserRole 以备需要，但不显示
-        QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(o.getOrderId()));
-        idItem->setData(Qt::UserRole, QString::fromStdString(o.getUserPhone()));
-        orderTable->setItem(i, 0, idItem);
-
-        // 状态列
-        orderTable->setItem(i, 1, new QTableWidgetItem(orderStatusToText(o.getStatus())));
-
-        // 实付金额列（使用 final amount）
-        orderTable->setItem(i, 2, new QTableWidgetItem(QString::number(o.getFinalAmount())));
-
-        // 地址列 —— 新增：把订单的 shipping_address 填入表格，并将地址也以 UserRole 存储以便后续直接读取
-        QTableWidgetItem* addrItem = new QTableWidgetItem(QString::fromStdString(o.getShippingAddress()));
-        addrItem->setData(Qt::UserRole, QString::fromStdString(o.getShippingAddress()));
-        orderTable->setItem(i, 3, addrItem);
-    }
-}
-
-void UserWindow::onViewOrderDetail() {
-    if (!client_) return;
-    auto items = orderTable->selectedItems();
-    if (items.empty()) { QMessageBox::warning(this, "查看订单", "请先选择订单行"); return; }
-    int row = orderTable->row(items.first());
-    QString oid = orderTable->item(row, 0)->text();
-    Order detail;
-    bool ok = client_->CLTgetOrderDetail(oid.toStdString(), phone_, detail);
-    if (!ok) { QMessageBox::warning(this, "查看订单", "获取订单详情失败"); return; }
-
-    // 计算原价总额（如果 server 未返回或为 0，则用项求和作为回退）
-    double computedTotal = 0.0;
-    for (const auto& it : detail.getItems()) computedTotal += it.getPrice() * it.getQuantity();
-    double totalToShow = detail.getTotalAmount();
-    if (totalToShow <= 0.005) totalToShow = computedTotal;
-
-    // 构造显示文本（金额格式保留两位小数）
-    QString txt;
-    txt += "订单ID: " + QString::fromStdString(detail.getOrderId()) + "\n";
-    txt += "手机号: " + QString::fromStdString(detail.getUserPhone()) + "\n";
-    txt += "地址: " + QString::fromStdString(detail.getShippingAddress()) + "\n";
-    txt += "状态: " + orderStatusToText(detail.getStatus()) + "\n";
-    txt += "总额: " + QString::number(totalToShow, 'f', 2) + "  实付: " + QString::number(detail.getFinalAmount(), 'f', 2) + "\n\n";
-    txt += "订单项:\n";
-    for (const auto& it : detail.getItems()) {
-        txt += QString::fromStdString(it.getGoodName()) + " (id:" + QString::number(it.getGoodId()) + ") x" + QString::number(it.getQuantity())
-               + " 单价:" + QString::number(it.getPrice(), 'f', 2) + " 小计:" + QString::number(it.getSubtotal(), 'f', 2) + "\n";
-    }
-    QMessageBox::information(this, "订单详情", txt);
-}
-
-void UserWindow::onReturnOrder() {
-    if (!client_) return;
-    auto items = orderTable->selectedItems();
-    if (items.empty()) { QMessageBox::warning(this, "退货", "请先选择订单行"); return; }
-    int row = orderTable->row(items.first());
-    QString oid = orderTable->item(row, 0)->text();
-    if (QMessageBox::question(this, "退货", "确认对订单 " + oid + " 发起退货请求？") != QMessageBox::Yes) return;
-    bool ok = client_->CLTreturnSettledOrder(oid.toStdString(), phone_);
-    QMessageBox::information(this, "退货", ok ? "退货请求已发送" : "退货失败（查看日志）");
-    refreshOrders();
-}
-
-void UserWindow::onRepairOrder() {
-    if (!client_) return;
-    auto items = orderTable->selectedItems();
-    if (items.empty()) { QMessageBox::warning(this, "维修", "请先选择订单行"); return; }
-    int row = orderTable->row(items.first());
-    QString oid = orderTable->item(row, 0)->text();
-    if (QMessageBox::question(this, "维修", "确认对订单 " + oid + " 发起维修请求？") != QMessageBox::Yes) return;
-    bool ok = client_->CLTrepairSettledOrder(oid.toStdString(), phone_);
-    QMessageBox::information(this, "维修", ok ? "维修请求已发送" : "维修失败（查看日志）");
-    refreshOrders();
-}
-
-void UserWindow::onDeleteOrder() {
-    if (!client_) return;
-    auto items = orderTable->selectedItems();
-    if (items.empty()) { QMessageBox::warning(this, "删除订单", "请先选择订单行"); return; }
-    int row = orderTable->row(items.first());
-    QString oid = orderTable->item(row, 0)->text();
-    if (QMessageBox::question(this, "删除订单", "确认删除订单 " + oid + " ? 该操作可能不可恢复") != QMessageBox::Yes) return;
-    bool ok = client_->CLTdeleteSettledOrder(oid.toStdString(), phone_);
-    QMessageBox::information(this, "删除订单", ok ? "删除成功" : "删除失败（查看日志）");
-    refreshOrders();
-}
-
+//cart->order
 void UserWindow::onCheckout() {
     Logger::instance().info("UserWindow::onCheckout called");
     if (!client_) {
@@ -1138,10 +1070,12 @@ void UserWindow::onCheckout() {
         if (!fresh.cart_id.empty()) {
             useCart.cart_id = fresh.cart_id;
             Logger::instance().info(std::string("UserWindow::onCheckout: refreshed cart_id from server -> ") + useCart.cart_id);
-        } else {
+        }
+        else {
             Logger::instance().info("UserWindow::onCheckout: server returned empty cart_id on refresh");
         }
-    } catch (...) {
+    }
+    catch (...) {
         Logger::instance().warn("UserWindow::onCheckout: failed to refresh cart before order id generation");
     }
 
@@ -1193,15 +1127,100 @@ void UserWindow::onCheckout() {
     refreshCart();
     refreshOrders();
 }
-void UserWindow::onApplyGoodsFilter() {
-    // 直接刷新商品表格即可读取筛选条件并应用
-    refreshGoods();
+
+//
+//order
+
+void UserWindow::refreshOrders() {
+    if (!client_) return;
+    orderTable->setRowCount(0);
+    auto orders = client_->CLTgetAllOrders(phone_);
+    orderTable->setRowCount((int)orders.size());
+    for (int i = 0; i < (int)orders.size(); i++) {
+        const Order& o = orders[i];
+        // 订单ID 列 —— 将 userPhone 隐藏存为 UserRole 以备需要，但不显示
+        QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(o.getOrderId()));
+        idItem->setData(Qt::UserRole, QString::fromStdString(o.getUserPhone()));
+        orderTable->setItem(i, 0, idItem);
+
+        // 状态列
+        orderTable->setItem(i, 1, new QTableWidgetItem(orderStatusToText(o.getStatus())));
+
+        // 实付金额列（使用 final amount）
+        orderTable->setItem(i, 2, new QTableWidgetItem(QString::number(o.getFinalAmount())));
+
+        // 地址列 —— 新增：把订单的 shipping_address 填入表格，并将地址也以 UserRole 存储以便后续直接读取
+        QTableWidgetItem* addrItem = new QTableWidgetItem(QString::fromStdString(o.getShippingAddress()));
+        addrItem->setData(Qt::UserRole, QString::fromStdString(o.getShippingAddress()));
+        orderTable->setItem(i, 3, addrItem);
+    }
 }
 
-void UserWindow::onClearGoodsFilter() {
-    if (goodsNameFilterEdit) goodsNameFilterEdit->clear();
-    if (priceMinSpin) priceMinSpin->setValue(0.0);
-    if (priceMaxSpin) priceMaxSpin->setValue(1e9);
-    if (categoryFilterEdit) categoryFilterEdit->clear();
-    refreshGoods();
+void UserWindow::onViewOrderDetail() {
+    if (!client_) return;
+    auto items = orderTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "查看订单", "请先选择订单行"); return; }
+    int row = orderTable->row(items.first());
+    QString oid = orderTable->item(row, 0)->text();
+    Order detail;
+    bool ok = client_->CLTgetOrderDetail(oid.toStdString(), phone_, detail);
+    if (!ok) { QMessageBox::warning(this, "查看订单", "获取订单详情失败"); return; }
+
+    // 计算原价总额（如果 server 未返回或为 0，则用项求和作为回退）
+    double computedTotal = 0.0;
+    for (const auto& it : detail.getItems()) computedTotal += it.getPrice() * it.getQuantity();
+    double totalToShow = detail.getTotalAmount();
+    if (totalToShow <= 0.005) totalToShow = computedTotal;
+
+    // 构造显示文本（金额格式保留两位小数）
+    QString txt;
+    txt += "订单ID: " + QString::fromStdString(detail.getOrderId()) + "\n";
+    txt += "手机号: " + QString::fromStdString(detail.getUserPhone()) + "\n";
+    txt += "地址: " + QString::fromStdString(detail.getShippingAddress()) + "\n";
+    txt += "状态: " + orderStatusToText(detail.getStatus()) + "\n";
+    txt += "总额: " + QString::number(totalToShow, 'f', 2) + "  实付: " + QString::number(detail.getFinalAmount(), 'f', 2) + "\n\n";
+    txt += "订单项:\n";
+    for (const auto& it : detail.getItems()) {
+        txt += QString::fromStdString(it.getGoodName()) + " (id:" + QString::number(it.getGoodId()) + ") x" + QString::number(it.getQuantity())
+               + " 单价:" + QString::number(it.getPrice(), 'f', 2) + " 小计:" + QString::number(it.getSubtotal(), 'f', 2) + "\n";
+    }
+    QMessageBox::information(this, "订单详情", txt);
 }
+
+void UserWindow::onReturnOrder() {
+    if (!client_) return;
+    auto items = orderTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "退货", "请先选择订单行"); return; }
+    int row = orderTable->row(items.first());
+    QString oid = orderTable->item(row, 0)->text();
+    if (QMessageBox::question(this, "退货", "确认对订单 " + oid + " 发起退货请求？") != QMessageBox::Yes) return;
+    bool ok = client_->CLTreturnSettledOrder(oid.toStdString(), phone_);
+    QMessageBox::information(this, "退货", ok ? "退货请求已发送" : "退货失败（查看日志）");
+    refreshOrders();
+}
+
+void UserWindow::onRepairOrder() {
+    if (!client_) return;
+    auto items = orderTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "维修", "请先选择订单行"); return; }
+    int row = orderTable->row(items.first());
+    QString oid = orderTable->item(row, 0)->text();
+    if (QMessageBox::question(this, "维修", "确认对订单 " + oid + " 发起维修请求？") != QMessageBox::Yes) return;
+    bool ok = client_->CLTrepairSettledOrder(oid.toStdString(), phone_);
+    QMessageBox::information(this, "维修", ok ? "维修请求已发送" : "维修失败（查看日志）");
+    refreshOrders();
+}
+
+void UserWindow::onDeleteOrder() {
+    if (!client_) return;
+    auto items = orderTable->selectedItems();
+    if (items.empty()) { QMessageBox::warning(this, "删除订单", "请先选择订单行"); return; }
+    int row = orderTable->row(items.first());
+    QString oid = orderTable->item(row, 0)->text();
+    if (QMessageBox::question(this, "删除订单", "确认删除订单 " + oid + " ? 该操作可能不可恢复") != QMessageBox::Yes) return;
+    bool ok = client_->CLTdeleteSettledOrder(oid.toStdString(), phone_);
+    QMessageBox::information(this, "删除订单", ok ? "删除成功" : "删除失败（查看日志）");
+    refreshOrders();
+}
+
+

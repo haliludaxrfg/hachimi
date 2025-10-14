@@ -1,7 +1,7 @@
 #include "admin.h"
 #include <iostream>
 
-const std::string Admin::password = "CCBC4nmb"; // 默认管理员密码
+const std::string Admin::password = "AUVhachimi"; // 默认管理员密码
 Admin::Admin(DatabaseManager* db) : db(db) {
 	loadAllData();
 }
