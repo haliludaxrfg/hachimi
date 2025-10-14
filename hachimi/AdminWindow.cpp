@@ -15,6 +15,7 @@
 #include <QDoubleSpinBox>
 #include <QApplication> // 用于切换主题
 #include <QDateTimeEdit> // 新增：用于订单筛选的日期时间选择
+#include "Theme.h"
 
 // 状态映射辅助函数
 static QString orderStatusToText(int status) {
@@ -341,8 +342,8 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     mainLayout->addLayout(bottomBtnLayout);
 
     // 连接：切换主题（允许在浅/深之间切换，不再受系统强制）
-    connect(backBtn, &QPushButton::clicked, this, [this]() {
-        applyTheme_AdminWindow(!s_darkMode_AdminWindow);
+    connect(backBtn, &QPushButton::clicked, this, []() {
+        Theme::instance().toggle();
     });
     connect(returnIdentityBtn, &QPushButton::clicked, this, &AdminWindow::onReturnToIdentitySelection);
 
@@ -383,8 +384,8 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     suppressThrottle_ = false;
 
     // 初始化主题：以系统主题为初始值，但用户点击“切换主题”可任意切换
-    s_darkMode_AdminWindow = isSystemDarkTheme();
-    applyTheme_AdminWindow(s_darkMode_AdminWindow);
+    // 使用 Theme 单例统一管理主题（优先使用持久化设置或基于系统）
+    Theme::instance().initFromSystem();
 }
 
 void AdminWindow::onReturnToIdentitySelection() {

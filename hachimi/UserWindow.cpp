@@ -18,6 +18,8 @@
 #include <QApplication> // 用于切换主题
 #include <QDoubleSpinBox> // 新增：价格筛选控件
 #include <QDateTimeEdit> // 新增：日期时间筛选控件
+#include <unordered_set>
+#include "Theme.h"
 
 // 在文件顶部 includes 之后加入与 AdminWindow 相同的状态映射辅助函数（UI 文件内局部）
 static QString orderStatusToText(int status) {
@@ -285,7 +287,31 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     orderTable->setColumnCount(4);
     orderTable->setHorizontalHeaderLabels(QStringList() << "订单ID" << "状态" << "实付金额" << "地址");
     orderTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    // 强制整行选择、单选并禁止编辑，避免用户只选单元格导致读取错误（与购物车行为一致）
+    orderTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    orderTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    orderTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     orderLayout->addWidget(orderTable);
+
+    // 按钮行：刷新/查看详情/退货/维修/删除（已连接到各自槽，槽内实现包含节流）
+    {
+        QHBoxLayout* orderBtnLayout = new QHBoxLayout;
+        refreshOrdersBtn = new QPushButton("刷新订单");
+        viewOrderBtn = new QPushButton("查看订单详情");
+        returnOrderBtn = new QPushButton("退货");
+        repairOrderBtn = new QPushButton("维修");
+        deleteOrderBtn = new QPushButton("删除订单");
+
+        orderBtnLayout->addWidget(refreshOrdersBtn);
+        orderBtnLayout->addWidget(viewOrderBtn);
+        orderBtnLayout->addWidget(returnOrderBtn);
+        orderBtnLayout->addWidget(repairOrderBtn);
+        orderBtnLayout->addWidget(deleteOrderBtn);
+
+        orderLayout->addLayout(orderBtnLayout);
+    }
 
     // ---------- 订单筛选（用户视图：时间区间） ----------
     {
@@ -343,8 +369,8 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     mainLayout->addLayout(bottomBtnLayout);
 
     // 连接槽：切换主题（替代原来的 close），允许在浅/深之间切换（不受系统强制）
-    connect(backBtn, &QPushButton::clicked, this, [this]() {
-        applyTheme_UserWindow(!s_darkMode_UserWindow);
+    connect(backBtn, &QPushButton::clicked, this, []() {
+        Theme::instance().toggle();
     });
     connect(returnIdentityBtn, &QPushButton::clicked, this, &UserWindow::onReturnToIdentitySelection);
 
@@ -400,9 +426,8 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
         returnIdentityBtn->setEnabled(false);
     }
 
-    // 初始化主题为系统主题，但允许用户任意切换之后覆盖
-    s_darkMode_UserWindow = isSystemDarkTheme_UserWindow();
-    applyTheme_UserWindow(s_darkMode_UserWindow);
+    // 使用 Theme 单例统一管理主题（优先使用持久化设置或基于系统）
+    Theme::instance().initFromSystem();
 }
 
 void UserWindow::onReturnToIdentitySelection() {
@@ -1049,6 +1074,24 @@ void UserWindow::onRemoveCartItem() {
         QMessageBox::warning(this, "删除商品", "删除失败（查看日志）");
     }
 }
+// --- 新增：作用域禁止窗口交互的 RAII 辅助类（放在文件顶部的 helper 区域） ---
+struct ScopedDisableWindow {
+    QWidget* w_;
+    explicit ScopedDisableWindow(QWidget* w) : w_(w) {
+        if (w_) {
+            w_->setEnabled(false);
+            Logger::instance().info("ScopedDisableWindow: window disabled");
+        }
+    }
+    ~ScopedDisableWindow() {
+        if (w_) {
+            w_->setEnabled(true);
+            Logger::instance().info("ScopedDisableWindow: window re-enabled");
+        }
+    }
+    ScopedDisableWindow(const ScopedDisableWindow&) = delete;
+    ScopedDisableWindow& operator=(const ScopedDisableWindow&) = delete;
+};
 
 // cart->order
 void UserWindow::onCheckout() {
@@ -1058,6 +1101,10 @@ void UserWindow::onCheckout() {
         Logger::instance().warn("UserWindow::onCheckout: client_ is null");
         return;
     }
+
+    // 在进入结算逻辑后立即禁止窗口操作，直到本函数退出（成功/失败/取消）。
+    // 使用 ScopedDisableWindow 保证在任意 return 路径都能恢复窗口可用性。
+    ScopedDisableWindow guard(this);
 
     // 确保连接
     if (!client_->CLTisConnectionActive()) {

@@ -75,6 +75,7 @@
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
     <ClCompile Include="TemporaryCart.cpp" />
+    <ClCompile Include="Theme.cpp" />
     <ClCompile Include="user.cpp" />
     <ClCompile Include="good.cpp" />
     <ClCompile Include="userManager.cpp" />
@@ -85,7 +86,6 @@
   <ItemGroup>
     <ClInclude Include="admin.h" />
     <QtMoc Include="AdminWindow.h" />
-    <ClInclude Include="AsyncLoader.h" />
     <ClInclude Include="cartItem.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="databaseManager.h" />
@@ -99,6 +99,7 @@
     <QtMoc Include="LoginWindow.h" />
     <QtMoc Include="QtServer.h" />
     <QtMoc Include="Server.h" />
+    <QtMoc Include="Theme.h" />
     <ClInclude Include="TemporaryCart.h" />
     <ClInclude Include="user.h" />
     <ClInclude Include="userManager.h" />

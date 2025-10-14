@@ -581,19 +581,38 @@ bool DatabaseManager::DTBdeleteAllCartItems(const std::string& cart_id) {
 	return DTBexecuteQuery(query);
 }
 std::vector<CartItem> DatabaseManager::DTBloadCartItems(const std::string& cart_id) {
+	if (!connection_) return std::vector<CartItem>();
 	std::vector<CartItem> items;
-	if (!connection_) return items;
 	std::string query = "SELECT good_id, good_name, price, quantity, subtotal FROM cartitem WHERE cart_id='" + cart_id + "'";
 	MYSQL_RES* result = DTBexecuteSelect(query);
 	if (!result) return items;
 	MYSQL_ROW row;
 	while ((row = mysql_fetch_row(result))) {
+		int goodId = row[0] ? std::stoi(row[0]) : 0;
+		// 若 goodId 非法则跳过
+		if (goodId <= 0) {
+			std::cerr << "DTBloadCartItems: invalid good_id in cartitem, skipping (cart_id=" << cart_id << ")" << std::endl;
+			// 尝试删除非法记录，避免重复问题
+			DTBdeleteCartItem(goodId, cart_id);
+			continue;
+		}
+
+		// 检查对应的商品是否存在于 good 表
+		Good g;
+		if (!DTBloadGood(goodId, g)) {
+			// 商品不存在：删除该购物车项并跳过（满足需求1/2）
+			std::cerr << "DTBloadCartItems: referenced good id " << goodId << " not found, deleting cartitem (cart_id=" << cart_id << ")" << std::endl;
+			DTBdeleteCartItem(goodId, cart_id);
+			continue;
+		}
+
+		// 商品存在，构造 CartItem（优先使用 cartitem 表中的显示字段，但可用商品表数据作补充）
 		CartItem item{ Good(0, "", 0.0, 0, ""), 0 };
-		item.good_id = row[0] ? std::stoi(row[0]) : 0;
-		item.good_name = row[1] ? row[1] : "";
-		item.price = row[2] ? std::stod(row[2]) : 0.0;
+		item.good_id = goodId;
+		item.good_name = row[1] ? row[1] : g.name; // 若 cartitem 中 name 为空则用 good 表的 name
+		item.price = row[2] ? std::stod(row[2]) : g.price;
 		item.quantity = row[3] ? std::stoi(row[3]) : 0;
-		item.subtotal = row[4] ? std::stod(row[4]) : 0.0;
+		item.subtotal = row[4] ? std::stod(row[4]) : (item.price * item.quantity);
 		items.push_back(item);
 	}
 	mysql_free_result(result);

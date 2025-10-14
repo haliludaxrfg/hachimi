@@ -76,6 +76,9 @@
     <ClCompile Include="userManager.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Theme.cpp">
+      <Filter>qt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="databaseManager.h">
@@ -111,8 +114,8 @@
     <ClInclude Include="admin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AsyncLoader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Theme.h">
+      <Filter>qt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
