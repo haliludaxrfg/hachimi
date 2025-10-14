@@ -13,6 +13,7 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include <QDoubleSpinBox>
+#include <QApplication> // 用于切换主题
 
 // 状态映射辅助函数
 static QString orderStatusToText(int status) {
@@ -25,6 +26,80 @@ static QString orderStatusToText(int status) {
     case 0: return QStringLiteral("未知");
     default: return QString::number(status);
     }
+}
+
+// 判断系统当前是否为深色主题（基于 QPalette::Window 的 lightness）
+static bool isSystemDarkTheme() {
+    QColor bg = qApp->palette().color(QPalette::Window);
+    // lightness 范围 0..255，128 为中间阈值
+    return bg.lightness() < 128;
+}
+
+// 主题切换支持：应用简单的暗黑样式或恢复默认（浅色）
+// 注意：s_darkMode_AdminWindow 在构造函数中初始化为系统当前主题，
+// 但用户可以通过“切换主题”按钮在浅/深之间切换（不再受系统强制）。
+static bool s_darkMode_AdminWindow = false;
+static void applyTheme_AdminWindow(bool dark) {
+    if (dark) {
+        QString ss = R"(
+            /* 深色主题：深海背景 + 柔和青绿色强调 */
+            QWidget { background-color: #0B1A1E; color: #E6F1F2; }
+
+            /* 标签页 */
+            QTabWidget::pane { background: transparent; }
+            QTabBar::tab { background: transparent; padding: 6px 12px; color: #CFEFEA; }
+            QTabBar::tab:selected { background: rgba(45,212,191,0.10); border-radius:4px; }
+
+            /* 输入控件 */
+            QLineEdit, QPlainTextEdit, QTextEdit, QComboBox, QSpinBox, QDoubleSpinBox {
+                background-color: #0F2A2E;
+                color: #E6F1F2;
+                border: 1px solid #1E3A3E;
+                border-radius: 4px;
+                padding: 4px;
+            }
+            QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+                border: 1px solid #2DD4BF;
+            }
+
+            /* 表格 */
+            QTableWidget {
+                background-color: #071014;
+                color: #E6F1F2;
+                gridline-color: #122B2E;
+                selection-background-color: rgba(45,212,191,0.14);
+                selection-color: #E6F1F2;
+            }
+            QHeaderView::section {
+                background-color: #0F2A2E;
+                color: #CFEFEA;
+                padding: 4px;
+                border: 1px solid #122B2E;
+            }
+
+            /* 按钮 */
+            QPushButton {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #175656, stop:1 #0F3B3E);
+                color: #F8FFFE;
+                border: 1px solid #1E6E69;
+                border-radius: 4px;
+                padding: 6px 10px;
+            }
+            QPushButton:hover { background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #1f7f78, stop:1 #126c68); }
+            QPushButton:pressed { background-color: #0b5b55; }
+
+            /* 提示与对话框 */
+            QMessageBox { background-color: #071014; color: #E6F1F2; }
+            QMenu { background-color: #071014; color: #E6F1F2; }
+            QToolTip { background-color: #0f2a2e; color: #E6F1F2; border: 1px solid #1E3A3E; }
+        )";
+        qApp->setStyleSheet(ss);
+    }
+    else {
+        qApp->setStyleSheet(QString());
+    }
+    s_darkMode_AdminWindow = dark;
+    Logger::instance().info(std::string("AdminWindow: theme switched to ") + (dark ? "dark" : "light"));
 }
 
 // 保留原有注释结构
@@ -141,14 +216,17 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
 
     // 返回按钮与“返回身份选择界面”并列
     QHBoxLayout* bottomBtnLayout = new QHBoxLayout;
-    backBtn = new QPushButton("返回上一级", this);
+    backBtn = new QPushButton("切换主题", this); // 改为切换主题
     returnIdentityBtn = new QPushButton("返回身份选择界面", this);
     bottomBtnLayout->addStretch();
     bottomBtnLayout->addWidget(backBtn);
     bottomBtnLayout->addWidget(returnIdentityBtn);
     mainLayout->addLayout(bottomBtnLayout);
 
-    connect(backBtn, &QPushButton::clicked, this, &AdminWindow::backRequested);
+    // 连接：切换主题（允许在浅/深之间切换，不再受系统强制）
+    connect(backBtn, &QPushButton::clicked, this, [this]() {
+        applyTheme_AdminWindow(!s_darkMode_AdminWindow);
+    });
     connect(returnIdentityBtn, &QPushButton::clicked, this, &AdminWindow::onReturnToIdentitySelection);
 
     // 连接槽（用户部分）
@@ -183,6 +261,10 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     refreshGoods();
     refreshOrders();
     refreshPromotions();
+
+    // 初始化主题：以系统主题为初始值，但用户点击“切换主题”可任意切换
+    s_darkMode_AdminWindow = isSystemDarkTheme();
+    applyTheme_AdminWindow(s_darkMode_AdminWindow);
 }
 
 // ---------------- 用户/商品/订单 已在之前文件中实现 ----------------

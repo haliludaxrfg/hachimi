@@ -8672,3 +8672,302 @@ GET_ALL_ORDERS {"userPhone":"12345678901"}
 [2025-10-13 23:03:27][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
 [2025-10-13 23:03:27][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=1
 [2025-10-13 23:03:27][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
+[2025-10-14 08:10:11][INFO] 应用启动
+[2025-10-14 08:10:11][INFO] Server: DatabaseManager 已连接。
+[2025-10-14 08:10:11][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-14 08:10:11][INFO] Client 已连接到 Server
+[2025-10-14 08:10:11][INFO] DatabaseManager::connect() called.
+
+[2025-10-14 08:10:12][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 08:10:22][INFO] Server received request: LOGIN {"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 08:10:22][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 08:10:23][INFO] Server sending response (len=37): {"phone":"17708659389","result":"ok"}
+[2025-10-14 08:10:23][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-14 08:10:23][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 08:10:23][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 08:10:23][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 08:10:23][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 08:10:23][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 08:10:23][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 08:10:23][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 08:10:23][INFO] Server SERgetAllGoods: dbManager ptr = 2944442309600, DTBisConnected=true
+[2025-10-14 08:10:23][INFO] DTBloadAllGoods: this=000002AD8E701BE0 connection_=000002AD8E7A1BE0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 08:10:23][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 08:10:23][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:10:23][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 08:10:23][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:10:23][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-14 08:10:23][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-14 08:10:24][INFO] Server received request: GET_CART 17708659389
+[2025-10-14 08:10:24][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-14 08:10:24][INFO] Server sending response (len=298): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-14 08:10:24][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-14 08:10:24][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-14 08:10:24][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
+[2025-10-14 08:10:24][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-14 08:10:24][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=2, subtotal=156.000000
+[2025-10-14 08:10:24][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 08:10:24][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 08:10:24][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 08:10:24][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 08:10:24][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 08:10:24][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 08:10:24][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 08:10:25][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 08:10:25][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 08:10:25][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 08:10:25][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 08:10:25][INFO] UserWindow: theme switched to light
+[2025-10-14 08:10:28][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:10:29][INFO] UserWindow: theme switched to light
+[2025-10-14 08:10:29][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:10:33][INFO] UserWindow: theme switched to light
+[2025-10-14 08:10:33][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:10:34][INFO] UserWindow: theme switched to light
+[2025-10-14 08:10:34][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:10:34][INFO] UserWindow: theme switched to light
+[2025-10-14 08:10:36][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:10:36][INFO] UserWindow: theme switched to light
+[2025-10-14 08:10:38][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:10:39][INFO] UserWindow: theme switched to light
+[2025-10-14 08:10:40][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:10:40][INFO] UserWindow: theme switched to light
+[2025-10-14 08:10:41][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:10:42][INFO] UserWindow: theme switched to light
+[2025-10-14 08:10:42][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:10:43][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:13][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:14][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:15][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:15][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:16][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:16][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:17][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:19][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:19][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:19][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:20][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:20][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:21][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:21][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:22][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:23][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:23][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:26][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:27][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:28][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:29][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:11:29][INFO] UserWindow: theme switched to light
+[2025-10-14 08:11:31][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:12:58][INFO] UserWindow: theme switched to light
+[2025-10-14 08:28:56][INFO] 应用启动
+[2025-10-14 08:28:56][INFO] Server: DatabaseManager 已连接。
+[2025-10-14 08:28:56][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-14 08:28:56][INFO] Client 已连接到 Server
+[2025-10-14 08:28:56][INFO] DatabaseManager::connect() called.
+
+[2025-10-14 08:28:56][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 08:29:05][INFO] Server received request: LOGIN {"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 08:29:05][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 08:29:05][INFO] Server sending response (len=37): {"phone":"17708659389","result":"ok"}
+[2025-10-14 08:29:05][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-14 08:29:05][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 08:29:05][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 08:29:05][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 08:29:05][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 08:29:06][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 08:29:06][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 08:29:06][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 08:29:06][INFO] Server SERgetAllGoods: dbManager ptr = 2284337300624, DTBisConnected=true
+[2025-10-14 08:29:06][INFO] DTBloadAllGoods: this=00000213DD1D0490 connection_=00000213DD26E6E0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 08:29:06][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 08:29:06][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:29:06][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 08:29:06][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:29:06][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-14 08:29:06][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-14 08:29:06][INFO] Server received request: GET_CART 17708659389
+[2025-10-14 08:29:06][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-14 08:29:06][INFO] Server sending response (len=298): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-14 08:29:06][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-14 08:29:06][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-14 08:29:06][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
+[2025-10-14 08:29:06][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-14 08:29:06][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=2, subtotal=156.000000
+[2025-10-14 08:29:07][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 08:29:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 08:29:07][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 08:29:07][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 08:29:07][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 08:29:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 08:29:07][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 08:29:07][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 08:29:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 08:29:07][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 08:29:07][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 08:29:07][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:09][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:09][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:10][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:10][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:10][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:10][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:10][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:11][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:11][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:11][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:11][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:11][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:11][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:12][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:12][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:12][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:12][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:12][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:12][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:13][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:13][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:13][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:29:13][INFO] UserWindow: theme switched to light
+[2025-10-14 08:29:15][INFO] UserWindow::onReturnToIdentitySelection called
+[2025-10-14 08:29:15][INFO] 收到 UserWindow::backRequested，返回登录界面
+[2025-10-14 08:29:15][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 08:29:20][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-14 08:29:20][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 08:29:20][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 08:29:20][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 08:29:20][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 08:29:21][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 08:29:21][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 08:29:21][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 08:29:21][INFO] Server SERgetAllGoods: dbManager ptr = 2284337300624, DTBisConnected=true
+[2025-10-14 08:29:21][INFO] DTBloadAllGoods: this=00000213DD1D0490 connection_=00000213DD26E6E0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 08:29:21][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 08:29:21][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:29:21][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 08:29:21][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:29:21][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 08:29:21][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 08:29:21][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 08:29:21][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 08:29:21][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 08:29:21][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 08:29:22][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 08:29:22][INFO] AdminWindow::refreshPromotions loaded 9 promotions
+[2025-10-14 08:29:22][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:24][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:24][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:24][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:24][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:25][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:25][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:25][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:25][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:26][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:26][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:28][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:28][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:28][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:28][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:29][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:29][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:32][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:32][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:32][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:32][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:29:33][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:29:33][INFO] AdminWindow: system theme is dark — enforce dark theme on toggle.
+[2025-10-14 08:35:58][INFO] 应用启动
+[2025-10-14 08:35:58][INFO] Server: DatabaseManager 已连接。
+[2025-10-14 08:35:58][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-14 08:35:58][INFO] Client 已连接到 Server
+[2025-10-14 08:35:58][INFO] DatabaseManager::connect() called.
+
+[2025-10-14 08:35:58][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 08:36:07][INFO] Server received request: LOGIN {"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 08:36:07][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 08:36:07][INFO] Server sending response (len=37): {"phone":"17708659389","result":"ok"}
+[2025-10-14 08:36:07][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-14 08:36:07][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 08:36:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 08:36:07][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 08:36:07][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 08:36:08][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 08:36:08][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 08:36:08][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 08:36:08][INFO] Server SERgetAllGoods: dbManager ptr = 2039581896208, DTBisConnected=true
+[2025-10-14 08:36:08][INFO] DTBloadAllGoods: this=000001DAE08DEE10 connection_=000001DAE092E7B0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 08:36:08][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 08:36:08][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:36:08][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 08:36:08][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:36:08][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-14 08:36:08][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-14 08:36:08][INFO] Server received request: GET_CART 17708659389
+[2025-10-14 08:36:08][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-14 08:36:08][INFO] Server sending response (len=298): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-14 08:36:08][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":156.0,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0}],"shipping_address":"JLU1","total_amount":156.0,"user_phone":"17708659389"}
+[2025-10-14 08:36:08][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-14 08:36:08][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
+[2025-10-14 08:36:08][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=1
+[2025-10-14 08:36:08][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=2, subtotal=156.000000
+[2025-10-14 08:36:09][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 08:36:09][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 08:36:09][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 08:36:09][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 08:36:09][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 08:36:09][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 08:36:09][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 08:36:09][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 08:36:09][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 08:36:09][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 08:36:09][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 08:36:10][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:36:11][INFO] UserWindow: theme switched to light
+[2025-10-14 08:36:12][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:36:12][INFO] UserWindow: theme switched to light
+[2025-10-14 08:36:13][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:36:15][INFO] UserWindow: theme switched to light
+[2025-10-14 08:36:16][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:36:16][INFO] UserWindow: theme switched to light
+[2025-10-14 08:36:17][INFO] UserWindow: theme switched to dark
+[2025-10-14 08:36:22][INFO] UserWindow::onReturnToIdentitySelection called
+[2025-10-14 08:36:22][INFO] 收到 UserWindow::backRequested，返回登录界面
+[2025-10-14 08:36:22][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 08:36:28][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-14 08:36:28][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 08:36:28][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 08:36:28][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 08:36:28][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 08:36:29][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 08:36:29][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 08:36:29][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 08:36:29][INFO] Server SERgetAllGoods: dbManager ptr = 2039581896208, DTBisConnected=true
+[2025-10-14 08:36:29][INFO] DTBloadAllGoods: this=000001DAE08DEE10 connection_=000001DAE092E7B0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 08:36:29][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 08:36:29][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:36:29][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 08:36:29][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 08:36:29][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 08:36:29][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 08:36:29][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 08:36:29][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 08:36:29][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 08:36:29][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 08:36:30][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 08:36:30][INFO] AdminWindow::refreshPromotions loaded 9 promotions
+[2025-10-14 08:36:30][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:36:31][INFO] AdminWindow: theme switched to light
+[2025-10-14 08:36:34][INFO] AdminWindow: theme switched to dark
+[2025-10-14 08:36:39][INFO] AdminWindow: theme switched to light
+[2025-10-14 08:36:39][INFO] AdminWindow: theme switched to dark

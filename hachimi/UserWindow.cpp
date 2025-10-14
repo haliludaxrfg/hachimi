@@ -15,6 +15,7 @@
 #include <QDialog>
 #include <thread>
 #include <chrono>
+#include <QApplication> // 用于切换主题
 
 // 在文件顶部 includes 之后加入与 AdminWindow 相同的状态映射辅助函数（UI 文件内局部）
 static QString orderStatusToText(int status) {
@@ -27,6 +28,73 @@ static QString orderStatusToText(int status) {
     case 0: return QStringLiteral("未知");
     default: return QString::number(status);
     }
+}
+
+// 判断系统是否为深色主题（基于 QPalette::Window 的 lightness）
+static bool isSystemDarkTheme_UserWindow() {
+    QColor bg = qApp->palette().color(QPalette::Window);
+    return bg.lightness() < 128;
+}
+
+// 主题切换支持：应用简单的暗黑样式或恢复默认（浅色）
+// 初始值在构造函数中根据系统主题设置，用户可任意切换
+static bool s_darkMode_UserWindow = false;
+static void applyTheme_UserWindow(bool dark) {
+    if (dark) {
+        QString ss = R"(
+            /* 深色主题：深海背景 + 柔和青绿色强调（与 AdminWindow 保持一致） */
+            QWidget { background-color: #0B1A1E; color: #E6F1F2; }
+
+            QTabWidget::pane { background: transparent; }
+            QTabBar::tab { background: transparent; padding: 6px 12px; color: #CFEFEA; }
+            QTabBar::tab:selected { background: rgba(45,212,191,0.10); border-radius:4px; }
+
+            QLineEdit, QPlainTextEdit, QTextEdit, QComboBox, QSpinBox, QDoubleSpinBox {
+                background-color: #0F2A2E;
+                color: #E6F1F2;
+                border: 1px solid #1E3A3E;
+                border-radius: 4px;
+                padding: 4px;
+            }
+            QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+                border: 1px solid #2DD4BF;
+            }
+
+            QTableWidget {
+                background-color: #071014;
+                color: #E6F1F2;
+                gridline-color: #122B2E;
+                selection-background-color: rgba(45,212,191,0.14);
+                selection-color: #E6F1F2;
+            }
+            QHeaderView::section {
+                background-color: #0F2A2E;
+                color: #CFEFEA;
+                padding: 4px;
+                border: 1px solid #122B2E;
+            }
+
+            QPushButton {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #175656, stop:1 #0F3B3E);
+                color: #F8FFFE;
+                border: 1px solid #1E6E69;
+                border-radius: 4px;
+                padding: 6px 10px;
+            }
+            QPushButton:hover { background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #1f7f78, stop:1 #126c68); }
+            QPushButton:pressed { background-color: #0b5b55; }
+
+            QMessageBox { background-color: #071014; color: #E6F1F2; }
+            QMenu { background-color: #071014; color: #E6F1F2; }
+            QToolTip { background-color: #0f2a2e; color: #E6F1F2; border: 1px solid #1E3A3E; }
+        )";
+        qApp->setStyleSheet(ss);
+    }
+    else {
+        qApp->setStyleSheet(QString());
+    }
+    s_darkMode_UserWindow = dark;
+    Logger::instance().info(std::string("UserWindow: theme switched to ") + (dark ? "dark" : "light"));
 }
 
 // 简单的价格展示对话框（复用在显示原价/折后价）
@@ -177,15 +245,17 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
 
     // 返回按钮及“返回身份选择界面”按钮，横向排列
     QHBoxLayout* bottomBtnLayout = new QHBoxLayout;
-    backBtn = new QPushButton("返回上一级", this);
+    backBtn = new QPushButton("切换主题", this); // 改为切换主题
     returnIdentityBtn = new QPushButton("返回身份选择界面", this);
     bottomBtnLayout->addStretch();
     bottomBtnLayout->addWidget(backBtn);
     bottomBtnLayout->addWidget(returnIdentityBtn);
     mainLayout->addLayout(bottomBtnLayout);
 
-    // 连接槽
-    connect(backBtn, &QPushButton::clicked, this, &UserWindow::close);
+    // 连接槽：切换主题（替代原来的 close），允许在浅/深之间切换（不受系统强制）
+    connect(backBtn, &QPushButton::clicked, this, [this]() {
+        applyTheme_UserWindow(!s_darkMode_UserWindow);
+    });
     connect(returnIdentityBtn, &QPushButton::clicked, this, &UserWindow::onReturnToIdentitySelection);
 
     connect(refreshGoodsBtn, &QPushButton::clicked, this, &UserWindow::refreshGoods);
@@ -239,6 +309,10 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
         deleteAccountBtn->setEnabled(false);
         returnIdentityBtn->setEnabled(false);
     }
+
+    // 初始化主题为系统主题，但允许用户任意切换之后覆盖
+    s_darkMode_UserWindow = isSystemDarkTheme_UserWindow();
+    applyTheme_UserWindow(s_darkMode_UserWindow);
 }
 
 void UserWindow::refreshGoods() {
