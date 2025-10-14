@@ -102,6 +102,16 @@ static void applyTheme_AdminWindow(bool dark) {
     Logger::instance().info(std::string("AdminWindow: theme switched to ") + (dark ? "dark" : "light"));
 }
 
+// helper: case-insensitive substring
+static bool containsIC_admin(const std::string& haystack, const std::string& needle) {
+    if (needle.empty()) return true;
+    std::string h = haystack;
+    std::string n = needle;
+    std::transform(h.begin(), h.end(), h.begin(), ::tolower);
+    std::transform(n.begin(), n.end(), n.begin(), ::tolower);
+    return h.find(n) != std::string::npos;
+}
+
 // 保留原有注释结构
 AdminWindow::AdminWindow(Client* client, QWidget* parent)
     : QWidget(parent), client_(client)
@@ -139,6 +149,45 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     // 商品管理页
     goodTab = new QWidget;
     QVBoxLayout* goodLayout = new QVBoxLayout(goodTab);
+
+    // 新增：筛选控件行（名字、价区间、分类、应用/清除）
+    {
+        QHBoxLayout* filterRow = new QHBoxLayout;
+        filterRow->addWidget(new QLabel("名称:"));
+        goodsNameFilterEdit = new QLineEdit;
+        goodsNameFilterEdit->setPlaceholderText("输入部分名称进行搜索");
+        filterRow->addWidget(goodsNameFilterEdit);
+
+        filterRow->addWidget(new QLabel("价格范围:"));
+        priceMinSpin = new QDoubleSpinBox;
+        priceMinSpin->setRange(0.0, 1e9);
+        priceMinSpin->setDecimals(2);
+        priceMinSpin->setValue(0.0);
+        priceMaxSpin = new QDoubleSpinBox;
+        priceMaxSpin->setRange(0.0, 1e9);
+        priceMaxSpin->setDecimals(2);
+        priceMaxSpin->setValue(1e9);
+        filterRow->addWidget(priceMinSpin);
+        filterRow->addWidget(new QLabel(" - "));
+        filterRow->addWidget(priceMaxSpin);
+
+        filterRow->addWidget(new QLabel("分类:"));
+        categoryFilterEdit = new QLineEdit;
+        categoryFilterEdit->setPlaceholderText("输入分类（部分匹配）");
+        filterRow->addWidget(categoryFilterEdit);
+
+        applyGoodsFilterBtn = new QPushButton("应用筛选");
+        clearGoodsFilterBtn = new QPushButton("清除筛选");
+        filterRow->addWidget(applyGoodsFilterBtn);
+        filterRow->addWidget(clearGoodsFilterBtn);
+
+        goodLayout->addLayout(filterRow);
+
+        // 连接筛选按钮
+        connect(applyGoodsFilterBtn, &QPushButton::clicked, this, &AdminWindow::onApplyGoodsFilter);
+        connect(clearGoodsFilterBtn, &QPushButton::clicked, this, &AdminWindow::onClearGoodsFilter);
+    }
+
     goodsTable = new QTableWidget;
     goodsTable->setColumnCount(5);
     goodsTable->setHorizontalHeaderLabels(QStringList() << "ID" << "名称" << "价格" << "库存" << "分类");
@@ -399,9 +448,32 @@ void AdminWindow::refreshGoods() {
     goodsTable->setRowCount(0);
     if (!client_) return;
     auto goods = client_->CLTgetAllGoods();
-    goodsTable->setRowCount((int)goods.size());
-    for (int i = 0; i < (int)goods.size(); ++i) {
-        const Good& g = goods[i];
+
+    // 读取筛选条件
+    std::string nameFilter;
+    double minPrice = 0.0;
+    double maxPrice = 1e18;
+    std::string categoryFilter;
+    if (goodsNameFilterEdit) nameFilter = goodsNameFilterEdit->text().toStdString();
+    if (priceMinSpin) minPrice = priceMinSpin->value();
+    if (priceMaxSpin) maxPrice = priceMaxSpin->value();
+    if (categoryFilterEdit) categoryFilter = categoryFilterEdit->text().toStdString();
+    if (maxPrice < minPrice) std::swap(minPrice, maxPrice);
+
+    // 过滤
+    std::vector<Good> filtered;
+    for (const auto& g : goods) {
+        if (!containsIC_admin(g.getName(), nameFilter)) continue;
+        if (!containsIC_admin(g.getCategory(), categoryFilter)) continue;
+        double p = g.getPrice();
+        if (p + 1e-9 < minPrice) continue;
+        if (p - 1e-9 > maxPrice) continue;
+        filtered.push_back(g);
+    }
+
+    goodsTable->setRowCount((int)filtered.size());
+    for (int i = 0; i < (int)filtered.size(); ++i) {
+        const Good& g = filtered[i];
         goodsTable->setItem(i, 0, new QTableWidgetItem(QString::number(g.getId())));
         goodsTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(g.getName())));
         goodsTable->setItem(i, 2, new QTableWidgetItem(QString::number(g.getPrice())));
@@ -1125,4 +1197,18 @@ void AdminWindow::onDeletePromotion() {
     bool ok = client_->CLTdeletePromotion(nameQ.toStdString());
     QMessageBox::information(this, "删除促销", ok ? "删除成功" : "删除失败（查看日志）");
     refreshPromotions();
+}
+
+// 新增：筛选按钮槽实现（加入到 AdminWindow.cpp 中合适位置）
+void AdminWindow::onApplyGoodsFilter() {
+    // 直接刷新商品表格即可读取筛选条件并应用
+    refreshGoods();
+}
+
+void AdminWindow::onClearGoodsFilter() {
+    if (goodsNameFilterEdit) goodsNameFilterEdit->clear();
+    if (priceMinSpin) priceMinSpin->setValue(0.0);
+    if (priceMaxSpin) priceMaxSpin->setValue(1e9);
+    if (categoryFilterEdit) categoryFilterEdit->clear();
+    refreshGoods();
 }

@@ -7,6 +7,7 @@
 #include "Client.h"
 #include "TemporaryCart.h"
 #include <nlohmann/json.hpp>
+#include <QDoubleSpinBox>
 
 // 保留原有注释结构
 class AdminWindow : public QWidget {
@@ -31,6 +32,10 @@ private slots:
     void onAddGood();
     void onEditGood();
     void onDeleteGood();
+
+    // 新增：商品搜索/筛选槽
+    void onApplyGoodsFilter();
+    void onClearGoodsFilter();
 
     // 订单相关
     void refreshOrders();
@@ -81,6 +86,14 @@ private:
     QPushButton* addGoodBtn;
     QPushButton* editGoodBtn;
     QPushButton* deleteGoodBtn;
+
+    // ------- 额外：商品搜索/筛选控件 -------
+    QLineEdit* goodsNameFilterEdit;    // 名称模糊搜索
+    QDoubleSpinBox* priceMinSpin;      // 价格下限
+    QDoubleSpinBox* priceMaxSpin;      // 价格上限
+    QLineEdit* categoryFilterEdit;     // 分类模糊搜索
+    QPushButton* applyGoodsFilterBtn;  // 应用筛选
+    QPushButton* clearGoodsFilterBtn;  // 清除筛选
 
     // 订单 UI
     QTableWidget* ordersTable;
