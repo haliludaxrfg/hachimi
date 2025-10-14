@@ -113,10 +113,28 @@ static bool containsIC_admin(const std::string& haystack, const std::string& nee
     return h.find(n) != std::string::npos;
 }
 
+// 节流实现：每秒最多允许一次（首次允许）
+bool AdminWindow::tryThrottle(QWidget* parent) {
+    // 如果在构造/初始化阶段希望抑制节流弹窗则直接允许
+    if (suppressThrottle_) return true;
+
+    // 原有逻辑：每 500 ms 最多允许一次
+    if (actionTimer_.isValid() && actionTimer_.elapsed() < 500) {
+        Logger::instance().warn("AdminWindow: action throttled (too frequent)");
+        QMessageBox::warning(parent ? parent : this, "操作过于频繁", "操作过于频繁，请稍后再试（每秒最多2次）。");
+        return false;
+    }
+    actionTimer_.start();
+    return true;
+}
+
 // 保留原有注释结构
 AdminWindow::AdminWindow(Client* client, QWidget* parent)
     : QWidget(parent), client_(client)
 {
+    // 在构造开始阶段抑制节流提示（避免连续刷新触发警告）
+    suppressThrottle_ = true;
+
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
 
     tabWidget = new QTabWidget(this);
@@ -355,11 +373,14 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     // 创建促销标签页
     createPromotionsTab();
 
-    // 首次加载
+    // 首次加载 —— 允许批量内部刷新而不触发节流提示
     refreshUsers();
     refreshGoods();
     refreshOrders();
     refreshPromotions();
+
+    // 构造完成后恢复节流行为（用户交互才会被节流）
+    suppressThrottle_ = false;
 
     // 初始化主题：以系统主题为初始值，但用户点击“切换主题”可任意切换
     s_darkMode_AdminWindow = isSystemDarkTheme();
@@ -374,6 +395,7 @@ void AdminWindow::onReturnToIdentitySelection() {
 
 // ---------------- 用户/商品/订单 已在之前文件中实现 ----------------
 void AdminWindow::refreshUsers() {
+    if (!tryThrottle(this)) return;
     usersTable->setRowCount(0);
     if (!client_) return;
     auto users = client_->CLTgetAllAccounts();
@@ -388,6 +410,7 @@ void AdminWindow::refreshUsers() {
 }
 
 void AdminWindow::onSearchUser() {
+    if (!tryThrottle(this)) return;
     Logger::instance().info("AdminWindow::onSearchUser called");
     if (!client_) return;
     bool ok;
@@ -418,6 +441,7 @@ void AdminWindow::onSearchUser() {
 }
 
 void AdminWindow::onAddUser() {
+    if (!tryThrottle(this)) return;
     Logger::instance().info("AdminWindow::onAddUser called");
     if (!client_) return;
     bool ok;
@@ -440,6 +464,7 @@ void AdminWindow::onAddUser() {
 }
 
 void AdminWindow::onEditUser() {
+    if (!tryThrottle(this)) return;
     Logger::instance().info("AdminWindow::onEditUser called");
     if (!client_) return;
     auto items = usersTable->selectedItems();
@@ -475,6 +500,7 @@ void AdminWindow::onEditUser() {
 }
 
 void AdminWindow::onDeleteUser() {
+    if (!tryThrottle(this)) return;
     Logger::instance().info("AdminWindow::onDeleteUser called");
     if (!client_) return;
     auto items = usersTable->selectedItems();
@@ -501,12 +527,12 @@ void AdminWindow::onDeleteUser() {
 
 // ---------------- 商品管理 ----------------
 //
-void AdminWindow::refreshGoods() {
+void AdminWindow::refreshGoodsInternal() {
     goodsTable->setRowCount(0);
     if (!client_) return;
     auto goods = client_->CLTgetAllGoods();
 
-    // 读取筛选条件
+    // 读取筛选条件（本地 UI 操作，不做节流）
     std::string nameFilter;
     double minPrice = 0.0;
     double maxPrice = 1e18;
@@ -540,6 +566,7 @@ void AdminWindow::refreshGoods() {
 }
 
 void AdminWindow::onAddGood() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     bool ok;
     QString name = QInputDialog::getText(this, "新增商品", "名称:", QLineEdit::Normal, "", &ok);
@@ -556,6 +583,7 @@ void AdminWindow::onAddGood() {
 }
 
 void AdminWindow::onEditGood() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = goodsTable->selectedItems();
     if (items.empty()) {
@@ -585,6 +613,7 @@ void AdminWindow::onEditGood() {
 }
 
 void AdminWindow::onDeleteGood() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = goodsTable->selectedItems();
     if (items.empty()) {
@@ -599,21 +628,27 @@ void AdminWindow::onDeleteGood() {
 }
 
 void AdminWindow::onApplyGoodsFilter() {
-    // 直接刷新商品表格即可读取筛选条件并应用
-    refreshGoods();
+    refreshGoodsInternal();
 }
-
+void AdminWindow::refreshGoods() {
+    if (!tryThrottle(this)) return;
+    // 带节流的外部接口调用不再包含具体实现（实现委托给 refreshGoodsInternal）
+    refreshGoodsInternal();
+}
 void AdminWindow::onClearGoodsFilter() {
+    // 清除筛选不计入节流（只影响本地控件）
     if (goodsNameFilterEdit) goodsNameFilterEdit->clear();
     if (priceMinSpin) priceMinSpin->setValue(0.0);
     if (priceMaxSpin) priceMaxSpin->setValue(1e9);
     if (categoryFilterEdit) categoryFilterEdit->clear();
-    refreshGoods();
+    // 直接内部刷新以避免节流弹窗
+    refreshGoodsInternal();
 }
 
 //
 // ---------------- 订单管理 ----------------
 void AdminWindow::refreshOrders() {
+    if (!tryThrottle(this)) return;
     ordersTable->setRowCount(0);
     if (!client_) return;
 
@@ -689,6 +724,7 @@ void AdminWindow::refreshOrders() {
 }
 
 void AdminWindow::onReturnOrder() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = ordersTable->selectedItems();
     if (items.empty()) { QMessageBox::warning(this, "发起退货", "请先选择要退货的订单行"); return; }
@@ -707,6 +743,7 @@ void AdminWindow::onReturnOrder() {
 }
 
 void AdminWindow::onRepairOrder() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = ordersTable->selectedItems();
     if (items.empty()) { QMessageBox::warning(this, "发起维修", "请先选择要维修的订单行"); return; }
@@ -724,6 +761,7 @@ void AdminWindow::onRepairOrder() {
 }
 
 void AdminWindow::onDeleteOrder() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = ordersTable->selectedItems();
     if (items.empty()) { QMessageBox::warning(this, "删除订单", "请先选择要删除的订单行"); return; }
@@ -741,6 +779,7 @@ void AdminWindow::onDeleteOrder() {
 }
 
 void AdminWindow::onViewOrderDetail() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = ordersTable->selectedItems();
     if (items.empty()) { QMessageBox::warning(this, "查看订单", "请先选择订单行"); return; }
@@ -787,8 +826,15 @@ void AdminWindow::onViewOrderDetail() {
 
 
 void AdminWindow::onLoadCartForUser() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
+
     QString phone = cartPhoneEdit->text().trimmed();
+
+    // 在开始执行耗时网络操作时禁用按钮，防止重复点击
+    loadCartBtn->setEnabled(false);
+    struct BtnRestorer { QPushButton* b; BtnRestorer(QPushButton* btn):b(btn){} ~BtnRestorer(){ if(b) b->setEnabled(true);} };
+    BtnRestorer restore(loadCartBtn);
 
     // 若填写了手机号 -> 加载该用户购物车（原有行为）
     if (!phone.isEmpty()) {
@@ -812,7 +858,6 @@ void AdminWindow::onLoadCartForUser() {
         cartTable->setRowCount((int)cart.items.size());
         for (int i = 0; i < (int)cart.items.size(); ++i) {
             const CartItem& it = cart.items[i];
-            // 单用户视图：不需要在 item 上携带 userPhone（已有 cartPhoneEdit）
             cartTable->setItem(i, 0, new QTableWidgetItem(QString::number(it.good_id)));
             cartTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(it.good_name)));
             cartTable->setItem(i, 2, new QTableWidgetItem(QString::number(it.price)));
@@ -881,6 +926,7 @@ void AdminWindow::onLoadCartForUser() {
 }
 
 void AdminWindow::onEditCartItem() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
 
     // 首先尝试从输入框读取手机号；若为空则从表格行的 UserRole 中读取（多用户视图）
@@ -978,6 +1024,7 @@ void AdminWindow::onEditCartItem() {
 }
 
 void AdminWindow::onRemoveCartItem() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
 
     auto items = cartTable->selectedItems();
@@ -1341,6 +1388,7 @@ bool AdminWindow::showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
 
 // 修改 onAddPromotion：先询问类型再编辑
 void AdminWindow::onAddPromotion() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     PromotionKind kind = PromotionKind::Unknown;
     if (!showPromotionTypeSelector(this, kind)) return;
@@ -1363,6 +1411,8 @@ void AdminWindow::onAddPromotion() {
 
 // 修改 onEditPromotion：读取现有 policy 试图推断类型并预填编辑器
 void AdminWindow::onEditPromotion() {
+    if (!tryThrottle(this)) return;
+    if (!client_) return;
     auto sel = promoTable->selectionModel()->selectedRows();
     if (sel.empty()) { QMessageBox::warning(this, "编辑促销", "请先选择一条促销"); return; }
     int row = sel.first().row();
@@ -1411,6 +1461,7 @@ void AdminWindow::onEditPromotion() {
 
 // 确保实现 AdminWindow::refreshPromotions 与 AdminWindow::onDeletePromotion（避免链接缺失）
 void AdminWindow::refreshPromotions() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     promoTable->setRowCount(0);
     auto rows = client_->CLTgetAllPromotionsRaw();
@@ -1453,6 +1504,7 @@ void AdminWindow::refreshPromotions() {
 }
 
 void AdminWindow::onDeletePromotion() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto sel = promoTable->selectionModel()->selectedRows();
     if (sel.empty()) {

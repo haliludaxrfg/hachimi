@@ -1,12 +1,14 @@
 #include "LoginWindow.h"
 #include "databaseManager.h"
 #include "admin.h" // 新增：使用 Admin::password
+#include "logger.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QInputDialog>
 #include <QMessageBox>
 #include "Client.h" // 使用 Client 的 CLTlogin
 #include <string>
+#include <QElapsedTimer> // 已在头中包含，但在 cpp 中明确添加以便使用
 
 LoginWindow::LoginWindow(std::vector<User>& users, DatabaseManager* db, Client* client, QWidget* parent)
     : QDialog(parent), usersRef(users), db(db), client_(client)
@@ -105,7 +107,20 @@ QString LoginWindow::userPhone() const {
     return getPhone();
 }
 
+// 节流实现：每秒最多允许一次（首次允许）
+bool LoginWindow::tryThrottle(QWidget* parent) {
+    if (actionTimer_.isValid() && actionTimer_.elapsed() < 1000) {
+        Logger::instance().warn("LoginWindow: action throttled (too frequent)");
+        QMessageBox::warning(parent ? parent : this, "操作过于频繁", "操作过于频繁，请稍后再试（每秒最多一次）。");
+        return false;
+    }
+    actionTimer_.start();
+    return true;
+}
+
 void LoginWindow::onLoginClicked() {
+    if (!tryThrottle(this)) return;
+
     // 管理员模式使用静态硬编码密码验证
     if (startAsAdmin) {
         std::string entered = passwordEdit->text().toStdString();
@@ -128,15 +143,12 @@ void LoginWindow::onLoginClicked() {
     if (client_) {
         bool ok = client_->CLTlogin(phone, pwd);
         if (ok) {
-            if (ok) {
-                infoLabel->setText("登录成功（服务器验证）！");
-                infoLabel->setStyleSheet("color: green;");
-                // 确保 phoneEdit 中保存了用于登录的手机号（防止后续读取为空）
-                phoneEdit->setText(QString::fromStdString(phone));
-                loginIndex = -1; // 标记为远端登录成功
-                accept();
-                return;
-            };
+            infoLabel->setText("登录成功（服务器验证）！");
+            infoLabel->setStyleSheet("color: green;");
+            // 确保 phoneEdit 中保存了用于登录的手机号（防止后续读取为空）
+            phoneEdit->setText(QString::fromStdString(phone));
+            loginIndex = -1; // 标记为远端登录成功
+            accept();
             return;
         } else {
             infoLabel->setText("登录失败（服务器验证未通过）");
@@ -160,6 +172,8 @@ void LoginWindow::onLoginClicked() {
 }
 
 void LoginWindow::onRegisterClicked() {
+    if (!tryThrottle(this)) return;
+
     // 管理员模式禁止注册
     if (startAsAdmin) {
         QMessageBox::information(this, "注册", "管理员模式不允许注册。");

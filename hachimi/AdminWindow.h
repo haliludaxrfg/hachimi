@@ -10,8 +10,9 @@
 #include <QDoubleSpinBox>
 #include <QDateTimeEdit>
 #include <QComboBox>
+#include <QElapsedTimer>
 
-// 保留原有注释结构
+ // 保留原有注释结构
 class AdminWindow : public QWidget {
     Q_OBJECT
 public:
@@ -59,8 +60,7 @@ private slots:
     void onEditPromotion();
     void onDeletePromotion();
 
-    // 订单筛选（时间范围：开始/结束；管理员额外按手机号）
-    
+    // 订单筛选（时间范围：开始/结束；管理员额外按手机号）    
 private:
     // UI 主控件
     QTabWidget* tabWidget;
@@ -144,4 +144,15 @@ private:
     QComboBox* ordersStatusFilter;      // 新增：按状态筛选
     QPushButton* applyOrdersFilterBtn;
     QPushButton* clearOrdersFilterBtn;
+
+    // 每秒操作限制相关
+    QElapsedTimer actionTimer_;
+    bool tryThrottle(QWidget* parent = nullptr);
+
+    // INTERNAL helpers
+    // 不带节流的内部刷新，用于在需要避免二次节流（如筛选按钮）时调用
+    void refreshGoodsInternal();
+
+    // 构造期间抑制节流弹窗（构造期连续刷新时使用）
+    bool suppressThrottle_ = false;
 };

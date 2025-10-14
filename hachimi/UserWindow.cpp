@@ -132,6 +132,17 @@ public:
     }
 };
 
+// 节流实现：每秒最多允许一次（首次允许）
+bool UserWindow::tryThrottle(QWidget* parent) {
+    if (actionTimer_.isValid() && actionTimer_.elapsed() < 1000) {
+        Logger::instance().warn("UserWindow: action throttled (too frequent)");
+        QMessageBox::warning(parent ? parent : this, "操作过于频繁", "操作过于频繁，请稍后再试（每秒最多一次）。");
+        return false;
+    }
+    actionTimer_.start();
+    return true;
+}
+
 UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent)
     : QWidget(parent), phone_(phone), client_(client)
 {
@@ -293,7 +304,7 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
         orderEndEdit->setDateTime(QDateTime::currentDateTime().addYears(10));
         orderFilterRow->addWidget(orderEndEdit);
 
-   
+
         orderFilterRow->addWidget(new QLabel("状态:"));
         orderStatusFilter = new QComboBox;
         orderStatusFilter->addItem("全部", QVariant(-1));
@@ -361,10 +372,10 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     cartTable->setSelectionMode(QAbstractItemView::SingleSelection);
     cartTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    // 初始加载
-    refreshGoods();
-    refreshCart();
-    refreshOrders();
+    // 初始加载 —— 使用不带节流的内部实现，避免构造期间连续调用导致弹窗
+    refreshGoodsInternal();
+    refreshCartInternal();
+    refreshOrdersInternal();
 
     // 尝试从客户端加载当前用户信息（若可用）
     if (client_) {
@@ -400,12 +411,9 @@ void UserWindow::onReturnToIdentitySelection() {
     this->close();
 }
 
-//
-//user
-
-
 // 保存用户信息（密码/地址），手机号不可修改
 void UserWindow::onSaveUserInfo() {
+    if (!tryThrottle(this)) return;
     Logger::instance().info("UserWindow::onSaveUserInfo called");
     if (!client_) return;
 
@@ -527,6 +535,7 @@ void UserWindow::onSaveUserInfo() {
 
 // 注销（删除当前手机号的用户）
 void UserWindow::onDeleteAccount() {
+    if (!tryThrottle(this)) return;
     Logger::instance().info("UserWindow::onDeleteAccount called");
     if (!client_) return;
 
@@ -565,7 +574,14 @@ void UserWindow::onDeleteAccount() {
 //
 //good
 
+// public wrapper：带节流的刷新商品
 void UserWindow::refreshGoods() {
+    if (!tryThrottle(this)) return;
+    refreshGoodsInternal();
+}
+
+// 内部实现（不做节流），原 refreshGoods 的主体逻辑移至此
+void UserWindow::refreshGoodsInternal() {
     goodsTable->setRowCount(0);
     if (!client_) return;
     auto goods = client_->CLTgetAllGoods();
@@ -610,8 +626,9 @@ void UserWindow::refreshGoods() {
 }
 
 void UserWindow::onApplyGoodsFilter() {
+    if (!tryThrottle(this)) return;
     // 直接刷新商品表格即可读取筛选条件并应用
-    refreshGoods();
+    refreshGoodsInternal();
 }
 
 void UserWindow::onClearGoodsFilter() {
@@ -619,12 +636,14 @@ void UserWindow::onClearGoodsFilter() {
     if (priceMinSpin) priceMinSpin->setValue(0.0);
     if (priceMaxSpin) priceMaxSpin->setValue(1e9);
     if (categoryFilterEdit) categoryFilterEdit->clear();
-    refreshGoods();
+    // 清除时使用内部刷新以避免重复弹窗
+    refreshGoodsInternal();
 }
 
 //
 //cart and promotion
 void UserWindow::onAddToCart() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = goodsTable->selectedItems();
     if (items.empty()) {
@@ -665,16 +684,28 @@ void UserWindow::onAddToCart() {
     if (res) {
         QMessageBox::information(this, "加入购物车", "已加入购物车");
     } else {
-        // 更具体的提示并引导查看日志
-        QMessageBox::warning(this, "加入购物车", "加入失败（查看 log.txt 获取详细信息）");
+        // 如果失败，尝试进一步判断是否为库存不足，并给出友好提示
+        Good g;
+        if (client_->CLTgetGoodById(id, g) && qty > g.getStock()) {
+            QMessageBox::warning(this, "加入购物车", "小店没货啦");
+        } else {
+            // 更具体的提示并引导查看日志
+            QMessageBox::warning(this, "加入购物车", "加入失败（查看 log.txt 获取详细信息）");
+        }
     }
 
-    // 刷新显示（即便失败也尝试刷新）
-    refreshCart();
+    // 刷新显示（内部刷新以避免第二次节流弹窗）
+    refreshCartInternal();
 }
 
 
 void UserWindow::refreshCart() {
+    if (!tryThrottle(this)) return;
+    refreshCartInternal();
+}
+
+// 不带节流实现
+void UserWindow::refreshCartInternal() {
     cartTable->setRowCount(0);
     if (!client_) {
         Logger::instance().warn("UserWindow::refreshCart: client_ is null");
@@ -723,6 +754,7 @@ void UserWindow::refreshCart() {
 }// 替换现有 refreshCart()，在 cart.shipping_address 为空时尝试从账号填充并保存
 
 void UserWindow::onShowOriginalTotal() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     TemporaryCart cart = client_->CLTgetCartForUser(phone_);
     double original = 0.0;
@@ -732,6 +764,7 @@ void UserWindow::onShowOriginalTotal() {
 }
 
 void UserWindow::onShowDiscountedTotal() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     TemporaryCart cart = client_->CLTgetCartForUser(phone_);
     double original = 0.0;
@@ -744,6 +777,7 @@ void UserWindow::onShowDiscountedTotal() {
 
 // 从服务器加载促销 JSON 并填充下拉（只读给用户选择）
 void UserWindow::refreshPromotions() {
+    // 不对 refreshPromotions 本身节流（内部常被调用），以避免被上层操作阻塞
     promoCombo->clear();
     if (!client_) return;
     auto raws = client_->CLTgetAllPromotionsRaw();
@@ -755,16 +789,24 @@ void UserWindow::refreshPromotions() {
         try {
             if (r.contains("policy")) policyStr = r["policy"].dump();
             else policyStr = r.value("policy_detail", std::string(""));
-        } catch (...) { policyStr = r.value("policy_detail", std::string("")); }
-        QString display = QString::fromStdString(name.empty() ? ("policy:" + policyStr.substr(0, (std::min)(policyStr.size(), static_cast<size_t>(60)))) : name);
+        } catch (...) {
+            policyStr = r.value("policy_detail", std::string(""));
+        }
+        QString display;
+        if (name.empty()) {
+            std::string shortPolicy = policyStr.substr(0, (std::min)(policyStr.size(), static_cast<size_t>(60)));
+            display = QString::fromStdString(std::string("policy:") + shortPolicy);
+        } else {
+            display = QString::fromStdString(name);
+        }
         promoCombo->addItem(display, QString::fromStdString(policyStr));
     }
     // 强制把下拉恢复到“-- 不使用促销 --”，避免保留上次选择导致默认意外选中某个促销
     promoCombo->setCurrentIndex(0);
 }
-
 // 应用所选促销到当前购物车（本地计算 -> 保存）
 void UserWindow::onApplyPromotion() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     int idx = promoCombo->currentIndex();
     if (idx <= 0) { QMessageBox::information(this, "应用促销", "请选择有效的促销"); return; }
@@ -829,6 +871,7 @@ void UserWindow::onApplyPromotion() {
 
 // 清除购物车中的促销信息
 void UserWindow::onClearPromotion() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     TemporaryCart cart = client_->CLTgetCartForUser(phone_);
     if (cart.items.empty()) { QMessageBox::information(this, "清除促销", "购物车为空"); return; }
@@ -844,6 +887,7 @@ void UserWindow::onClearPromotion() {
 
 // 修改购物车商品数量（已增强日志、重连与重试逻辑）
 void UserWindow::onModifyCartItem() {
+    if (!tryThrottle(this)) return;
     Logger::instance().info("UserWindow::onModifyCartItem called");
     if (!client_) {
         Logger::instance().warn("UserWindow::onModifyCartItem: client_ is null");
@@ -892,7 +936,6 @@ void UserWindow::onModifyCartItem() {
             return;
         }
         // 调用删除逻辑（含重试）
-// ----------------- 新增槽实现：订单相关 -----------------
         int attempts = 0;
         bool removed = false;
         for (; attempts < 2; ++attempts) {
@@ -912,7 +955,7 @@ void UserWindow::onModifyCartItem() {
         } else {
             QMessageBox::warning(this, "删除商品", "删除失败（查看日志）");
         }
-        refreshCart();
+        refreshCartInternal();
         return;
     }
 
@@ -935,13 +978,20 @@ void UserWindow::onModifyCartItem() {
     if (updated) {
         QMessageBox::information(this, "修改数量", "已更新数量");
     } else {
-        QMessageBox::warning(this, "修改数量", "更新失败（查看日志）");
+        // 尝试判断是否为库存不足以提供更友好提示
+        Good g;
+        if (client_->CLTgetGoodById(productId, g) && newQty > g.getStock()) {
+            QMessageBox::warning(this, "修改数量", "小店没货啦");
+        } else {
+            QMessageBox::warning(this, "修改数量", "更新失败（查看日志）");
+        }
     }
-    refreshCart();
+    refreshCartInternal();
 }
 
 // 删除购物车商品（已增强日志、重连与重试逻辑）
 void UserWindow::onRemoveCartItem() {
+    if (!tryThrottle(this)) return;
     Logger::instance().info("UserWindow::onRemoveCartItem called");
     if (!client_) {
         Logger::instance().warn("UserWindow::onRemoveCartItem: client_ is null");
@@ -994,13 +1044,15 @@ void UserWindow::onRemoveCartItem() {
 
     if (removed) {
         QMessageBox::information(this, "删除商品", "已从购物车删除");
+        refreshCartInternal();
     } else {
         QMessageBox::warning(this, "删除商品", "删除失败（查看日志）");
     }
 }
 
-//cart->order
+// cart->order
 void UserWindow::onCheckout() {
+    if (!tryThrottle(this)) return;
     Logger::instance().info("UserWindow::onCheckout called");
     if (!client_) {
         Logger::instance().warn("UserWindow::onCheckout: client_ is null");
@@ -1154,14 +1206,21 @@ void UserWindow::onCheckout() {
     Logger::instance().info(std::string("UserWindow::onCheckout CLTsaveCartForUser returned ") + (saved ? "true" : "false"));
 
     QMessageBox::information(this, "结算", "订单已生成");
-    refreshCart();
-    refreshOrders();
+    // 使用内部刷新以避免再次被节流弹窗
+    refreshCartInternal();
+    refreshOrdersInternal();
 }
 
 //
 //order
 
 void UserWindow::refreshOrders() {
+    if (!tryThrottle(this)) return;
+    refreshOrdersInternal();
+}
+
+// 不带节流实现
+void UserWindow::refreshOrdersInternal() {
     if (!client_) return;
     orderTable->setRowCount(0);
 
@@ -1195,7 +1254,7 @@ void UserWindow::refreshOrders() {
         dt2 = dt2.addMSecs(msec);
         dt2 = dt2.toLocalTime();
         return dt2;
-        };
+    };
 
     std::vector<Order> filtered;
     filtered.reserve(orders.size());
@@ -1208,7 +1267,7 @@ void UserWindow::refreshOrders() {
         else {
             filtered.push_back(o);
         }
-    
+
     }
 
     orderTable->setRowCount((int)filtered.size());
@@ -1226,6 +1285,7 @@ void UserWindow::refreshOrders() {
 }
 
 void UserWindow::onViewOrderDetail() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = orderTable->selectedItems();
     if (items.empty()) { QMessageBox::warning(this, "查看订单", "请先选择订单行"); return; }
@@ -1257,6 +1317,7 @@ void UserWindow::onViewOrderDetail() {
 }
 
 void UserWindow::onReturnOrder() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = orderTable->selectedItems();
     if (items.empty()) { QMessageBox::warning(this, "退货", "请先选择订单行"); return; }
@@ -1269,6 +1330,7 @@ void UserWindow::onReturnOrder() {
 }
 
 void UserWindow::onRepairOrder() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = orderTable->selectedItems();
     if (items.empty()) { QMessageBox::warning(this, "维修", "请先选择订单行"); return; }
@@ -1281,6 +1343,7 @@ void UserWindow::onRepairOrder() {
 }
 
 void UserWindow::onDeleteOrder() {
+    if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = orderTable->selectedItems();
     if (items.empty()) { QMessageBox::warning(this, "删除订单", "请先选择订单行"); return; }
@@ -1294,7 +1357,8 @@ void UserWindow::onDeleteOrder() {
 
 
 void UserWindow::onApplyOrdersFilter() {
-    refreshOrders();
+    if (!tryThrottle(this)) return;
+    refreshOrdersInternal();
 }
 
 
@@ -1302,7 +1366,7 @@ void UserWindow::onClearOrdersFilter() {
     if (orderStartEdit) orderStartEdit->setDateTime(QDateTime::fromSecsSinceEpoch(0));
     if (orderEndEdit) orderEndEdit->setDateTime(QDateTime::currentDateTime().addYears(10));
     if (orderStatusFilter) orderStatusFilter->setCurrentIndex(0);
-    refreshOrders();
+    refreshOrdersInternal();
 }
 
 

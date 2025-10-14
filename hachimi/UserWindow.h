@@ -7,6 +7,10 @@
 #include "Client.h"
 #include <QDoubleSpinBox>
 #include <QDateTimeEdit>
+#include <QElapsedTimer>
+#define NOMINMAX // 在包含 <windows.h> 之前添加此行
+#include <windows.h>
+#include <algorithm>
 
 class Client;
 
@@ -118,4 +122,13 @@ private:
     QComboBox* orderStatusFilter;   // 新增：按状态筛选（用户视图）
     QPushButton* applyOrdersFilterBtn;
     QPushButton* clearOrdersFilterBtn;
+
+    // 每秒操作限制相关
+    QElapsedTimer actionTimer_;
+    bool tryThrottle(QWidget* parent = nullptr);
+
+    // 内部不带节流的实现（构造期间或内部刷新用，避免重复节流弹窗）
+    void refreshGoodsInternal();
+    void refreshCartInternal();
+    void refreshOrdersInternal();
 };

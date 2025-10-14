@@ -8,6 +8,7 @@
 #include "userManager.h"
 #include "DatabaseManager.h"
 #include <functional>
+#include <QElapsedTimer> // 新增：节流计时器
 
 // 前向声明，避免头文件循环包含
 class Client;
@@ -47,5 +48,9 @@ private:
 
     // 新增：记录启动模式（true = 管理员，false = 普通用户）
     bool startAsAdmin = false;
+
+    // 每秒操作限制相关（LoginWindow 同样支持节流）
+    QElapsedTimer actionTimer_;
+    bool tryThrottle(QWidget* parent = nullptr);
 };
 
