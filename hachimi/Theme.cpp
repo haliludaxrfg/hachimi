@@ -7,25 +7,115 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QUrl>
+#include <QStandardPaths>
+#include <QDir>
+#include <QDialog>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QMainWindow>
+#include <QScrollArea>
+#include <QGroupBox>
+#include <QFrame>
+#include <QTabWidget>
+#include <QGraphicsDropShadowEffect>
+#include <QFont> // 新增
+static void applyTextShadowToLabels(const QColor& textColor);
+// 让背景图可见：为顶层窗口与常见容器开启样式背景并设为透明
+static void markTopLevelAndContainersTransparent() {
+    for (QWidget* w : qApp->topLevelWidgets()) {
+        if (!w) continue;
+
+        // 先标记属性，再启用样式背景
+        w->setProperty("themeRoot", true);
+        w->setAttribute(Qt::WA_StyledBackground, true);
+
+        // 避免反复 += 导致样式不断膨胀；只设置一次透明背景
+        if (!w->property("themeTransparentApplied").toBool()) {
+            w->setStyleSheet("background: transparent;");
+            w->setProperty("themeTransparentApplied", true);
+        }
+
+        if (auto mw = qobject_cast<QMainWindow*>(w)) {
+            if (QWidget* cw = mw->centralWidget()) {
+                cw->setAttribute(Qt::WA_StyledBackground, true);
+                if (!cw->property("themeTransparentApplied").toBool()) {
+                    cw->setStyleSheet("background: transparent;");
+                    cw->setProperty("themeTransparentApplied", true);
+                }
+            }
+        }
+
+        // QTabWidget 及每个 tab page
+        for (auto tw : w->findChildren<QTabWidget*>()) {
+            tw->setAttribute(Qt::WA_StyledBackground, true);
+            if (!tw->property("themeTransparentApplied").toBool()) {
+                tw->setStyleSheet("QTabWidget::pane{background: transparent;}");
+                tw->setProperty("themeTransparentApplied", true);
+            }
+            for (int i = 0; i < tw->count(); ++i) {
+                if (QWidget* page = tw->widget(i)) {
+                    page->setAttribute(Qt::WA_StyledBackground, true);
+                    if (!page->property("themeTransparentApplied").toBool()) {
+                        page->setStyleSheet("background: transparent;");
+                        page->setProperty("themeTransparentApplied", true);
+                    }
+                }
+            }
+        }
+
+        // QScrollArea 视口
+        for (auto sa : w->findChildren<QScrollArea*>()) {
+            if (QWidget* vp = sa->viewport()) {
+                vp->setAttribute(Qt::WA_StyledBackground, true);
+                if (!vp->property("themeTransparentApplied").toBool()) {
+                    vp->setStyleSheet("background: transparent;");
+                    vp->setProperty("themeTransparentApplied", true);
+                }
+            }
+        }
+
+        // 常见容器
+        for (auto gb : w->findChildren<QGroupBox*>()) {
+            gb->setAttribute(Qt::WA_StyledBackground, true);
+            if (!gb->property("themeTransparentApplied").toBool()) {
+                gb->setStyleSheet("background: transparent;");
+                gb->setProperty("themeTransparentApplied", true);
+            }
+        }
+        for (auto fr : w->findChildren<QFrame*>()) {
+            fr->setAttribute(Qt::WA_StyledBackground, true);
+            if (!fr->property("themeTransparentApplied").toBool()) {
+                fr->setStyleSheet("background: transparent;");
+                fr->setProperty("themeTransparentApplied", true);
+            }
+        }
+    }
+}
 
 Theme& Theme::instance() {
     static Theme* inst = new Theme(qApp);
     return *inst;
 }
+static QString systemLightStyleSheet();
 
 Theme::Theme(QObject* parent)
     : QObject(parent),
-      dark_(false),
-      customEnabled_(false),
-      customBg_(QColor()),
-      customText_(QColor()),
-      customAccent_(QColor()),
-      backgroundEnabled_(false),
-      backgroundImagePath_()
+    dark_(false),
+    customEnabled_(false),
+    customBg_(QColor()),
+    customText_(QColor()),
+    customAccent_(QColor()),
+    backgroundEnabled_(false),
+    backgroundImagePath_()
 {
     // 默认深色样式（若无自定义配色或浅色模式使用空样式）
     cachedDarkSheet_ = R"(
-        QWidget { background-color: #0B1A1E; color: #E6F1F2; }
+        QWidget { background-color: #0B1A1E; color: #E6F1F2; font-family: '方正FW珍珠体 简繁','Microsoft YaHei',sans-serif; }
         QTabWidget::pane { background: transparent; }
         QTabBar::tab { background: transparent; padding: 6px 12px; color: #CFEFEA; }
         QTabBar::tab:selected { background: rgba(45,212,191,0.10); border-radius:4px; }
@@ -50,19 +140,25 @@ Theme::Theme(QObject* parent)
             padding: 4px;
             border: 1px solid #122B2E;
         }
+        /* 去除按钮渐变，改为纯色 */
         QPushButton {
-            background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #175656, stop:1 #0F3B3E);
+            background-color: #175656;
             color: #F8FFFE;
             border: 1px solid #1E6E69;
             border-radius: 4px;
             padding: 6px 10px;
         }
-        QPushButton:hover { background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #1f7f78, stop:1 #126c68); }
+        QPushButton:hover { background-color: #1f7f78; }
         QPushButton:pressed { background-color: #0b5b55; }
         QMessageBox { background-color: #071014; color: #E6F1F2; }
         QMenu { background-color: #071014; color: #E6F1F2; }
         QToolTip { background-color: #0f2a2e; color: #E6F1F2; border: 1px solid #1E3A3E; }
     )";
+
+    // 全局设置应用字体（若系统未安装将回退到样式表里的备选字体）
+    QFont appFont(QStringLiteral("方正FW珍珠体 简繁"));
+    appFont.setStyleStrategy(QFont::PreferAntialias);
+    qApp->setFont(appFont);
 }
 
 void Theme::initFromSystem() {
@@ -105,7 +201,7 @@ void Theme::initFromSystem() {
         backgroundImagePath_ = defaultBgRes;
         backgroundEnabled_ = true;
     } else {
-        // 若没有把图片加入资源，则尝试查找项目 assets 路径（开发阶段）
+        // 若没有把图片加入资源，则尝试查找项目 assets 开发阶段）
         QString devPath = QStringLiteral("assets/default_bg.png");
         if (QFile::exists(devPath)) {
             backgroundImagePath_ = devPath;
@@ -130,14 +226,20 @@ void Theme::apply(bool dark) {
         QString ss = buildStyleSheetFromColors(customBg_, customText_, customAccent_);
         qApp->setStyleSheet(ss);
         Logger::instance().info("Theme: applied custom palette stylesheet");
+        // 为文字添加阴影（基于当前文本色）
+        applyTextShadowToLabels(customText_.isValid() ? customText_ : qApp->palette().color(QPalette::WindowText));
     } else {
-        if (dark) qApp->setStyleSheet(cachedDarkSheet_);
-        else qApp->setStyleSheet(QString());
-        Logger::instance().info(std::string("Theme: applied ") + (dark ? "dark" : "light"));
+        // 修复：恢复为“系统默认设置”时，改用你提供的浅色样式，而不是清空样式表
+        if (dark) {
+            qApp->setStyleSheet(cachedDarkSheet_);
+        } else {
+            qApp->setStyleSheet(systemLightStyleSheet());
+        }
+        Logger::instance().info(std::string("Theme: applied ") + (dark ? "dark" : "system-light-css"));
+        applyTextShadowToLabels(qApp->palette().color(QPalette::WindowText));
     }
     dark_ = dark;
     emit themeChanged(dark_);
-    // 如果已配置背景图，确保背景样式被叠加（apply 不会移除 backgroundEnabled_）
     if (backgroundEnabled_) applyBackgroundImage(false);
 }
 
@@ -197,7 +299,6 @@ void Theme::loadSettings() {
     }
     s.endGroup();
 }
-
 QString Theme::buildStyleSheetFromColors(const QColor& bg, const QColor& text, const QColor& accent) const {
     QColor bgc = bg.isValid() ? bg : QColor("#0B1A1E");
     QColor textc = text.isValid() ? text : QColor("#E6F1F2");
@@ -205,8 +306,18 @@ QString Theme::buildStyleSheetFromColors(const QColor& bg, const QColor& text, c
     QColor headerBg = bgc.darker(110);
     QString accentStr = accent.isValid() ? accent.name(QColor::HexArgb) : QString("#2DD4BF");
 
+    // 计算按钮纯色与悬停/按下色（去除渐变）
+    QColor accentColor = QColor(accentStr);
+    QString accNormal = accentColor.name(QColor::HexArgb);
+    QString accHover = accentColor.lighter(115).name(QColor::HexArgb);
+    QString accPressed = accentColor.darker(115).name(QColor::HexArgb);
+    QString rgbAccent = QString("%1,%2,%3")
+        .arg(accentColor.red())
+        .arg(accentColor.green())
+        .arg(accentColor.blue());
+
     QString ss = QString(R"(
-        QWidget { background-color: %1; color: %2; }
+        QWidget { background-color: %1; color: %2; font-family: '方正FW珍珠体 简繁','Microsoft YaHei',sans-serif; }
         QTabWidget::pane { background: transparent; }
         QTabBar::tab { background: transparent; padding: 6px 12px; color: %2; }
         QTabBar::tab:selected { background: rgba(%4,0.10); border-radius:4px; }
@@ -231,15 +342,16 @@ QString Theme::buildStyleSheetFromColors(const QColor& bg, const QColor& text, c
             padding: 4px;
             border: 1px solid %5;
         }
+        /* 去除按钮渐变，改为纯色 */
         QPushButton {
-            background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 %9, stop:1 %10);
+            background-color: %9;
             color: %2;
             border: 1px solid %5;
             border-radius: 4px;
             padding: 6px 10px;
         }
-        QPushButton:hover { background-color: %11; }
-        QPushButton:pressed { background-color: %12; }
+        QPushButton:hover { background-color: %10; }
+        QPushButton:pressed { background-color: %11; }
         QMessageBox { background-color: %7; color: %2; }
         QMenu { background-color: %7; color: %2; }
         QToolTip { background-color: %3; color: %2; border: 1px solid %5; }
@@ -247,15 +359,14 @@ QString Theme::buildStyleSheetFromColors(const QColor& bg, const QColor& text, c
         .arg(bgc.name(QColor::HexArgb))
         .arg(textc.name(QColor::HexArgb))
         .arg(inpBg.name(QColor::HexArgb))
-        .arg(QString::number(QColor(accentStr).red()) + "," + QString::number(QColor(accentStr).green()) + "," + QString::number(QColor(accentStr).blue()))
+        .arg(rgbAccent)
         .arg(headerBg.darker(110).name(QColor::HexArgb))
-        .arg(accentStr)
+        .arg(accNormal)
         .arg(bgc.darker(140).name(QColor::HexArgb))
         .arg(headerBg.name(QColor::HexArgb))
-        .arg(accentStr)
-        .arg(bgc.name(QColor::HexArgb))
-        .arg(QColor(accentStr).name(QColor::HexArgb))
-        .arg(accentStr);
+        .arg(accNormal)
+        .arg(accHover)
+        .arg(accPressed);
 
     return ss;
 }
@@ -268,6 +379,8 @@ void Theme::applyPaletteColors(const QColor& background, const QColor& text, con
     QString ss = buildStyleSheetFromColors(customBg_, customText_, customAccent_);
     qApp->setStyleSheet(ss);
     Logger::instance().info("Theme: applied palette colors");
+    // 同步应用文字阴影
+    applyTextShadowToLabels(customText_.isValid() ? customText_ : qApp->palette().color(QPalette::WindowText));
     emit themeChanged(dark_);
     if (save) saveSettings();
 }
@@ -300,49 +413,302 @@ void Theme::clearCustomColors(bool save) {
 
 // -------- 背景图片相关实现 --------
 
+// 禁用：加载背景图片
 bool Theme::showBackgroundImageSelector(QWidget* parent, bool save) {
-    QString fn = QFileDialog::getOpenFileName(parent, "选择背景图片", QString(), "图片文件 (*.png *.jpg *.jpeg *.bmp)");
-    if (fn.isEmpty()) return false;
-    if (!QFile::exists(fn)) {
-        Logger::instance().warn(std::string("Theme: selected background file does not exist: ") + fn.toStdString());
-        return false;
+    (void)parent; (void)save;
+    Logger::instance().info("Theme: background image selection is disabled");
+    return false;
+}
+
+// 禁用：应用背景图片（保持现有颜色样式，不叠加图片）
+void Theme::applyBackgroundImage(bool save) {
+    (void)save;
+    // 不做任何处理，避免修改样式表
+}
+
+// 禁用：清除背景图片
+void Theme::clearBackgroundImage(bool save) {
+    (void)save;
+    // 不做任何处理，避免修改样式表
+}
+
+// -------- 主题预设管理实现 --------
+
+QString Theme::presetsFilePath() const {
+    QString base = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+    if (base.isEmpty()) {
+        base = QDir::homePath() + "/.hachimi";
     }
-    backgroundImagePath_ = fn;
-    backgroundEnabled_ = true;
-    applyBackgroundImage(save);
+    QDir dir(base);
+    if (!dir.exists()) dir.mkpath(".");
+    QString file = dir.filePath("theme_presets.ini");
+    return file;
+}
+
+bool Theme::writePreset(int slotIndex, const Preset& p) {
+    if (slotIndex < 1 || slotIndex > 5) return false;
+    QSettings ini(presetsFilePath(), QSettings::IniFormat);
+    ini.beginGroup(QString("Preset%1").arg(slotIndex));
+    ini.setValue("name", p.name);
+    ini.setValue("dark", p.dark);
+    ini.setValue("customEnabled", p.customEnabled);
+    ini.setValue("customBg", p.customBg.name(QColor::HexArgb));
+    ini.setValue("customText", p.customText.name(QColor::HexArgb));
+    ini.setValue("customAccent", p.customAccent.name(QColor::HexArgb));
+    ini.setValue("backgroundEnabled", p.backgroundEnabled);
+    ini.setValue("backgroundImagePath", p.backgroundImagePath);
+    ini.endGroup();
+    ini.sync();
+    return (ini.status() == QSettings::NoError);
+}
+
+static QColor colorFromHex(const QVariant& v, const QColor& fallback = QColor()) {
+    QColor c(v.toString());
+    return c.isValid() ? c : fallback;
+}
+
+bool Theme::loadPresetFromStorage(int slotIndex, Preset& out) {
+    if (slotIndex < 1 || slotIndex > 5) return false;
+    QSettings ini(presetsFilePath(), QSettings::IniFormat);
+    ini.beginGroup(QString("Preset%1").arg(slotIndex));
+    if (!ini.contains("dark") && !ini.contains("customEnabled") && !ini.contains("backgroundEnabled")) {
+        ini.endGroup();
+        return false; // 空槽
+    }
+    out.name = ini.value("name", QString("预设 %1").arg(slotIndex)).toString();
+    out.dark = ini.value("dark", false).toBool();
+    out.customEnabled = ini.value("customEnabled", false).toBool();
+    out.customBg = colorFromHex(ini.value("customBg"), QColor("#FF0B1A1E"));
+    out.customText = colorFromHex(ini.value("customText"), QColor("#FFE6F1F2"));
+    out.customAccent = colorFromHex(ini.value("customAccent"), QColor("#FF2DD4BF"));
+    out.backgroundEnabled = ini.value("backgroundEnabled", false).toBool();
+    out.backgroundImagePath = ini.value("backgroundImagePath").toString();
+    ini.endGroup();
     return true;
 }
 
-void Theme::applyBackgroundImage(bool save) {
-    if (!backgroundEnabled_ || backgroundImagePath_.isEmpty()) {
-        // 若没有背景，确保恢复纯样式（但保留颜色样式）
-        if (customEnabled_) qApp->setStyleSheet(buildStyleSheetFromColors(customBg_, customText_, customAccent_));
-        else qApp->setStyleSheet(dark_ ? cachedDarkSheet_ : QString());
-        emit backgroundChanged(QString());
-        if (save) saveSettings();
-        return;
-    }
-
-    // 构造背景样式（使用 file:// URL）
-    QUrl url = QUrl::fromLocalFile(backgroundImagePath_);
-    QString bgRule = QString("QWidget { background-image: url(\"%1\"); background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: cover; }")
-                        .arg(url.toString());
-
-    // 基本样式（颜色）与背景规则合并：把背景规则追加到基础样式
-    QString base;
-    if (customEnabled_) base = buildStyleSheetFromColors(customBg_, customText_, customAccent_);
-    else base = (dark_ ? cachedDarkSheet_ : QString());
-
-    QString finalSheet = base + "\n" + bgRule;
-    qApp->setStyleSheet(finalSheet);
-    emit backgroundChanged(backgroundImagePath_);
-    Logger::instance().info(std::string("Theme: applied background image: ") + backgroundImagePath_.toStdString());
-    if (save) saveSettings();
+bool Theme::readPreset(int slotIndex, Preset& outPreset) const {
+    return const_cast<Theme*>(this)->loadPresetFromStorage(slotIndex, outPreset);
 }
 
-void Theme::clearBackgroundImage(bool save) {
-    backgroundEnabled_ = false;
-    backgroundImagePath_.clear();
-    applyBackgroundImage(save); // will reapply base style and save if requested
-    Logger::instance().info("Theme: cleared background image");
+bool Theme::savePreset(int slotIndex, const QString& customName) {
+    Preset p;
+    p.name = customName.isEmpty() ? QString("预设 %1").arg(slotIndex) : customName;
+    p.dark = dark_;
+    p.customEnabled = customEnabled_;
+    p.customBg = customBg_;
+    p.customText = customText_;
+    p.customAccent = customAccent_;
+    p.backgroundEnabled = backgroundEnabled_;
+    p.backgroundImagePath = backgroundImagePath_;
+    return writePreset(slotIndex, p);
+}
+
+bool Theme::applyPreset(int slotIndex) {
+    Preset p;
+    if (!loadPresetFromStorage(slotIndex, p)) {
+        QMessageBox::warning(nullptr, "主题预设", QString("槽位 %1 为空，无法应用").arg(slotIndex));
+        return false;
+    }
+    // 应用深浅色
+    apply(p.dark);
+    // 应用调色板（不重复保存）
+    customEnabled_ = p.customEnabled;
+    if (p.customEnabled) {
+        applyPaletteColors(p.customBg, p.customText, p.customAccent, false);
+    } else {
+        clearCustomColors(false);
+    }
+    // 应用背景图
+    backgroundEnabled_ = p.backgroundEnabled;
+    backgroundImagePath_ = p.backgroundImagePath;
+    if (backgroundEnabled_ && !backgroundImagePath_.isEmpty()) {
+        applyBackgroundImage(false);
+    } else {
+        clearBackgroundImage(false);
+    }
+    // 保存为当前主题
+    saveSettings();
+    emit themeChanged(dark_);
+    emit backgroundChanged(backgroundImagePath_);
+    return true;
+}
+
+bool Theme::showPresetManager(QWidget* parent) {
+    QDialog dlg(parent);
+    dlg.setWindowTitle("主题预设管理");
+    QVBoxLayout* v = new QVBoxLayout(&dlg);
+
+    QHBoxLayout* row1 = new QHBoxLayout;
+    row1->addWidget(new QLabel("预设槽位:"));
+    QComboBox* slotCombo = new QComboBox(&dlg);
+    for (int i = 1; i <= 5; ++i) slotCombo->addItem(QString("预设 %1").arg(i), i);
+    row1->addWidget(slotCombo);
+    row1->addWidget(new QLabel("名称:"));
+    QLineEdit* nameEdit = new QLineEdit(&dlg);
+    row1->addWidget(nameEdit);
+    v->addLayout(row1);
+
+    QHBoxLayout* row2 = new QHBoxLayout;
+    QPushButton* editPaletteBtn = new QPushButton("编辑调色板", &dlg);
+    row2->addWidget(editPaletteBtn);
+    v->addLayout(row2);
+
+    QHBoxLayout* row3 = new QHBoxLayout;
+    QPushButton* saveBtn = new QPushButton("保存到该槽", &dlg);
+    QPushButton* applyBtn = new QPushButton("应用该槽", &dlg);
+    QPushButton* resetBtn = new QPushButton("重置为系统主题", &dlg);
+    QPushButton* closeBtn = new QPushButton("关闭", &dlg);
+    row3->addWidget(saveBtn);
+    row3->addWidget(applyBtn);
+    row3->addWidget(resetBtn);
+    row3->addStretch();
+    row3->addWidget(closeBtn);
+    v->addLayout(row3);
+
+    // 初始化名称显示
+    auto refreshName = [&]() {
+        int slotIndex = slotCombo->currentData().toInt();
+        Preset p;
+        if (loadPresetFromStorage(slotIndex, p)) {
+            nameEdit->setText(p.name);
+        } else {
+            nameEdit->setText(QString("预设 %1").arg(slotIndex));
+        }
+    };
+    refreshName();
+
+    QObject::connect(slotCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+                     &dlg, [&](int){ refreshName(); });
+
+    QObject::connect(editPaletteBtn, &QPushButton::clicked, &dlg, [&]() {
+        showPaletteEditor(&dlg);
+    });
+
+    QObject::connect(saveBtn, &QPushButton::clicked, &dlg, [&]() {
+        int slotIndex = slotCombo->currentData().toInt();
+        if (savePreset(slotIndex, nameEdit->text().trimmed()))
+            QMessageBox::information(&dlg, "主题预设", "已保存到槽位");
+        else
+            QMessageBox::warning(&dlg, "主题预设", "保存失败");
+    });
+    QObject::connect(applyBtn, &QPushButton::clicked, &dlg, [&]() {
+        int slotIndex = slotCombo->currentData().toInt();
+        applyPreset(slotIndex);
+    });
+    // 调整“重置为系统主题”逻辑：真正回到系统默认（此处为自定义的系统浅色样式）
+    QObject::connect(resetBtn, &QPushButton::clicked, &dlg, [&]() {
+        // 清除自定义调色板与背景配置
+        customEnabled_ = false;
+        backgroundEnabled_ = false;
+        backgroundImagePath_.clear();
+        // 设为浅色并应用系统浅色样式
+        dark_ = false;
+        apply(false);
+        saveSettings();
+        QMessageBox::information(&dlg, "主题预设", "已恢复为系统默认样式（浅色 CSS）");
+    });
+    QObject::connect(closeBtn, &QPushButton::clicked, &dlg, [&]() { dlg.accept(); });
+
+    dlg.setMinimumWidth(520);
+    return dlg.exec() == QDialog::Accepted;
+}
+
+// 在 Theme.cpp 文件底部实现
+static QString systemLightStyleSheet() {
+    return QString::fromUtf8(R"(
+QWidget { 
+    background-color: #FFFFFF;  /* 白色主背景 */
+    color: #333333;             /* 深灰色文字 */
+    font-family: '方正FW珍珠体 简繁','Microsoft YaHei',sans-serif;
+}
+
+/* 标签页样式 */
+QTabBar::tab { 
+    background: transparent; 
+    padding: 6px 12px; 
+    color: #666666;             /* 中性灰色 */
+}
+QTabBar::tab:selected { 
+    background: rgba(255, 105, 180, 0.1);  /* 粉红色透明背景 */
+    border-radius: 4px; 
+    color: #FF69B4;             /* 粉红色 */
+}
+
+/* 输入控件 */
+QLineEdit, QPlainTextEdit, QTextEdit, QComboBox, QSpinBox, QDoubleSpinBox {
+    background-color: #F8F9FA;   /* 浅灰背景 */
+    color: #333333;
+    border: 1px solid #DDDDDD;   /* 浅灰边框 */
+    border-radius: 4px;
+    padding: 4px;
+}
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus { 
+    border: 1px solid #87CEEB;   /* 天蓝色焦点边框 */
+}
+
+/* 表格样式 */
+QTableWidget {
+    background-color: #FFFFFF;
+    color: #333333;
+    gridline-color: #EEEEEE;
+    selection-background-color: rgba(135, 206, 235, 0.2);  /* 天蓝色选中 */
+    selection-color: #333333;
+}
+
+/* 按钮样式 */
+QPushButton {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #FF69B4, stop:1 #FF1493); /* 粉红渐变 */
+    color: #FFFFFF;              /* 白色文字 */
+    border: 1px solid #FF69B4;
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+QPushButton:hover { 
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #FF85C1, stop:1 #FF43A4); 
+}
+QPushButton:pressed { 
+    background-color: #E75480;   /* 深粉红 */
+}
+
+/* 其他元素 */
+QHeaderView::section {
+    background-color: #F0F0F0;   /* 浅灰背景 */
+    color: #333333;              /* 黑色文字 */
+    border: 1px solid #DDDDDD;
+}
+)");
+}
+
+// 为所有 QLabel 应用/更新文本阴影（尽量不影响已有自定义效果）
+// 为所有 QLabel 应用/更新“黑色描边”效果
+static void applyTextShadowToLabels(const QColor& textColor) {
+    (void)textColor; // 描边固定为黑色，忽略传入颜色
+    const QColor outline(0, 0, 0, 230); // 纯黑，略透明提升观感
+
+    for (QWidget* w : qApp->topLevelWidgets()) {
+        if (!w) continue;
+        const auto labels = w->findChildren<QLabel*>();
+        for (QLabel* lbl : labels) {
+            if (!lbl) continue;
+            if (lbl->text().trimmed().isEmpty()) continue;
+
+            auto existing = qobject_cast<QGraphicsDropShadowEffect*>(lbl->graphicsEffect());
+            if (existing) {
+                if (lbl->property("themeTextShadowApplied").toBool()) {
+                    existing->setColor(outline);
+                    existing->setBlurRadius(0.8);              // 小模糊模拟描边
+                    existing->setOffset(QPointF(0.0, 0.0));    // 无偏移 => 描边环绕
+                }
+                continue;
+            }
+
+            auto effect = new QGraphicsDropShadowEffect(lbl);
+            effect->setBlurRadius(0.8);
+            effect->setOffset(QPointF(0.0, 0.0));
+            effect->setColor(outline);
+            lbl->setGraphicsEffect(effect);
+            lbl->setProperty("themeTextShadowApplied", true);
+        }
+    }
 }

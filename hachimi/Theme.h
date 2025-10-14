@@ -1,13 +1,7 @@
 #pragma once
-
-#ifndef HACHIMI_THEME_H
-#define HACHIMI_THEME_H
-
 #include <QObject>
-#include <QString>
 #include <QColor>
-
-class QWidget;
+#include <QString>
 
 class Theme : public QObject {
     Q_OBJECT
@@ -36,18 +30,37 @@ public:
     void clearCustomColors(bool save = true);
     bool isUsingCustomColors() const noexcept { return customEnabled_; }
 
-    // 新增：背景图片相关
-    // 弹出文件选择对话，选择后应用并可保存（返回 true 表示已应用）
+    // 背景图片相关
     bool showBackgroundImageSelector(QWidget* parent = nullptr, bool save = true);
-
-    // 直接应用已设置的背景图片（如果存在）
     void applyBackgroundImage(bool save = true);
-
-    // 清除背景图片（并可保存设置）
     void clearBackgroundImage(bool save = true);
 
     // 获取当前深色样式（供调试/扩展）
     QString darkStyleSheet() const noexcept;
+
+    // ========== 新增：主题预设（5 槽）==========
+    struct Preset {
+        QString name;                // 预设名称
+        bool dark = false;           // 深色/浅色
+        bool customEnabled = false;  // 是否启用自定义调色板
+        QColor customBg;
+        QColor customText;
+        QColor customAccent;
+        bool backgroundEnabled = false;
+        QString backgroundImagePath;
+    };
+
+    // 打开预设管理器（统一给 Admin/User 调用）
+    bool showPresetManager(QWidget* parent = nullptr);
+
+    // 保存当前主题到指定槽位(1..5)
+    bool savePreset(int slotIndex, const QString& customName = QString());
+
+    // 应用指定槽位(1..5)并保存为当前主题
+    bool applyPreset(int slotIndex);
+
+    // 读取槽位配置（不应用）
+    bool readPreset(int slotIndex, Preset& outPreset) const;
 
 signals:
     void themeChanged(bool dark);
@@ -57,6 +70,12 @@ private:
     explicit Theme(QObject* parent = nullptr);
     QString buildStyleSheetFromColors(const QColor& bg, const QColor& text, const QColor& accent) const;
 
+    // 预设读写辅助
+    QString presetsFilePath() const; // 本地 INI 文件路径
+    bool writePreset(int slotIndex, const Preset& preset);
+    bool loadPresetFromStorage(int slotIndex, Preset& out);
+
+    // 当前状态
     bool dark_;
     bool customEnabled_;
     QColor customBg_;
@@ -68,5 +87,3 @@ private:
     bool backgroundEnabled_;
     QString backgroundImagePath_;
 };
-
-#endif // HACHIMI_THEME_H

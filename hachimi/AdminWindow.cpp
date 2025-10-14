@@ -334,17 +334,22 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
 
     // 返回按钮与“返回身份选择界面”并列
     QHBoxLayout* bottomBtnLayout = new QHBoxLayout;
-    backBtn = new QPushButton("切换主题", this); // 改为切换主题
+    backBtn = new QPushButton("修改主题", this); // 原“切换主题”改为“修改主题”
     returnIdentityBtn = new QPushButton("返回身份选择界面", this);
     bottomBtnLayout->addStretch();
     bottomBtnLayout->addWidget(backBtn);
     bottomBtnLayout->addWidget(returnIdentityBtn);
     mainLayout->addLayout(bottomBtnLayout);
 
-    // 连接：切换主题（允许在浅/深之间切换，不再受系统强制）
-    connect(backBtn, &QPushButton::clicked, this, []() {
-        Theme::instance().toggle();
+    connect(backBtn, &QPushButton::clicked, this, [this]() {
+        Theme::instance().showPresetManager(this);
     });
+    connect(returnIdentityBtn, &QPushButton::clicked, this, &AdminWindow::onReturnToIdentitySelection);
+
+    // 连接：切换主题（允许在浅/深之间切换，不再受系统强制）
+    connect(backBtn, &QPushButton::clicked, this, [this]() {
+        Theme::instance().showPresetManager(this);
+        });
     connect(returnIdentityBtn, &QPushButton::clicked, this, &AdminWindow::onReturnToIdentitySelection);
 
     // 连接槽（用户部分）
@@ -511,7 +516,7 @@ void AdminWindow::onDeleteUser() {
     }
     int row = usersTable->row(items.first());
     QString phone = usersTable->item(row, 0)->text();
-    QString pwd = usersTable->item(row, 2)->text(); // 管理員界面显示明文
+    QString pwd = usersTable->item(row, 2)->text(); // 管理員界面顯示明文
 
     if (QMessageBox::question(this, "删除用户", QString("确认删除用户 %1 ?").arg(phone)) != QMessageBox::Yes) return;
 

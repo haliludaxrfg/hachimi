@@ -361,16 +361,16 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
 
     // 返回按钮及“返回身份选择界面”按钮，横向排列
     QHBoxLayout* bottomBtnLayout = new QHBoxLayout;
-    backBtn = new QPushButton("切换主题", this); // 改为切换主题
+    backBtn = new QPushButton("修改主题", this); // 原“切换主题”改为“修改主题”
     returnIdentityBtn = new QPushButton("返回身份选择界面", this);
     bottomBtnLayout->addStretch();
     bottomBtnLayout->addWidget(backBtn);
     bottomBtnLayout->addWidget(returnIdentityBtn);
     mainLayout->addLayout(bottomBtnLayout);
 
-    // 连接槽：切换主题（替代原来的 close），允许在浅/深之间切换（不受系统强制）
-    connect(backBtn, &QPushButton::clicked, this, []() {
-        Theme::instance().toggle();
+    // 打开主题预设管理器（管理员与用户共用设置）
+    connect(backBtn, &QPushButton::clicked, this, [this]() {
+        Theme::instance().showPresetManager(this);
     });
     connect(returnIdentityBtn, &QPushButton::clicked, this, &UserWindow::onReturnToIdentitySelection);
 
