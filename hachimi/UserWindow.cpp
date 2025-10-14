@@ -20,7 +20,8 @@
 #include <QDateTimeEdit> // 新增：日期时间筛选控件
 #include <unordered_set>
 #include "Theme.h"
-
+#include <QStringList> // 添加所需头（用于 QStringList）
+static bool checkCartStockAndWarn(Client* client, const TemporaryCart& cart, QWidget* parent);
 // 在文件顶部 includes 之后加入与 AdminWindow 相同的状态映射辅助函数（UI 文件内局部）
 static QString orderStatusToText(int status) {
     switch (status) {
@@ -596,9 +597,16 @@ void UserWindow::onDeleteAccount() {
     }
 }
 
-//
-//good
-
+// 生成唯一订单号（不再复用 cart_id）
+static QString generateOrderId_User() {
+    QString dt = QDateTime::currentDateTime().toString("yyyyMMddHHmmsszzz");
+    static thread_local std::mt19937_64 rng((std::random_device())());
+    std::uniform_int_distribution<uint64_t> dist(0, (std::numeric_limits<uint64_t>::max)());
+    uint64_t r = dist(rng);
+    QString id = QString("o%1_%2").arg(dt).arg(QString::number(r, 16));
+    if (id.size() > 63) id = id.left(63);
+    return id;
+}
 // public wrapper：带节流的刷新商品
 void UserWindow::refreshGoods() {
     if (!tryThrottle(this)) return;
@@ -671,10 +679,7 @@ void UserWindow::onAddToCart() {
     if (!tryThrottle(this)) return;
     if (!client_) return;
     auto items = goodsTable->selectedItems();
-    if (items.empty()) {
-        QMessageBox::warning(this, "加入购物车", "请先选择商品");
-        return;
-    }
+    if (items.empty()) { QMessageBox::warning(this, "加入购物车", "请先选择商品"); return; }
     int row = goodsTable->row(items.first());
     int id = goodsTable->item(row, 0)->text().toInt();
     QString name = goodsTable->item(row, 1)->text();
@@ -684,42 +689,42 @@ void UserWindow::onAddToCart() {
     int qty = QInputDialog::getInt(this, "加入购物车", "数量:", 1, 1, 1000000, 1, &ok);
     if (!ok) return;
 
-    // 详细日志：记录准备发送的参数
+    // 新增：加入前做库存预检查与矫正
+    Good g;
+    if (client_->CLTgetGoodById(id, g)) {
+        int stock = g.getStock();
+        if (stock <= 0) {
+            QMessageBox::warning(this, "加入购物车", "该商品当前无库存");
+            return;
+        }
+        if (qty > stock) {
+            bool ok2;
+            int newQty = QInputDialog::getInt(this, "库存不足",
+                           QString("最多可选 %1 件，请重新输入:").arg(stock),
+                           stock, 1, stock, 1, &ok2);
+            if (!ok2) return;
+            qty = newQty;
+        }
+    }
+
     Logger::instance().info(std::string("UserWindow::onAddToCart params: phone=") + phone_ +
                             ", goodId=" + std::to_string(id) +
                             ", name=" + name.toStdString() +
                             ", price=" + std::to_string(price) +
                             ", qty=" + std::to_string(qty));
 
-    // 若连接断开，尝试重连一次并记录结果
     if (!client_->CLTisConnectionActive()) {
         Logger::instance().warn("UserWindow::onAddToCart: client not connected, attempting reconnect");
         bool rc = client_->CLTreconnect();
-        Logger::instance().info(std::string("UserWindow::onAddToCart: CLTreconnect returned ") + (rc ? "true" : "false"));
-        if (!rc) {
-            QMessageBox::warning(this, "加入购物车", "与服务器连接失败，无法加入购物车（已尝试重连）");
-            return;
-        }
+        if (!rc) { QMessageBox::warning(this, "加入购物车", "连接失败，已尝试重连"); return; }
     }
 
-    // 发请求并记录返回值
     bool res = client_->CLTaddToCart(phone_, id, name.toStdString(), price, qty);
-    Logger::instance().info(std::string("UserWindow::onAddToCart CLTaddToCart returned ") + (res ? "true" : "false"));
+    Logger::instance().info(std::string("UserWindow::onAddToCart CLTaddToCart返回") + (res ? "true" : "false"));
 
-    if (res) {
-        QMessageBox::information(this, "加入购物车", "已加入购物车");
-    } else {
-        // 如果失败，尝试进一步判断是否为库存不足，并给出友好提示
-        Good g;
-        if (client_->CLTgetGoodById(id, g) && qty > g.getStock()) {
-            QMessageBox::warning(this, "加入购物车", "小店没货啦");
-        } else {
-            // 更具体的提示并引导查看日志
-            QMessageBox::warning(this, "加入购物车", "加入失败（查看 log.txt 获取详细信息）");
-        }
-    }
+    if (res) QMessageBox::information(this, "加入购物车", "已加入购物车");
+    else     QMessageBox::warning(this, "加入购物车", "加入失败（查看 log.txt 获取详细信息）");
 
-    // 刷新显示（内部刷新以避免第二次节流弹窗）
     refreshCartInternal();
 }
 
@@ -984,6 +989,20 @@ void UserWindow::onModifyCartItem() {
         return;
     }
 
+    // ...拿到 newQty 后，发送更新前：
+    Good gForUpdate;
+    if (client_->CLTgetGoodById(productId, gForUpdate)) {
+        int stock = gForUpdate.getStock();
+        if (newQty > stock) {
+            bool okAdj;
+            int adj = QInputDialog::getInt(this, "库存不足",
+                       QString("最多可选 %1 件，请重新输入:").arg(stock),
+                       (std::max)(1, stock), 1, (std::max)(1, stock), 1, &okAdj);
+            if (!okAdj) return;
+            newQty = adj;
+        }
+    }
+
     // 否则更新数量（重试一次）
     int attempts = 0;
     bool updated = false;
@@ -1058,12 +1077,12 @@ void UserWindow::onRemoveCartItem() {
         if (!client_->CLTisConnectionActive()) {
             Logger::instance().warn("UserWindow::onRemoveCartItem: client not connected, attempting reconnect");
             bool rc = client_->CLTreconnect();
-            Logger::instance().info(std::string("UserWindow::onRemoveCartItem: CLTreconnect returned ") + (rc ? "true" : "false"));
+            Logger::instance().info(std::string("UserWindow::onRemoveCartItem: CLTreconnect返回") + (rc ? "true" : "false"));
             if (!rc) { Logger::instance().warn("UserWindow::onRemoveCartItem: reconnect failed"); }
         }
         Logger::instance().info(std::string("UserWindow::onRemoveCartItem: attempt remove productId=") + std::to_string(productId) + ", attempt=" + std::to_string(attempts+1));
         removed = client_->CLTremoveFromCart(phone_, productId);
-        Logger::instance().info(std::string("UserWindow::onRemoveCartItem CLTremoveFromCart returned ") + (removed ? "true" : "false"));
+        Logger::instance().info(std::string("UserWindow::onRemoveCartItem CLTremoveFromCart返回") + (removed ? "true" : "false"));
         if (removed) break;
     }
 
@@ -1185,43 +1204,20 @@ void UserWindow::onCheckout() {
 
     // 4) 使用服务器最终结果（或本地已保存策略）计算应付金额并向用户确认
     double payable = (useCart.final_amount > 0.0) ? useCart.final_amount : useCart.total_amount;
-    QString confirmMsg = QString("确认结算当前购物车？应付金额：%1\n收货地址：%2").arg(payable).arg(QString::fromStdString(useCart.shipping_address));
+    // 在弹出确认对话框前先做库存校验
+    if (!checkCartStockAndWarn(client_, useCart, this)) return;
+
+    QString confirmMsg = QString("确认结算当前购物车？应付金额：%1\n收货地址：%2")
+        .arg(payable).arg(QString::fromStdString(useCart.shipping_address));
     if (QMessageBox::question(this, "确认结算", confirmMsg) != QMessageBox::Yes) {
         Logger::instance().info("UserWindow::onCheckout: user cancelled checkout");
         return;
     }
 
-    // 5) 生成订单ID（优先用 cart_id）
-    // 确保拿到服务器最新的 cart_id（避免使用本地空 id 导致 fallback orderId）
-    if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
-    try {
-        TemporaryCart fresh = client_->CLTgetCartForUser(phone_);
-        if (!fresh.cart_id.empty()) {
-            useCart.cart_id = fresh.cart_id;
-            Logger::instance().info(std::string("UserWindow::onCheckout: refreshed cart_id from server -> ") + useCart.cart_id);
-        }
-        else {
-            Logger::instance().info("UserWindow::onCheckout: server returned empty cart_id on refresh");
-        }
-    }
-    catch (...) {
-        Logger::instance().warn("UserWindow::onCheckout: failed to refresh cart before order id generation");
-    }
+    // 5) 生成订单ID：不再使用 cart_id，使用新的、有时间戳与随机的 ID
+    QString oid = generateOrderId_User();
 
-    QString oid;
-    if (!useCart.cart_id.empty()) {
-        oid = QString::fromStdString(useCart.cart_id);
-        Logger::instance().info(std::string("UserWindow::onCheckout: using cart.cart_id as order id: ") + useCart.cart_id);
-    }
-    else {
-        oid = QDateTime::currentDateTime().toString("yyyyMMddHHmmsszzz");
-        std::mt19937 rng((unsigned)QDateTime::currentMSecsSinceEpoch());
-        std::uniform_int_distribution<int> dist(0, 9999);
-        oid += QString::number(dist(rng));
-        Logger::instance().info(std::string("UserWindow::onCheckout: generated fallback order id: ") + oid.toStdString());
-    }
-
-    // 6) 构造 Order 并发送（把 useCart 的 shipping_address / discount_policy / final_amount 等都带上）
+    // 6) 构造 Order 并发送（把 useCart 的金额/策略/地址带上）
     Order order(useCart, oid.toStdString(), 1);
     order.setOrderId(oid.toStdString());
     order.setUserPhone(phone_);
@@ -1233,8 +1229,16 @@ void UserWindow::onCheckout() {
 
     if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
     Logger::instance().info(std::string("UserWindow::onCheckout: sending order ") + oid.toStdString() + " for user " + phone_);
+
+    // 发送 + 失败自动换ID重试一次
     bool ok = client_->CLTaddSettledOrder(order);
-    Logger::instance().info(std::string("UserWindow::onCheckout CLTaddSettledOrder returned ") + (ok ? "true" : "false"));
+    if (!ok) {
+        Logger::instance().warn("UserWindow::onCheckout: first submit failed, retry with a new orderId");
+        QString oid2 = generateOrderId_User();
+        order.setOrderId(oid2.toStdString());
+        ok = client_->CLTaddSettledOrder(order);
+    }
+    Logger::instance().info(std::string("UserWindow::onCheckout CLTaddSettledOrder返回") + (ok ? "true" : "false"));
     if (!ok) {
         QMessageBox::warning(this, "结算", "生成订单失败（查看日志获取详细信息）");
         return;
@@ -1250,7 +1254,7 @@ void UserWindow::onCheckout() {
     emptyCart.cart_id.clear();
     emptyCart.is_converted = true;
     bool saved = client_->CLTsaveCartForUserWithPolicy(emptyCart, std::string());
-    Logger::instance().info(std::string("UserWindow::onCheckout CLTsaveCartForUser returned ") + (saved ? "true" : "false"));
+    Logger::instance().info(std::string("UserWindow::onCheckout CLTsaveCartForUser返回") + (saved ? "true" : "false"));
 
     QMessageBox::information(this, "结算", "订单已生成");
     // 使用内部刷新以避免再次被节流弹窗
@@ -1414,6 +1418,27 @@ void UserWindow::onClearOrdersFilter() {
     if (orderEndEdit) orderEndEdit->setDateTime(QDateTime::currentDateTime().addYears(10));
     if (orderStatusFilter) orderStatusFilter->setCurrentIndex(0);
     refreshOrdersInternal();
+}
+
+// 结算/提交前检查购物车库存，发现不足就提示并阻止继续
+static bool checkCartStockAndWarn(Client* client, const TemporaryCart& cart, QWidget* parent) {
+    QStringList issues;
+    for (const auto& it : cart.items) {
+        Good g;
+        if (!client->CLTgetGoodById(it.good_id, g)) continue; // 获取失败则跳过校验
+        if (g.getStock() < it.quantity) {
+            issues << QString("%1(id:%2): 当前库存 %3，已选择 %4")
+                      .arg(QString::fromStdString(it.good_name))
+                      .arg(it.good_id).arg(g.getStock()).arg(it.quantity);
+        }
+    }
+    if (!issues.isEmpty()) {
+        QMessageBox::warning(parent, "库存不足",
+                             "以下商品库存不足，已阻止下单：\n" + issues.join("\n") +
+                             "\n请在购物车调整数量或移除后重试。");
+        return false;
+    }
+    return true;
 }
 
 
