@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include "Client.h"
 #include <QDoubleSpinBox>
+#include <QDateTimeEdit>
 
 class Client;
 
@@ -52,6 +53,10 @@ private slots:
     // 新增：商品搜索/筛选槽
     void onApplyGoodsFilter();
     void onClearGoodsFilter();
+
+    // 订单时间筛选（用户视图）
+    void onApplyOrdersFilter();
+    void onClearOrdersFilter();
 
 private:
     QTabWidget* tabWidget;
@@ -106,4 +111,11 @@ private:
     QPushButton* returnOrderBtn;
     QPushButton* repairOrderBtn;
     QPushButton* deleteOrderBtn;
+
+    // 订单筛选（仅时间与状态）
+    QDateTimeEdit* orderStartEdit;
+    QDateTimeEdit* orderEndEdit;
+    QComboBox* orderStatusFilter;   // 新增：按状态筛选（用户视图）
+    QPushButton* applyOrdersFilterBtn;
+    QPushButton* clearOrdersFilterBtn;
 };

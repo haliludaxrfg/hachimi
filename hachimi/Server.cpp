@@ -817,6 +817,7 @@ std::string Server::SERprocessRequest(const std::string& request) {
     }
 }
 
+//good
 std::string Server::SERgetAllGoods() {
     if (!dbManager) {
         Logger::instance().fail("Server SERgetAllGoods: dbManager is null");
@@ -1428,6 +1429,7 @@ std::string Server::SERdeleteSettledOrder(const std::string& orderId, const std:
     }
 }
 
+//Cart
 std::string Server::SERgetCart(const std::string& userPhone) {
     if (!dbManager) { Logger::instance().fail("Server SERgetCart: dbManager is null"); json e; e["error"] = "服务器内部错误"; return e.dump(); }
     if (!dbManager->DTBisConnected() && !dbManager->DTBinitialize()) { Logger::instance().fail("Server SERgetCart: 数据库未连接"); json e; e["error"] = "数据库未连接"; return e.dump(); }
@@ -1463,7 +1465,7 @@ std::string Server::SERgetCart(const std::string& userPhone) {
     }
 }
 
-// 替换整个 Server::SERsaveCart 函数，确保如果客户端随 cart 传入 policy，则服务端使用该 policy 计算 totals（否则回退到服务端促销引擎）。
+
 std::string Server::SERsaveCart(const std::string& userPhone, const std::string& cartData) {
     if (!dbManager) { Logger::instance().fail("Server SERsaveCart: dbManager is null"); json e; e["error"] = "服务器内部错误"; return e.dump(); }
     if (!dbManager->DTBisConnected() && !dbManager->DTBinitialize()) { Logger::instance().fail("Server SERsaveCart: 数据库未连接"); json e; e["error"] = "数据库未连接"; return e.dump(); }
@@ -1621,6 +1623,7 @@ std::string Server::SERremoveFromCart(const std::string& userPhone, int productI
     }
 }
 
+//promotion
 std::string Server::SERgetAllPromotions() {
     if (!dbManager) return std::string("{\"error\":\"db not available\"}");
     auto rows = dbManager->DTBloadAllPromotionStrategies(false);
@@ -1732,8 +1735,8 @@ std::string Server::SERdeletePromotion(const std::string& name) {
     }
 }
 
-// --------- Promotions helpers: implementations added to resolve linker errors ----------
-std::string Server::SERgetPromotionsByProductId(int productId) {
+
+std::string Server::SERgetPromotionsByProductId(int productId) {//实际不用的
     if (!dbManager) {
         Logger::instance().warn("Server SERgetPromotionsByProductId: dbManager is null");
         return std::string("{\"error\":\"db not available\"}");
@@ -1894,13 +1897,7 @@ static std::string derivePolicyName(const nlohmann::json& policy) {
     return std::string();
 }
 
-// ---------- 新增：基于 policy 的 recalc 实现（文件作用域 helper） ----------
-/*
-  修改点：
-  - 增加第三个参数 DatabaseManager* dbManager（默认 nullptr），
-    以便在文件作用域函数中访问数据库中的促销策略（避免使用 this 或调用非静态成员）。
-  - 在没有 dbManager 时保留回退行为（不应用任何促销）。
-*/
+
 
 // ---------- 替换：Server::recalcCartTotals 调用到文件作用域实现 ----------
 void Server::recalcCartTotals(TemporaryCart& cart) {

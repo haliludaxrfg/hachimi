@@ -17,6 +17,7 @@
 #include <chrono>
 #include <QApplication> // 用于切换主题
 #include <QDoubleSpinBox> // 新增：价格筛选控件
+#include <QDateTimeEdit> // 新增：日期时间筛选控件
 
 // 在文件顶部 includes 之后加入与 AdminWindow 相同的状态映射辅助函数（UI 文件内局部）
 static QString orderStatusToText(int status) {
@@ -275,18 +276,47 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     orderTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     orderLayout->addWidget(orderTable);
 
-    QHBoxLayout* orderBtnLayout = new QHBoxLayout;
-    refreshOrdersBtn = new QPushButton("刷新订单");
-    viewOrderBtn = new QPushButton("查看详情");
-    returnOrderBtn = new QPushButton("退货");
-    repairOrderBtn = new QPushButton("维修");
-    deleteOrderBtn = new QPushButton("删除订单");
-    orderBtnLayout->addWidget(refreshOrdersBtn);
-    orderBtnLayout->addWidget(viewOrderBtn);
-    orderBtnLayout->addWidget(returnOrderBtn);
-    orderBtnLayout->addWidget(repairOrderBtn);
-    orderBtnLayout->addWidget(deleteOrderBtn);
-    orderLayout->addLayout(orderBtnLayout);
+    // ---------- 订单筛选（用户视图：时间区间） ----------
+    {
+        QHBoxLayout* orderFilterRow = new QHBoxLayout;
+        orderFilterRow->addWidget(new QLabel("起始时间:"));
+        orderStartEdit = new QDateTimeEdit;
+        orderStartEdit->setDisplayFormat("yyyy-MM-dd HH:mm:ss.zzz");
+        orderStartEdit->setCalendarPopup(true);
+        orderStartEdit->setDateTime(QDateTime::fromSecsSinceEpoch(0));
+        orderFilterRow->addWidget(orderStartEdit);
+
+        orderFilterRow->addWidget(new QLabel("结束时间:"));
+        orderEndEdit = new QDateTimeEdit;
+        orderEndEdit->setDisplayFormat("yyyy-MM-dd HH:mm:ss.zzz");
+        orderEndEdit->setCalendarPopup(true);
+        orderEndEdit->setDateTime(QDateTime::currentDateTime().addYears(10));
+        orderFilterRow->addWidget(orderEndEdit);
+
+   
+        orderFilterRow->addWidget(new QLabel("状态:"));
+        orderStatusFilter = new QComboBox;
+        orderStatusFilter->addItem("全部", QVariant(-1));
+        orderStatusFilter->addItem("已完成", QVariant(1));
+        orderStatusFilter->addItem("已发货", QVariant(2));
+        orderStatusFilter->addItem("已退货", QVariant(3));
+        orderStatusFilter->addItem("维修中", QVariant(4));
+        orderStatusFilter->addItem("已取消", QVariant(5));
+        orderStatusFilter->addItem("未知", QVariant(0));
+        orderStatusFilter->setCurrentIndex(0);
+        orderFilterRow->addWidget(orderStatusFilter);
+
+        applyOrdersFilterBtn = new QPushButton("应用筛选");
+        clearOrdersFilterBtn = new QPushButton("清除筛选");
+        orderFilterRow->addWidget(applyOrdersFilterBtn);
+        orderFilterRow->addWidget(clearOrdersFilterBtn);
+
+        orderLayout->addLayout(orderFilterRow);
+
+        connect(applyOrdersFilterBtn, &QPushButton::clicked, this, &UserWindow::onApplyOrdersFilter);
+        connect(clearOrdersFilterBtn, &QPushButton::clicked, this, &UserWindow::onClearOrdersFilter);
+    }
+    // ---------- 订单筛选结束 ----------
 
     tabWidget->addTab(orderTab, "我的订单");
 
@@ -1134,22 +1164,61 @@ void UserWindow::onCheckout() {
 void UserWindow::refreshOrders() {
     if (!client_) return;
     orderTable->setRowCount(0);
+
+    // 拉取当前用户的订单（server 支持按 userPhone 查询）
     auto orders = client_->CLTgetAllOrders(phone_);
-    orderTable->setRowCount((int)orders.size());
-    for (int i = 0; i < (int)orders.size(); i++) {
-        const Order& o = orders[i];
-        // 订单ID 列 —— 将 userPhone 隐藏存为 UserRole 以备需要，但不显示
+
+    // 时间范围
+    QDateTime start = orderStartEdit ? orderStartEdit->dateTime() : QDateTime::fromSecsSinceEpoch(0);
+    QDateTime end = orderEndEdit ? orderEndEdit->dateTime() : QDateTime::currentDateTime().addYears(10);
+
+    int selStatus = -1;
+    if (orderStatusFilter) {
+        QVariant v = orderStatusFilter->currentData();
+        if (v.isValid()) selStatus = v.toInt();
+    }
+    // 更健壮的 parseOid：支持 "cYYYYMMDDHHmmsszzz_..."，并避免使用已弃用方法
+    auto parseOid = [](const std::string& oidStr) -> QDateTime {
+        QString oid = QString::fromStdString(oidStr).trimmed();
+        if (!oid.startsWith('c')) return QDateTime();
+        if (oid.size() < 18) return QDateTime();
+        QString sub = oid.mid(1, 17); // YYYYMMDDHHmmsszzz
+        QDateTime dt = QDateTime::fromString(sub, "yyyyMMddHHmmsszzz");
+        if (dt.isValid()) { dt = dt.toLocalTime(); return dt; }
+        QString datePart = sub.left(14); // YYYYMMDDHHmmss
+        QString msPart = sub.mid(14, 3); // zzz
+        QDateTime dt2 = QDateTime::fromString(datePart, "yyyyMMddHHmmss");
+        if (!dt2.isValid()) return QDateTime();
+        bool ok = false;
+        int msec = msPart.toInt(&ok);
+        if (!ok) msec = 0;
+        dt2 = dt2.addMSecs(msec);
+        dt2 = dt2.toLocalTime();
+        return dt2;
+        };
+
+    std::vector<Order> filtered;
+    filtered.reserve(orders.size());
+    for (const auto& o : orders) {
+        if (selStatus != -1 && o.getStatus() != selStatus) continue;
+        QDateTime dt = parseOid(o.getOrderId());
+        if (dt.isValid()) {
+            if (dt >= start && dt <= end) filtered.push_back(o);
+        }
+        else {
+            filtered.push_back(o);
+        }
+    
+    }
+
+    orderTable->setRowCount((int)filtered.size());
+    for (int i = 0; i < (int)filtered.size(); i++) {
+        const Order& o = filtered[i];
         QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(o.getOrderId()));
         idItem->setData(Qt::UserRole, QString::fromStdString(o.getUserPhone()));
         orderTable->setItem(i, 0, idItem);
-
-        // 状态列
         orderTable->setItem(i, 1, new QTableWidgetItem(orderStatusToText(o.getStatus())));
-
-        // 实付金额列（使用 final amount）
         orderTable->setItem(i, 2, new QTableWidgetItem(QString::number(o.getFinalAmount())));
-
-        // 地址列 —— 新增：把订单的 shipping_address 填入表格，并将地址也以 UserRole 存储以便后续直接读取
         QTableWidgetItem* addrItem = new QTableWidgetItem(QString::fromStdString(o.getShippingAddress()));
         addrItem->setData(Qt::UserRole, QString::fromStdString(o.getShippingAddress()));
         orderTable->setItem(i, 3, addrItem);
@@ -1220,6 +1289,19 @@ void UserWindow::onDeleteOrder() {
     if (QMessageBox::question(this, "删除订单", "确认删除订单 " + oid + " ? 该操作可能不可恢复") != QMessageBox::Yes) return;
     bool ok = client_->CLTdeleteSettledOrder(oid.toStdString(), phone_);
     QMessageBox::information(this, "删除订单", ok ? "删除成功" : "删除失败（查看日志）");
+}
+
+
+
+void UserWindow::onApplyOrdersFilter() {
+    refreshOrders();
+}
+
+
+void UserWindow::onClearOrdersFilter() {
+    if (orderStartEdit) orderStartEdit->setDateTime(QDateTime::fromSecsSinceEpoch(0));
+    if (orderEndEdit) orderEndEdit->setDateTime(QDateTime::currentDateTime().addYears(10));
+    if (orderStatusFilter) orderStatusFilter->setCurrentIndex(0);
     refreshOrders();
 }
 

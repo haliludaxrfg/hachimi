@@ -9558,3 +9558,394 @@ GET_ALL_ORDERS {"userPhone":"12345678901"}
 [2025-10-14 09:23:39][INFO] CLTgetCartForUser: item[1] good_id=1, name=hyw, price=9.990000, qty=2, subtotal=19.980000
 [2025-10-14 09:23:39][INFO] CLTgetCartForUser: item[2] good_id=4, name=dingdongji, price=8.110000, qty=4, subtotal=32.440000
 [2025-10-14 09:23:39][INFO] AdminWindow::onLoadCartForUser: loaded all carts total items=5
+[2025-10-14 09:44:49][INFO] 应用启动
+[2025-10-14 09:44:49][INFO] Server: DatabaseManager 已连接。
+[2025-10-14 09:44:49][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-14 09:44:49][INFO] Client 已连接到 Server
+[2025-10-14 09:44:49][INFO] DatabaseManager::connect() called.
+
+[2025-10-14 09:44:49][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 09:44:59][INFO] Server received request: LOGIN {"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 09:44:59][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 09:44:59][INFO] Server sending response (len=37): {"phone":"17708659389","result":"ok"}
+[2025-10-14 09:45:00][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-14 09:45:00][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 09:45:00][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 09:45:00][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 09:45:00][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 09:45:00][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 09:45:00][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 09:45:00][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 09:45:00][INFO] Server SERgetAllGoods: dbManager ptr = 1961756507968, DTBisConnected=true
+[2025-10-14 09:45:00][INFO] DTBloadAllGoods: this=000001C8C1CCBF40 connection_=000001C8C1D76390 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 09:45:00][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 09:45:00][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 09:45:00][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 09:45:00][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 09:45:00][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-14 09:45:00][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-14 09:45:01][INFO] Server received request: GET_CART 17708659389
+[2025-10-14 09:45:01][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-14 09:45:01][INFO] Server sending response (len=457): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":208.42,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":2,"subtotal":19.98},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":4,"subtotal":32.44}],"shipping_address":"JLU1","total_amount":208.42,"user_phone":"17708659389"}
+[2025-10-14 09:45:01][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":208.42,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":2,"subtotal":19.98},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":4,"subtotal":32.44}],"shipping_address":"JLU1","total_amount":208.42,"user_phone":"17708659389"}
+[2025-10-14 09:45:01][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=3
+[2025-10-14 09:45:01][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
+[2025-10-14 09:45:01][INFO] CLTgetCartForUser: item[1] good_id=1, name=hyw, price=9.990000, qty=2, subtotal=19.980000
+[2025-10-14 09:45:01][INFO] CLTgetCartForUser: item[2] good_id=4, name=dingdongji, price=8.110000, qty=4, subtotal=32.440000
+[2025-10-14 09:45:01][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=3
+[2025-10-14 09:45:01][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=2, subtotal=156.000000
+[2025-10-14 09:45:01][INFO] UserWindow::refreshCart: item 1 good_id=1, name=hyw, qty=2, subtotal=19.980000
+[2025-10-14 09:45:01][INFO] UserWindow::refreshCart: item 2 good_id=4, name=dingdongji, qty=4, subtotal=32.440000
+[2025-10-14 09:45:01][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 09:45:01][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 09:45:01][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 09:45:01][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 09:45:01][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:45:01][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:45:01][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:45:02][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 09:45:02][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 09:45:02][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 09:45:02][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 09:45:02][INFO] UserWindow: theme switched to dark
+[2025-10-14 09:45:08][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:45:08][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:45:08][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:45:33][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:45:33][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:45:33][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:45:35][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:45:35][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:45:35][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:45:35][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:45:35][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:45:35][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:45:35][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:45:35][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:45:35][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:45:36][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:45:36][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:45:36][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:45:59][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:45:59][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:45:59][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:46:45][INFO] 应用启动
+[2025-10-14 09:46:45][INFO] Server: DatabaseManager 已连接。
+[2025-10-14 09:46:45][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-14 09:46:45][INFO] Client 已连接到 Server
+[2025-10-14 09:46:45][INFO] DatabaseManager::connect() called.
+
+[2025-10-14 09:46:45][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 09:46:56][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-14 09:46:56][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 09:46:56][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 09:46:56][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 09:46:56][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 09:46:57][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 09:46:57][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 09:46:57][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 09:46:57][INFO] Server SERgetAllGoods: dbManager ptr = 3063505322832, DTBisConnected=true
+[2025-10-14 09:46:57][INFO] DTBloadAllGoods: this=000002C947258350 connection_=000002C9472F2E00 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 09:46:57][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 09:46:57][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 09:46:57][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 09:46:57][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 09:46:57][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 09:46:57][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 09:46:57][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 09:46:57][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 09:46:57][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 09:46:57][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 09:46:58][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 09:46:58][INFO] AdminWindow::refreshPromotions loaded 9 promotions
+[2025-10-14 09:46:58][INFO] AdminWindow: theme switched to dark
+[2025-10-14 09:47:03][INFO] AdminWindow::onLoadCartForUser: phone empty -> load all users' carts
+[2025-10-14 09:47:03][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 09:47:03][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 09:47:03][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 09:47:03][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 09:47:03][INFO] CLTgetCartForUser: request for userPhone=12345678901
+[2025-10-14 09:47:03][INFO] Server received request: GET_CART 12345678901
+[2025-10-14 09:47:03][INFO] Server::SERprocessRequest: cmd=GET_CART payload=12345678901
+[2025-10-14 09:47:03][INFO] Server sending response (len=388): {"cart_id":"c20251013214425210_d9a4e037eb481641","discount_amount":0.0,"discount_policy":"","final_amount":3021.5,"is_converted":true,"items":[{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":44,"subtotal":2921.6},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":10,"subtotal":99.9}],"shipping_address":"何意味","total_amount":3021.5,"user_phone":"12345678901"}
+[2025-10-14 09:47:03][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013214425210_d9a4e037eb481641","discount_amount":0.0,"discount_policy":"","final_amount":3021.5,"is_converted":true,"items":[{"good_id":6,"good_name":"野火哈基米","price":66.4,"quantity":44,"subtotal":2921.6},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":10,"subtotal":99.9}],"shipping_address":"何意味","total_amount":3021.5,"user_phone":"12345678901"}
+[2025-10-14 09:47:03][INFO] CLTgetCartForUser: parsed cart_id=c20251013214425210_d9a4e037eb481641, items=2
+[2025-10-14 09:47:03][INFO] CLTgetCartForUser: item[0] good_id=6, name=野火哈基米, price=66.400000, qty=44, subtotal=2921.600000
+[2025-10-14 09:47:03][INFO] CLTgetCartForUser: item[1] good_id=1, name=hyw, price=9.990000, qty=10, subtotal=99.900000
+[2025-10-14 09:47:03][INFO] CLTgetCartForUser: request for userPhone=12345678902
+[2025-10-14 09:47:04][INFO] Server received request: GET_CART 12345678902
+[2025-10-14 09:47:04][INFO] Server::SERprocessRequest: cmd=GET_CART payload=12345678902
+[2025-10-14 09:47:04][INFO] Server sending response (len=30): {"error":"未找到购物车"}
+[2025-10-14 09:47:04][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
+[2025-10-14 09:47:04][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
+[2025-10-14 09:47:04][INFO] CLTgetCartForUser: request for userPhone=12345678903
+[2025-10-14 09:47:04][INFO] Server received request: GET_CART 12345678903
+[2025-10-14 09:47:04][INFO] Server::SERprocessRequest: cmd=GET_CART payload=12345678903
+[2025-10-14 09:47:04][INFO] Server sending response (len=30): {"error":"未找到购物车"}
+[2025-10-14 09:47:04][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
+[2025-10-14 09:47:04][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
+[2025-10-14 09:47:04][INFO] CLTgetCartForUser: request for userPhone=12345678908
+[2025-10-14 09:47:04][INFO] Server received request: GET_CART 12345678908
+[2025-10-14 09:47:04][INFO] Server::SERprocessRequest: cmd=GET_CART payload=12345678908
+[2025-10-14 09:47:04][INFO] Server sending response (len=30): {"error":"未找到购物车"}
+[2025-10-14 09:47:04][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
+[2025-10-14 09:47:04][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
+[2025-10-14 09:47:04][INFO] CLTgetCartForUser: request for userPhone=12345678909
+[2025-10-14 09:47:05][INFO] Server received request: GET_CART 12345678909
+[2025-10-14 09:47:05][INFO] Server::SERprocessRequest: cmd=GET_CART payload=12345678909
+[2025-10-14 09:47:05][INFO] Server sending response (len=30): {"error":"未找到购物车"}
+[2025-10-14 09:47:05][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
+[2025-10-14 09:47:05][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
+[2025-10-14 09:47:05][INFO] CLTgetCartForUser: request for userPhone=12345678911
+[2025-10-14 09:47:05][INFO] Server received request: GET_CART 12345678911
+[2025-10-14 09:47:05][INFO] Server::SERprocessRequest: cmd=GET_CART payload=12345678911
+[2025-10-14 09:47:05][INFO] Server sending response (len=30): {"error":"未找到购物车"}
+[2025-10-14 09:47:05][INFO] CLTgetCartForUser: raw response: {"error":"未找到购物车"}
+[2025-10-14 09:47:05][WARN] CLTgetCartForUser: server returned error: {"error":"未找到购物车"}
+[2025-10-14 09:47:05][INFO] CLTgetCartForUser: request for userPhone=15568713710
+[2025-10-14 09:47:05][INFO] Server received request: GET_CART 15568713710
+[2025-10-14 09:47:05][INFO] Server::SERprocessRequest: cmd=GET_CART payload=15568713710
+[2025-10-14 09:47:05][INFO] Server sending response (len=216): {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-14 09:47:05][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013225121915_4b3e1b5b24dbfaaf","discount_amount":0.0,"discount_policy":"","final_amount":0.0,"is_converted":true,"items":[],"shipping_address":"踩踩","total_amount":0.0,"user_phone":"15568713710"}
+[2025-10-14 09:47:05][INFO] CLTgetCartForUser: parsed cart_id=c20251013225121915_4b3e1b5b24dbfaaf, items=0
+[2025-10-14 09:47:05][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-14 09:47:06][INFO] Server received request: GET_CART 17708659389
+[2025-10-14 09:47:06][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-14 09:47:06][INFO] Server sending response (len=457): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":208.42,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":2,"subtotal":19.98},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":4,"subtotal":32.44}],"shipping_address":"JLU1","total_amount":208.42,"user_phone":"17708659389"}
+[2025-10-14 09:47:06][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":208.42,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":2,"subtotal":19.98},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":4,"subtotal":32.44}],"shipping_address":"JLU1","total_amount":208.42,"user_phone":"17708659389"}
+[2025-10-14 09:47:06][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=3
+[2025-10-14 09:47:06][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
+[2025-10-14 09:47:06][INFO] CLTgetCartForUser: item[1] good_id=1, name=hyw, price=9.990000, qty=2, subtotal=19.980000
+[2025-10-14 09:47:06][INFO] CLTgetCartForUser: item[2] good_id=4, name=dingdongji, price=8.110000, qty=4, subtotal=32.440000
+[2025-10-14 09:47:06][INFO] AdminWindow::onLoadCartForUser: loaded all carts total items=5
+[2025-10-14 09:47:29][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 09:47:29][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 09:47:29][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 09:47:34][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 09:47:34][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 09:47:34][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 09:51:42][INFO] 应用启动
+[2025-10-14 09:51:42][INFO] Server: DatabaseManager 已连接。
+[2025-10-14 09:51:42][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-14 09:51:43][INFO] Client 已连接到 Server
+[2025-10-14 09:51:43][INFO] DatabaseManager::connect() called.
+
+[2025-10-14 09:51:43][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 09:51:51][INFO] Server received request: LOGIN {"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 09:51:51][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 09:51:51][INFO] Server sending response (len=37): {"phone":"17708659389","result":"ok"}
+[2025-10-14 09:51:51][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-14 09:51:52][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 09:51:52][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 09:51:52][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 09:51:52][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 09:51:52][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 09:51:52][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 09:51:52][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 09:51:52][INFO] Server SERgetAllGoods: dbManager ptr = 2173655708576, DTBisConnected=true
+[2025-10-14 09:51:52][INFO] DTBloadAllGoods: this=000001FA17F9F3A0 connection_=000001FA18030680 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 09:51:52][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 09:51:52][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 09:51:52][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 09:51:52][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 09:51:52][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-14 09:51:52][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-14 09:51:52][INFO] Server received request: GET_CART 17708659389
+[2025-10-14 09:51:52][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-14 09:51:52][INFO] Server sending response (len=457): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":208.42,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":2,"subtotal":19.98},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":4,"subtotal":32.44}],"shipping_address":"JLU1","total_amount":208.42,"user_phone":"17708659389"}
+[2025-10-14 09:51:52][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":208.42,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":2,"subtotal":19.98},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":4,"subtotal":32.44}],"shipping_address":"JLU1","total_amount":208.42,"user_phone":"17708659389"}
+[2025-10-14 09:51:52][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=3
+[2025-10-14 09:51:52][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
+[2025-10-14 09:51:52][INFO] CLTgetCartForUser: item[1] good_id=1, name=hyw, price=9.990000, qty=2, subtotal=19.980000
+[2025-10-14 09:51:52][INFO] CLTgetCartForUser: item[2] good_id=4, name=dingdongji, price=8.110000, qty=4, subtotal=32.440000
+[2025-10-14 09:51:52][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=3
+[2025-10-14 09:51:52][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=2, subtotal=156.000000
+[2025-10-14 09:51:52][INFO] UserWindow::refreshCart: item 1 good_id=1, name=hyw, qty=2, subtotal=19.980000
+[2025-10-14 09:51:52][INFO] UserWindow::refreshCart: item 2 good_id=4, name=dingdongji, qty=4, subtotal=32.440000
+[2025-10-14 09:51:53][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 09:51:53][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 09:51:53][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 09:51:53][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 09:51:53][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:51:53][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:51:53][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:51:54][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 09:51:54][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 09:51:54][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 09:51:54][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 09:51:54][INFO] UserWindow: theme switched to dark
+[2025-10-14 09:51:58][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:51:58][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:51:58][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:51:59][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:51:59][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:51:59][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:52:00][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:52:00][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:52:00][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:52:05][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:52:05][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:52:05][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:52:06][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:52:06][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:52:06][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:52:06][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:52:06][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:52:06][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:52:07][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:52:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:52:07][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:52:07][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:52:07][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:52:07][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:52:43][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:52:43][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:52:43][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:53:01][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:53:01][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:53:01][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:53:11][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:53:11][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:53:11][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:53:13][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:53:13][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:53:13][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:53:16][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 09:53:16][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 09:53:16][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 09:53:42][INFO] 应用启动
+[2025-10-14 09:53:42][INFO] Server: DatabaseManager 已连接。
+[2025-10-14 09:53:42][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-14 09:53:42][INFO] Client 已连接到 Server
+[2025-10-14 09:53:42][INFO] DatabaseManager::connect() called.
+
+[2025-10-14 09:53:42][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 09:53:48][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-14 09:53:49][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 09:53:49][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 09:53:49][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 09:53:49][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 09:53:49][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 09:53:49][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 09:53:49][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 09:53:49][INFO] Server SERgetAllGoods: dbManager ptr = 1829712297952, DTBisConnected=true
+[2025-10-14 09:53:49][INFO] DTBloadAllGoods: this=000001AA0359FFE0 connection_=000001AA0362E620 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 09:53:49][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 09:53:49][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 09:53:49][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 09:53:49][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 09:53:49][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 09:53:49][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 09:53:49][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 09:53:50][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 09:53:50][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 09:53:50][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 09:53:50][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 09:53:50][INFO] AdminWindow::refreshPromotions loaded 9 promotions
+[2025-10-14 09:53:50][INFO] AdminWindow: theme switched to dark
+[2025-10-14 09:54:02][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 09:54:02][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 09:54:02][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 09:54:05][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 09:54:05][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 09:54:05][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 10:05:12][INFO] 应用启动
+[2025-10-14 10:05:12][INFO] Server: DatabaseManager 已连接。
+[2025-10-14 10:05:12][INFO] 本地 Server 已启动 (127.0.0.1:8888)
+[2025-10-14 10:05:12][INFO] Client 已连接到 Server
+[2025-10-14 10:05:12][INFO] DatabaseManager::connect() called.
+
+[2025-10-14 10:05:12][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 10:05:21][INFO] 管理员登录成功，打开管理员窗口
+[2025-10-14 10:05:21][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 10:05:21][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 10:05:21][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 10:05:21][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 10:05:22][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 10:05:22][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 10:05:22][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 10:05:22][INFO] Server SERgetAllGoods: dbManager ptr = 2149234657840, DTBisConnected=true
+[2025-10-14 10:05:22][INFO] DTBloadAllGoods: this=000001F4685E4A30 connection_=000001F468675EF0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 10:05:22][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 10:05:22][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 10:05:22][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 10:05:22][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 10:05:22][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 10:05:22][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 10:05:22][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 10:05:22][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 10:05:22][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 10:05:22][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 10:05:23][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 10:05:23][INFO] AdminWindow::refreshPromotions loaded 9 promotions
+[2025-10-14 10:05:23][INFO] AdminWindow: theme switched to dark
+[2025-10-14 10:05:34][INFO] Server received request: GET_ALL_ORDERS {}
+[2025-10-14 10:05:34][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={}
+[2025-10-14 10:05:34][INFO] Server sending response (len=364): [{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"},{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"}]
+[2025-10-14 10:05:36][INFO] AdminWindow::onReturnToIdentitySelection called
+[2025-10-14 10:05:36][INFO] 收到 AdminWindow::backRequested，返回登录界面
+[2025-10-14 10:05:36][INFO] 已从数据库刷新用户列表用于登录对话框
+[2025-10-14 10:05:47][INFO] Server received request: LOGIN {"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 10:05:47][INFO] Server::SERprocessRequest: cmd=LOGIN payload={"password":"AUVpbb","phone":"17708659389"}
+[2025-10-14 10:05:47][INFO] Server sending response (len=37): {"phone":"17708659389","result":"ok"}
+[2025-10-14 10:05:47][INFO] 用户登录成功，手机号: 17708659389
+[2025-10-14 10:05:48][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 10:05:48][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 10:05:48][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 10:05:48][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 10:05:48][INFO] Server received request: GET_ALL_GOODS
+[2025-10-14 10:05:48][INFO] Server::SERprocessRequest: cmd=GET_ALL_GOODS payload=<none>
+[2025-10-14 10:05:48][INFO] Server 收到请求: GET_ALL_GOODS
+[2025-10-14 10:05:48][INFO] Server SERgetAllGoods: dbManager ptr = 2149234657840, DTBisConnected=true
+[2025-10-14 10:05:48][INFO] DTBloadAllGoods: this=000001F4685E4A30 connection_=000001F468675EF0 Query="SELECT id, name, price, stock, category FROM good"
+
+[2025-10-14 10:05:48][INFO] DTBloadAllGoods: mysql_num_rows = 5
+
+[2025-10-14 10:05:48][INFO] Server SERgetAllGoods: 返回JSON内容: [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 10:05:48][INFO] Server SERgetAllGoods: 查询到 5 个商品
+[2025-10-14 10:05:48][INFO] Server sending response (len=356): [{"category":"HYW","id":1,"name":"hyw","price":9.99,"stock":819},{"category":"umamusume","id":2,"name":"manbo","price":28.88,"stock":113972},{"category":"ji","id":4,"name":"dingdongji","price":8.11,"stock":348},{"category":"ji","id":6,"name":"野火哈基米","price":66.4,"stock":203},{"category":"ji","id":7,"name":"ハチミ","price":78.0,"stock":1106}]
+[2025-10-14 10:05:48][INFO] UserWindow::refreshCart: client connection active? true
+[2025-10-14 10:05:48][INFO] CLTgetCartForUser: request for userPhone=17708659389
+[2025-10-14 10:05:49][INFO] Server received request: GET_CART 17708659389
+[2025-10-14 10:05:49][INFO] Server::SERprocessRequest: cmd=GET_CART payload=17708659389
+[2025-10-14 10:05:49][INFO] Server sending response (len=457): {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":208.42,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":2,"subtotal":19.98},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":4,"subtotal":32.44}],"shipping_address":"JLU1","total_amount":208.42,"user_phone":"17708659389"}
+[2025-10-14 10:05:49][INFO] CLTgetCartForUser: raw response: {"cart_id":"c20251013212012566_fafe846c913b001d","discount_amount":0.0,"discount_policy":"","final_amount":208.42,"is_converted":true,"items":[{"good_id":7,"good_name":"ハチミ","price":78.0,"quantity":2,"subtotal":156.0},{"good_id":1,"good_name":"hyw","price":9.99,"quantity":2,"subtotal":19.98},{"good_id":4,"good_name":"dingdongji","price":8.11,"quantity":4,"subtotal":32.44}],"shipping_address":"JLU1","total_amount":208.42,"user_phone":"17708659389"}
+[2025-10-14 10:05:49][INFO] CLTgetCartForUser: parsed cart_id=c20251013212012566_fafe846c913b001d, items=3
+[2025-10-14 10:05:49][INFO] CLTgetCartForUser: item[0] good_id=7, name=ハチミ, price=78.000000, qty=2, subtotal=156.000000
+[2025-10-14 10:05:49][INFO] CLTgetCartForUser: item[1] good_id=1, name=hyw, price=9.990000, qty=2, subtotal=19.980000
+[2025-10-14 10:05:49][INFO] CLTgetCartForUser: item[2] good_id=4, name=dingdongji, price=8.110000, qty=4, subtotal=32.440000
+[2025-10-14 10:05:49][INFO] UserWindow::refreshCart: got cart_id=c20251013212012566_fafe846c913b001d, items=3
+[2025-10-14 10:05:49][INFO] UserWindow::refreshCart: item 0 good_id=7, name=ハチミ, qty=2, subtotal=156.000000
+[2025-10-14 10:05:49][INFO] UserWindow::refreshCart: item 1 good_id=1, name=hyw, qty=2, subtotal=19.980000
+[2025-10-14 10:05:49][INFO] UserWindow::refreshCart: item 2 good_id=4, name=dingdongji, qty=4, subtotal=32.440000
+[2025-10-14 10:05:49][INFO] Server received request: GET_ALL_PROMOTIONS
+[2025-10-14 10:05:49][INFO] Server::SERprocessRequest: cmd=GET_ALL_PROMOTIONS payload=<none>
+[2025-10-14 10:05:49][INFO] Server sending response (len=1136): [{"id":"4","name":"满1999减288","policy":{"reduce":188.0,"scope":"global","threshold":1999.0,"type":"full_reduction"}},{"id":"5","name":"98?95?92!","policy":{"scope":"global","tiers":[{"discount":0.98,"min_qty":3},{"discount":0.95,"min_qty":3},{"discount":0.92,"min_qty":5}],"type":"tiered"}},{"id":"6","name":"230-11","policy":{"reduce":11.0,"scope":"global","threshold":230.0,"type":"full_reduction"}},{"id":"7","name":"330-20","policy":{"reduce":20.0,"scope":"global","threshold":330.0,"type":"full_reduction"}},{"id":"8","name":"350-40","policy":{"reduce":40.0,"scope":"global","threshold":350.0,"type":"full_reduction"}},{"id":"9","name":"950-66","policy":{"reduce":66.0,"scope":"global","threshold":950.0,"type":"full_reduction"}},{"id":"11","name":"500-48","policy":{"reduce":48.0,"scope":"global","threshold":500.0,"type":"full_reduction"}},{"id":"12","name":"600-67","policy":{"reduce":87.0,"scope":"global","threshold":600.0,"type":"full_reduction"}},{"id":"15","name":"1919810","policy":{"scope":"global","tiers...(truncated)
+[2025-10-14 10:05:49][INFO] CLTgetAllPromotionsRaw: loaded 9 promotions
+[2025-10-14 10:05:49][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 10:05:49][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 10:05:49][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 10:05:50][INFO] Server received request: GET_ALL_ACCOUNTS
+[2025-10-14 10:05:50][INFO] Server::SERprocessRequest: cmd=GET_ALL_ACCOUNTS payload=<none>
+[2025-10-14 10:05:50][INFO] Server 收到请求: GET_ALL_ACCOUNTS
+[2025-10-14 10:05:50][INFO] Server sending response (len=511): [{"address":"何意味","password":"111111","phone":"12345678901"},{"address":"xiaobaishoutao","password":"ccbccb","phone":"12345678902"},{"address":"cbcb","password":"777777","phone":"12345678903"},{"address":"?","password":"awdaw","phone":"12345678908"},{"address":"dk","password":"AUVAUV","phone":"12345678909"},{"address":"??|?|/|?|???","password":"/|/|/|","phone":"12345678911"},{"address":"踩踩","password":"123456789","phone":"15568713710"},{"address":"JLU1","password":"AUVpbb","phone":"17708659389"}]
+[2025-10-14 10:05:50][INFO] UserWindow: theme switched to dark
+[2025-10-14 10:05:56][INFO] Server received request: GET_ALL_ORDERS {"userPhone":"17708659389"}
+[2025-10-14 10:05:56][INFO] Server::SERprocessRequest: cmd=GET_ALL_ORDERS payload={"userPhone":"17708659389"}
+[2025-10-14 10:05:56][INFO] Server sending response (len=364): [{"discount_amount":497.83,"final_amount":3650.73,"order_id":"c20251013205153719_a4590f3ea09b6146","shipping_address":"JLU1","status":1,"total_amount":4148.56,"user_phone":"17708659389"},{"discount_amount":0.5,"final_amount":9.49,"order_id":"c20251013210328472_9c6f7b4a1411aefc","shipping_address":"JLU1","status":4,"total_amount":9.99,"user_phone":"17708659389"}]
+[2025-10-14 10:05:59][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-14 10:05:59][INFO] DatabaseManager::disconnect() called.
+
+[2025-10-14 10:05:59][INFO] 应用退出
+

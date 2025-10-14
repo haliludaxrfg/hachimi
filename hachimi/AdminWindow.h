@@ -8,6 +8,8 @@
 #include "TemporaryCart.h"
 #include <nlohmann/json.hpp>
 #include <QDoubleSpinBox>
+#include <QDateTimeEdit>
+#include <QComboBox>
 
 // 保留原有注释结构
 class AdminWindow : public QWidget {
@@ -20,6 +22,7 @@ signals:
     void backRequested(); // 返回信号
 
 private slots:
+    void onReturnToIdentitySelection();
     // 用户相关
     void refreshUsers();
 	void onAddUser();
@@ -32,27 +35,23 @@ private slots:
     void onAddGood();
     void onEditGood();
     void onDeleteGood();
-
-    // 新增：商品搜索/筛选槽
     void onApplyGoodsFilter();
     void onClearGoodsFilter();
-
-    // 订单相关
-    void refreshOrders();
-    // 新增：订单操作槽
-    void onReturnOrder();
-    void onRepairOrder();
-    void onDeleteOrder();
-    // 新增：查看订单详情（管理员）
-    void onViewOrderDetail();
-
-    // 新增：返回身份选择界面槽
-    void onReturnToIdentitySelection();
 
     // 购物车相关槽（已移除 Add/Save）
     void onLoadCartForUser();
     void onEditCartItem();
     void onRemoveCartItem();
+
+    // 订单相关
+    void refreshOrders();
+    void onReturnOrder();
+    void onRepairOrder();
+    void onDeleteOrder();
+    void onApplyOrdersFilter();
+    void onClearOrdersFilter();
+    void onViewOrderDetail();
+
 
     // Promotions
     void refreshPromotions();
@@ -60,6 +59,8 @@ private slots:
     void onEditPromotion();
     void onDeletePromotion();
 
+    // 订单筛选（时间范围：开始/结束；管理员额外按手机号）
+    
 private:
     // UI 主控件
     QTabWidget* tabWidget;
@@ -135,4 +136,12 @@ private:
     static bool showTypedPromotionEditor(QWidget* parent, PromotionKind kind,
                                          const std::string& inName, const nlohmann::json& inPolicyJson, const std::string& inPolicyDetail,
                                          std::string& outName, nlohmann::json& outPolicyJson, std::string& outPolicyDetail);
+
+    // 订单筛选控件（管理员视图）
+    QDateTimeEdit* orderStartEdit;      // 起始时间
+    QDateTimeEdit* orderEndEdit;        // 结束时间
+    QLineEdit* ordersPhoneFilterEdit;   // 管理员按手机号筛选订单
+    QComboBox* ordersStatusFilter;      // 新增：按状态筛选
+    QPushButton* applyOrdersFilterBtn;
+    QPushButton* clearOrdersFilterBtn;
 };

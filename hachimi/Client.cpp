@@ -874,7 +874,7 @@ bool Client::CLTdeleteSettledOrder(const std::string& orderId, const std::string
     }
 }
 
-// ---------------- 促销（占位） ----------------
+// ---------------- 促销 ----------------
 std::vector<std::shared_ptr<PromotionStrategy>> Client::CLTgetAllPromotions() {
     std::vector<std::shared_ptr<PromotionStrategy>> out;
     std::string resp = CLTsendRequest("GET_ALL_PROMOTIONS");
@@ -963,7 +963,6 @@ bool Client::CLTdeletePromotion(const std::string& name) {
     }
 }
 
-// ---------------- 促销（原始 JSON 列表） ----------------
 std::vector<nlohmann::json> Client::CLTgetAllPromotionsRaw() {
     std::vector<nlohmann::json> out;
     try {

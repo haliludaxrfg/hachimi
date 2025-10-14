@@ -14,6 +14,7 @@
 #include <QSpinBox>
 #include <QDoubleSpinBox>
 #include <QApplication> // 用于切换主题
+#include <QDateTimeEdit> // 新增：用于订单筛选的日期时间选择
 
 // 状态映射辅助函数
 static QString orderStatusToText(int status) {
@@ -213,6 +214,55 @@ AdminWindow::AdminWindow(Client* client, QWidget* parent)
     ordersTable->setHorizontalHeaderLabels(QStringList() << "订单ID" << "用户手机号" << "地址" << "状态" << "摘要");
     ordersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     orderLayout->addWidget(ordersTable);
+
+    // ---------- 订单筛选行（管理员） ----------
+    {
+        QHBoxLayout* ordersFilterRow = new QHBoxLayout;
+        ordersFilterRow->addWidget(new QLabel("用户手机号:"));
+        ordersPhoneFilterEdit = new QLineEdit;
+        ordersPhoneFilterEdit->setPlaceholderText("留空查看所有用户订单");
+        ordersFilterRow->addWidget(ordersPhoneFilterEdit);
+
+        ordersFilterRow->addWidget(new QLabel("起始时间:"));
+        orderStartEdit = new QDateTimeEdit;
+        orderStartEdit->setDisplayFormat("yyyy-MM-dd HH:mm:ss.zzz");
+        orderStartEdit->setCalendarPopup(true);
+        // 默认：非常早的时间
+        orderStartEdit->setDateTime(QDateTime::fromSecsSinceEpoch(0));
+        ordersFilterRow->addWidget(orderStartEdit);
+
+        ordersFilterRow->addWidget(new QLabel("结束时间:"));
+        orderEndEdit = new QDateTimeEdit;
+        orderEndEdit->setDisplayFormat("yyyy-MM-dd HH:mm:ss.zzz");
+        orderEndEdit->setCalendarPopup(true);
+        orderEndEdit->setDateTime(QDateTime::currentDateTime().addYears(10)); // 远期结束时间默认
+        ordersFilterRow->addWidget(orderEndEdit);
+
+        // 状态下拉
+        ordersFilterRow->addWidget(new QLabel("状态:"));
+        ordersStatusFilter = new QComboBox;
+        // 第一项表示全部(-1)
+        ordersStatusFilter->addItem("全部", QVariant(-1));
+        ordersStatusFilter->addItem("已完成", QVariant(1));
+        ordersStatusFilter->addItem("已发货", QVariant(2));
+        ordersStatusFilter->addItem("已退货", QVariant(3));
+        ordersStatusFilter->addItem("维修中", QVariant(4));
+        ordersStatusFilter->addItem("已取消", QVariant(5));
+        ordersStatusFilter->addItem("未知", QVariant(0));
+        ordersStatusFilter->setCurrentIndex(0);
+        ordersFilterRow->addWidget(ordersStatusFilter);
+
+        applyOrdersFilterBtn = new QPushButton("应用筛选");
+        clearOrdersFilterBtn = new QPushButton("清除筛选");
+        ordersFilterRow->addWidget(applyOrdersFilterBtn);
+        ordersFilterRow->addWidget(clearOrdersFilterBtn);
+
+        orderLayout->addLayout(ordersFilterRow);
+
+        connect(applyOrdersFilterBtn, &QPushButton::clicked, this, &AdminWindow::onApplyOrdersFilter);
+        connect(clearOrdersFilterBtn, &QPushButton::clicked, this, &AdminWindow::onClearOrdersFilter);
+    }
+    // ---------- 订单筛选行 结束 ----------
 
     // 订单按钮：刷新 + 发起退货/维修/删除/查看详情
     QHBoxLayout* orderBtnLayout = new QHBoxLayout;
@@ -566,14 +616,65 @@ void AdminWindow::onClearGoodsFilter() {
 void AdminWindow::refreshOrders() {
     ordersTable->setRowCount(0);
     if (!client_) return;
-    auto orders = client_->CLTgetAllOrders(); // 获取所有订单
-    ordersTable->setRowCount((int)orders.size());
-    for (int i = 0; i < (int)orders.size(); ++i) {
-        const Order& o = orders[i];
+
+    // 管理员可以指定手机号（留空表示获取最近的订单集合）
+    QString phoneFilter = (ordersPhoneFilterEdit ? ordersPhoneFilterEdit->text().trimmed() : QString());
+
+    // 请求服务端：若 phoneFilter 为空则获取最近若干订单（服务端实现），否则按用户拉取
+    auto orders = client_->CLTgetAllOrders(phoneFilter.toStdString());
+
+    // 读取时间范围
+    QDateTime start = orderStartEdit ? orderStartEdit->dateTime() : QDateTime::fromSecsSinceEpoch(0);
+    QDateTime end = orderEndEdit ? orderEndEdit->dateTime() : QDateTime::currentDateTime().addYears(10);
+
+    // 读取状态筛选（-1 表示全部）
+    int selStatus = -1;
+    if (ordersStatusFilter) {
+        QVariant v = ordersStatusFilter->currentData();
+        if (v.isValid()) selStatus = v.toInt();
+    }
+
+    // 同样使用健壮的解析逻辑（注意：避免使用已弃用的 setTimeSpec）
+    auto parseOid = [](const std::string& oidStr) -> QDateTime {
+        QString oid = QString::fromStdString(oidStr).trimmed();
+        if (!oid.startsWith('c')) return QDateTime();
+        if (oid.size() < 18) return QDateTime();
+        QString sub = oid.mid(1, 17); // YYYYMMDDHHmmsszzz
+        QDateTime dt = QDateTime::fromString(sub, "yyyyMMddHHmmsszzz");
+        if (dt.isValid()) { dt = dt.toLocalTime(); return dt; }
+        QString datePart = sub.left(14);
+        QString msPart = sub.mid(14, 3);
+        QDateTime dt2 = QDateTime::fromString(datePart, "yyyyMMddHHmmss");
+        if (!dt2.isValid()) return QDateTime();
+        bool ok = false;
+        int msec = msPart.toInt(&ok);
+        if (!ok) msec = 0;
+        dt2 = dt2.addMSecs(msec);
+        dt2 = dt2.toLocalTime();
+        return dt2;
+    };
+
+    std::vector<Order> filtered;
+    filtered.reserve(orders.size());
+    for (const auto& o : orders) {
+        // 按状态过滤（若选中“全部”即 selStatus == -1 则不过滤）
+        if (selStatus != -1 && o.getStatus() != selStatus) continue;
+
+        QDateTime dt = parseOid(o.getOrderId());
+        if (dt.isValid()) {
+            if (dt >= start && dt <= end) filtered.push_back(o);
+        } else {
+            // 保留无法解析的订单（如需严格过滤可以改为跳过）
+            filtered.push_back(o);
+        }
+    }
+
+    ordersTable->setRowCount((int)filtered.size());
+    for (int i = 0; i < (int)filtered.size(); ++i) {
+        const Order& o = filtered[i];
         ordersTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(o.getOrderId())));
         ordersTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(o.getUserPhone())));
 
-        // 填地址：优先 Order 自带，否则尝试拉取详情
         QString addr = QString::fromStdString(o.getShippingAddress());
         if (addr.isEmpty()) {
             Order detail;
@@ -581,7 +682,6 @@ void AdminWindow::refreshOrders() {
             if (ok) addr = QString::fromStdString(detail.getShippingAddress());
         }
         ordersTable->setItem(i, 2, new QTableWidgetItem(addr));
-
         ordersTable->setItem(i, 3, new QTableWidgetItem(orderStatusToText(o.getStatus())));
         QString summary = QString("总计 %1").arg(o.getTotalAmount());
         ordersTable->setItem(i, 4, new QTableWidgetItem(summary));
@@ -1378,3 +1478,15 @@ void AdminWindow::onDeletePromotion() {
 }
 
 // 新增：筛选按钮槽实现（加入到 AdminWindow.cpp 中合适位置）
+void AdminWindow::onApplyOrdersFilter() {
+    // 直接刷新订单以应用当前筛选控件的值
+    refreshOrders();
+}
+
+void AdminWindow::onClearOrdersFilter() {
+    if (ordersPhoneFilterEdit) ordersPhoneFilterEdit->clear();
+    if (orderStartEdit) orderStartEdit->setDateTime(QDateTime::fromSecsSinceEpoch(0));
+    if (orderEndEdit) orderEndEdit->setDateTime(QDateTime::currentDateTime().addYears(10));
+    if (ordersStatusFilter) ordersStatusFilter->setCurrentIndex(0);
+    refreshOrders();
+}
