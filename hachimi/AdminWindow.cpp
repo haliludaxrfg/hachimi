@@ -577,7 +577,7 @@ void AdminWindow::onAddGood() {
     bool ok;
     QString name = QInputDialog::getText(this, "新增商品", "名称:", QLineEdit::Normal, "", &ok);
     if (!ok || name.isEmpty()) return;
-    double price = QInputDialog::getDouble(this, "新增商品", "价格:", 0.0, 0, 1e9, 2, &ok);
+    double price = QInputDialog::getDouble(this, "新增商品", "价格（最高支持9999,9999.00）:", 0.0, 0, 1e8-1, 2, &ok);
     if (!ok) return;
     int stock = QInputDialog::getInt(this, "新增商品", "库存:", 0, 0, 1e9, 1, &ok);
     if (!ok) return;
@@ -606,7 +606,7 @@ void AdminWindow::onEditGood() {
     bool ok;
     QString name = QInputDialog::getText(this, "编辑商品", "名称:", QLineEdit::Normal, curName, &ok);
     if (!ok) return;
-    double price = QInputDialog::getDouble(this, "编辑商品", "价格:", curPrice, 0, 1e9, 2, &ok);
+    double price = QInputDialog::getDouble(this, "编辑商品", "价格（最高支持9999,9999.00）:", curPrice, 0, 1e8-1, 2, &ok);
     if (!ok) return;
     int stock = QInputDialog::getInt(this, "编辑商品", "库存:", curStock, 0, 1e9, 1, &ok);
     if (!ok) return;

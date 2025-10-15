@@ -62,6 +62,8 @@ private slots:
     void onApplyOrdersFilter();
     void onClearOrdersFilter();
 
+    void onRefreshUserInfo(); // 新增槽声明
+
 private:
     QTabWidget* tabWidget;
     QWidget* userTab;   // 个人信息管理
@@ -75,6 +77,7 @@ private:
     QLineEdit* addressEdit;
     QPushButton* saveInfoBtn;
     QPushButton* deleteAccountBtn;
+    QPushButton* refreshInfoBtn; // 新增：刷新信息按钮
 
     // 新增：返回身份选择按钮
     QPushButton* returnIdentityBtn;

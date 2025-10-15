@@ -108,6 +108,7 @@
     <None Include="..\..\..\..\document\Image-Line\FLEX\wavetables_cache.bin" />
     <None Include="..\..\..\..\document\Rockstar Games\GTA V\Profiles\980E0BCA\pc_settings.bin" />
     <None Include="..\..\..\..\document\Rockstar Games\GTAV Enhanced\Profiles\980E0BCA\pc_settings.bin" />
+    <None Include="..\..\..\oop\READM.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="log.txt" />

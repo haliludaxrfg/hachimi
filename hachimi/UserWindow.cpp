@@ -173,8 +173,10 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     QHBoxLayout* userBtnLayout = new QHBoxLayout;
     saveInfoBtn = new QPushButton("保存修改");
     deleteAccountBtn = new QPushButton("注销账号（删除）");
+    refreshInfoBtn = new QPushButton("刷新信息"); // 新增刷新信息按钮
     userBtnLayout->addWidget(saveInfoBtn);
     userBtnLayout->addWidget(deleteAccountBtn);
+    userBtnLayout->addWidget(refreshInfoBtn); // 添加到布局
     userLayout->addLayout(userBtnLayout);
 
     tabWidget->addTab(userTab, "个人信息");
@@ -384,9 +386,10 @@ UserWindow::UserWindow(const std::string& phone, Client* client, QWidget* parent
     connect(showOriginalBtn, &QPushButton::clicked, this, &UserWindow::onShowOriginalTotal);
     connect(showDiscountedBtn, &QPushButton::clicked, this, &UserWindow::onShowDiscountedTotal);
 
-    // 新增连接：保存与注销
+    // 新增连接：保存、注销、刷新
     connect(saveInfoBtn, &QPushButton::clicked, this, &UserWindow::onSaveUserInfo);
     connect(deleteAccountBtn, &QPushButton::clicked, this, &UserWindow::onDeleteAccount);
+    connect(refreshInfoBtn, &QPushButton::clicked, this, &UserWindow::onRefreshUserInfo); // 连接刷新槽
 
     connect(refreshOrdersBtn, &QPushButton::clicked, this, &UserWindow::refreshOrders);
     connect(viewOrderBtn, &QPushButton::clicked, this, &UserWindow::onViewOrderDetail);
@@ -454,46 +457,52 @@ void UserWindow::onSaveUserInfo() {
 
     // 获取服务器上当前用户信息（用于判断地址是否被修改 / 填充空地址）
     QString serverAddr;
+    std::string serverPwd;
     {
         auto users = client_->CLTgetAllAccounts();
         for (const auto& u : users) {
             if (u.getPhone() == phone_) {
                 serverAddr = QString::fromStdString(u.getAddress());
+                serverPwd = u.getPassword();
                 break;
             }
         }
     }
 
-    // 判断用户是否真正修改了地址：
+    // 判断用户是否真正修改了地址和密码：
     bool addressModified = false;
+    bool passwordModified = false;
     QString newAddr = uiAddr;
     if (uiAddr.isEmpty()) {
         // 空表示不修改地址，使用服务器当前地址作为占位（不视为修改）
         newAddr = serverAddr;
         addressModified = false;
-    }
-    else {
-        // 非空且不同于服务器上的地址视为修改
+    } else {
         addressModified = (uiAddr != serverAddr);
         newAddr = uiAddr;
+    }
+    if (!uiPwd.isEmpty()) {
+        passwordModified = (uiPwd.toStdString() != serverPwd);
+    }
+
+    // 新增：如果都未修改，直接提示无需保存
+    if (!addressModified && (uiPwd.isEmpty() || !passwordModified)) {
+        QMessageBox::information(this, "保存修改", "信息未变，无需保存");
+        return;
     }
 
     // 情况 A: 未填写新密码 —— 仅更新地址（可能没改则也会调用，但服务器会更新或保持不变）
     if (uiPwd.isEmpty()) {
-        // 地址最终不能为空（服务器上也可能为空），做个基本检查
         if (newAddr.isEmpty()) {
             QMessageBox::warning(this, "保存修改", "地址不能为空（请在地址栏输入或先在服务器端设置地址）");
             return;
         }
-        // 使用当前已知密码（currentPassword_）进行认证并更新
         bool res = client_->CLTupdateUser(phone_, currentPassword_, newAddr.toStdString());
         Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateUser(return) ") + (res ? "true" : "false"));
         if (res) {
             QMessageBox::information(this, "保存修改", "保存成功");
-            // 不改 currentPassword_
             passwordEdit->clear();
-        }
-        else {
+        } else {
             QMessageBox::warning(this, "保存修改", "保存失败，请检查网络或稍后重试");
         }
         return;
@@ -508,7 +517,6 @@ void UserWindow::onSaveUserInfo() {
         return;
     }
 
-    // 分两条路径：
     // B1: 仅改密码（地址未被修改） => 直接调用修改密码接口
     if (!addressModified) {
         bool passChanged = client_->CLTupdateAccountPassword(phone_, oldPwd.toStdString(), uiPwd.toStdString());
@@ -517,7 +525,6 @@ void UserWindow::onSaveUserInfo() {
             QMessageBox::warning(this, "修改密码", "修改密码失败（原密码错误或服务器错误）");
             return;
         }
-        // 密码改成功
         currentPassword_ = uiPwd.toStdString();
         passwordEdit->clear();
         QMessageBox::information(this, "修改密码", "密码已更新");
@@ -525,23 +532,16 @@ void UserWindow::onSaveUserInfo() {
     }
 
     // B2: 同时改地址和密码（或仅认为地址被修改）：
-    // 先使用旧密码更新地址（认证并修改地址），再修改密码
-    // 先保存当前服务器地址以便回滚（可选）
     QString prevAddr = serverAddr;
-
-    // 1) 用旧密码更新地址
     bool addrUpdated = client_->CLTupdateUser(phone_, oldPwd.toStdString(), newAddr.toStdString());
     Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateUser(before pwd change) returned ") + (addrUpdated ? "true" : "false"));
     if (!addrUpdated) {
         QMessageBox::warning(this, "保存修改", "地址更新失败（请检查原密码或网络），已取消密码修改流程。");
         return;
     }
-
-    // 2) 修改密码
     bool passChanged = client_->CLTupdateAccountPassword(phone_, oldPwd.toStdString(), uiPwd.toStdString());
     Logger::instance().info(std::string("UserWindow::onSaveUserInfo CLTupdateAccountPassword returned ") + (passChanged ? "true" : "false"));
     if (!passChanged) {
-        // 尝试回滚地址到 prevAddr（若可用）
         bool rolledBack = false;
         if (!prevAddr.isEmpty()) {
             rolledBack = client_->CLTupdateUser(phone_, oldPwd.toStdString(), prevAddr.toStdString());
@@ -552,8 +552,6 @@ void UserWindow::onSaveUserInfo() {
         QMessageBox::warning(this, "修改密码", msg);
         return;
     }
-
-    // 如果两步都成功
     currentPassword_ = uiPwd.toStdString();
     passwordEdit->clear();
     QMessageBox::information(this, "保存修改", "密码与地址均已更新");
@@ -1439,6 +1437,21 @@ static bool checkCartStockAndWarn(Client* client, const TemporaryCart& cart, QWi
         return false;
     }
     return true;
+}
+
+// 新增槽函数实现
+void UserWindow::onRefreshUserInfo() {
+    if (!client_) return;
+    auto users = client_->CLTgetAllAccounts();
+    for (const auto& u : users) {
+        if (u.getPhone() == phone_) {
+            // 只刷新界面，不覆盖密码输入框内容
+            addressEdit->setText(QString::fromStdString(u.getAddress()));
+            QMessageBox::information(this, "刷新信息", "已刷新为服务器最新信息");
+            return;
+        }
+    }
+    QMessageBox::warning(this, "刷新信息", "未找到当前用户信息");
 }
 
 

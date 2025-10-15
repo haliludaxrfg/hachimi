@@ -114,9 +114,6 @@
     <ClInclude Include="admin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Theme.h">
-      <Filter>qt</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\document\Rockstar Games\GTA V\Profiles\980E0BCA\pc_settings.bin">
@@ -128,6 +125,7 @@
     <None Include="..\..\..\..\document\Image-Line\FLEX\wavetables_cache.bin">
       <Filter>others</Filter>
     </None>
+    <None Include="..\..\..\oop\READM.md" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtServer.h">
@@ -150,6 +148,9 @@
     </QtMoc>
     <QtMoc Include="UserWindow.h">
       <Filter>qt</Filter>
+    </QtMoc>
+    <QtMoc Include="Theme.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
