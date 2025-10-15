@@ -34,6 +34,7 @@
 #include <fstream>
 #include <QTcpSocket>
 #include <QHostAddress>
+#include <QThread>
 using nlohmann::json;
 
 
@@ -58,11 +59,16 @@ int main(int argc, char* argv[])
     }
 
     Server* serverPtr = nullptr;
+    QThread* serverThread = nullptr;
     if (!serverAlreadyRunning) {
         // 没有检测到已有 Server，当前进程启动本地 Server
         serverPtr = new Server(8888);
-        serverPtr->SERstart();
-        Logger::instance().info("本地 Server 已启动 (127.0.0.1:8888)");
+        serverThread = new QThread();
+        serverPtr->moveToThread(serverThread);
+        QObject::connect(serverThread, &QThread::started, serverPtr, &Server::SERstart);
+        QObject::connect(serverThread, &QThread::finished, serverPtr, &QObject::deleteLater);
+        serverThread->start();
+        Logger::instance().info("本地 Server 已启动 (127.0.0.1:8888) 于专用线程");
     } else {
         Logger::instance().info("检测到已有本地 Server 监听 127.0.0.1:8888，跳过启动");
     }
@@ -190,16 +196,23 @@ int main(int argc, char* argv[])
     }
     catch (...) {}
     try {
-        if (serverPtr) serverPtr->SERstop();
+        if (serverPtr) QMetaObject::invokeMethod(serverPtr, "SERstop", Qt::BlockingQueuedConnection);
     }
     catch (...) {}
 
     // 清理 DatabaseManager
     delete db;
 
-    // 若本进程创建了 Server，则释放它
+    // 若本进程创建了 Server，则释放它和线程
     if (serverPtr) {
-        delete serverPtr;
+        if (serverThread) {
+            serverThread->quit();
+            serverThread->wait();
+            delete serverThread;
+            serverThread = nullptr;
+        } else {
+            delete serverPtr;
+        }
         serverPtr = nullptr;
     }
 
