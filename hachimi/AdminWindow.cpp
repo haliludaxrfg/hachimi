@@ -577,7 +577,7 @@ void AdminWindow::onAddGood() {
     bool ok;
     QString name = QInputDialog::getText(this, "新增商品", "名称:", QLineEdit::Normal, "", &ok);
     if (!ok || name.isEmpty()) return;
-    double price = QInputDialog::getDouble(this, "新增商品", "价格（最高支持9999,9999.00）:", 0.0, 0, 1e8-1, 2, &ok);
+    double price = QInputDialog::getDouble(this, "新增商品", "价格（最高支持10,0000.00）:", 0.0, 0, 1e5, 2, &ok);
     if (!ok) return;
     int stock = QInputDialog::getInt(this, "新增商品", "库存:", 0, 0, 1e9, 1, &ok);
     if (!ok) return;
@@ -606,7 +606,7 @@ void AdminWindow::onEditGood() {
     bool ok;
     QString name = QInputDialog::getText(this, "编辑商品", "名称:", QLineEdit::Normal, curName, &ok);
     if (!ok) return;
-    double price = QInputDialog::getDouble(this, "编辑商品", "价格（最高支持9999,9999.00）:", curPrice, 0, 1e8-1, 2, &ok);
+    double price = QInputDialog::getDouble(this, "编辑商品", "价格（最高支持10,0000.00）:", curPrice, 0, 1e5, 2, &ok);
     if (!ok) return;
     int stock = QInputDialog::getInt(this, "编辑商品", "库存:", curStock, 0, 1e9, 1, &ok);
     if (!ok) return;
@@ -1091,6 +1091,7 @@ void AdminWindow::onRemoveCartItem() {
 
 // ------------------- 促销相关实现 -------------------
 // 在构造函数中创建 promotions tab（示例放在 AdminWindow 构造尾部或合适位置）
+// 在 createPromotionsTab 中，加入“类型”筛选下拉并连接变化事件到 refreshPromotions()
 void AdminWindow::createPromotionsTab() {
     promoTab = new QWidget(this);
     QVBoxLayout* v = new QVBoxLayout(promoTab);
@@ -1105,6 +1106,8 @@ void AdminWindow::createPromotionsTab() {
     promoTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
     promoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     promoTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    // 新增：彻底禁止表格内联编辑
+    promoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     QHBoxLayout* btnRow = new QHBoxLayout;
     refreshPromosBtn = new QPushButton("刷新", promoTab);
@@ -1122,17 +1125,14 @@ void AdminWindow::createPromotionsTab() {
     v->addWidget(promoTable);
     tabWidget->addTab(promoTab, "促销");
 
-    // 连接信号：刷新、删除、以及新增和双击编辑
+    // 连接信号：刷新、删除、以及新增
     connect(refreshPromosBtn, &QPushButton::clicked, this, &AdminWindow::refreshPromotions);
     connect(deletePromoBtn, &QPushButton::clicked, this, &AdminWindow::onDeletePromotion);
-
-    // 新增：连接新增按钮到实现好的 onAddPromotion()
     connect(addPromoBtn, &QPushButton::clicked, this, &AdminWindow::onAddPromotion);
 
-    // 方便：双击表格行进入编辑（使用已有 onEditPromotion）
-    connect(promoTable, &QTableWidget::cellDoubleClicked, this, [this](int row, int /*col*/) {
-        Q_UNUSED(row);
-        this->onEditPromotion();
+    // 修改：禁用双击进入编辑，改为提示
+    connect(promoTable, &QTableWidget::cellDoubleClicked, this, [this](int /*row*/, int /*col*/) {
+        QMessageBox::information(this, "促销", "已禁用在窗口直接修改促销策略。");
         });
 }
 
@@ -1417,8 +1417,11 @@ void AdminWindow::onAddPromotion() {
 
 // 修改 onEditPromotion：读取现有 policy 试图推断类型并预填编辑器
 void AdminWindow::onEditPromotion() {
-    if (!tryThrottle(this)) return;
-    if (!client_) return;
+    // 新增：管理员禁用在窗口直接修改促销
+    QMessageBox::information(this, "编辑促销", "已禁用在窗口直接修改促销策略。");
+    return;
+
+    // 保留原实现（不会被执行，仅为兼容编译与后续可能的策略调整）
     auto sel = promoTable->selectionModel()->selectedRows();
     if (sel.empty()) { QMessageBox::warning(this, "编辑促销", "请先选择一条促销"); return; }
     int row = sel.first().row();
@@ -1466,47 +1469,72 @@ void AdminWindow::onEditPromotion() {
 }
 
 // 确保实现 AdminWindow::refreshPromotions 与 AdminWindow::onDeletePromotion（避免链接缺失）
+// 在 refreshPromotions 中依据下拉选择过滤
 void AdminWindow::refreshPromotions() {
     if (!tryThrottle(this)) return;
     if (!client_) return;
     promoTable->setRowCount(0);
+
+    QString selType = "ALL";
+    if (promosTypeFilter) {
+        QVariant v = promosTypeFilter->currentData();
+        if (v.isValid()) selType = v.toString();
+    }
+
     auto rows = client_->CLTgetAllPromotionsRaw();
-    promoTable->setRowCount(static_cast<int>(rows.size()));
-    for (int i = 0; i < (int)rows.size(); ++i) {
-        const auto& r = rows[i];
+    int outRow = 0;
+    promoTable->setRowCount(static_cast<int>(rows.size())); // 先设最大，再按需填
+    for (const auto& r : rows) {
         QString id = QString::fromStdString(r.value("id", std::string("")));
         QString name = QString::fromStdString(r.value("name", std::string("")));
+
         QString type;
         try {
             if (r.contains("policy") && r["policy"].is_object()) {
                 type = QString::fromStdString(r["policy"].value("type", std::string("")));
-            } else {
+            }
+            else {
                 type = QString::fromStdString(r.value("type", std::string("")));
             }
-        } catch (...) {
+        }
+        catch (...) {
             type = QString::fromStdString(r.value("type", std::string("")));
+        }
+
+        // 依据选择过滤
+        bool isUnknown = type.trimmed().isEmpty();
+        if (selType != "ALL") {
+            if (selType == "UNKNOWN") {
+                if (!isUnknown) continue;
+            }
+            else {
+                if (type != selType) continue;
+            }
         }
 
         QString policyStr;
         try {
             if (r.contains("policy")) policyStr = QString::fromStdString(r["policy"].dump());
             else policyStr = QString::fromStdString(r.value("policy_detail", std::string("")));
-        } catch (...) {
+        }
+        catch (...) {
             policyStr = QString::fromStdString(r.value("policy_detail", std::string("")));
         }
 
         QTableWidgetItem* idItem = new QTableWidgetItem(id);
         QTableWidgetItem* nameItem = new QTableWidgetItem(name);
         QTableWidgetItem* typeItem = new QTableWidgetItem(type);
-        QTableWidgetItem* policyItem = new QTableWidgetItem(policyStr.left(200)); // 表格仅显示摘要
-        policyItem->setData(Qt::UserRole, policyStr); // 将完整 policy 存到 UserRole 备用
+        QTableWidgetItem* policyItem = new QTableWidgetItem(policyStr.left(200));
+        policyItem->setData(Qt::UserRole, policyStr);
 
-        promoTable->setItem(i, 0, idItem);
-        promoTable->setItem(i, 1, nameItem);
-        promoTable->setItem(i, 2, typeItem);
-        promoTable->setItem(i, 3, policyItem);
+        promoTable->setItem(outRow, 0, idItem);
+        promoTable->setItem(outRow, 1, nameItem);
+        promoTable->setItem(outRow, 2, typeItem);
+        promoTable->setItem(outRow, 3, policyItem);
+        ++outRow;
     }
-    Logger::instance().info(std::string("AdminWindow::refreshPromotions loaded ") + std::to_string(rows.size()) + " promotions");
+    promoTable->setRowCount(outRow); // 收缩到真实行数
+    Logger::instance().info(std::string("AdminWindow::refreshPromotions loaded (filtered) ") + std::to_string(outRow) + " promotions");
 }
 
 void AdminWindow::onDeletePromotion() {

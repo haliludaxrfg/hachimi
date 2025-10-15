@@ -122,8 +122,9 @@ private:
     QTableWidget* promoTable;
     QPushButton* refreshPromosBtn;
     QPushButton* addPromoBtn;
-    QPushButton* editPromoBtn;
     QPushButton* deletePromoBtn;
+
+    QComboBox* promosTypeFilter; // 新增：促销类型筛选下拉
 
     // helper: 在 cpp 中实现 createPromotionsTab()
     void createPromotionsTab();

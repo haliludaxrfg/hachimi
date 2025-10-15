@@ -63,6 +63,7 @@ private slots:
     void onClearOrdersFilter();
 
     void onRefreshUserInfo(); // 新增槽声明
+    void onChoosePromoTypeFilter(); // 新增：选择促销类型筛选
 
 private:
     QTabWidget* tabWidget;
@@ -110,6 +111,8 @@ private:
     QComboBox* promoCombo;
     QPushButton* applyPromoBtn;
     QPushButton* clearPromoBtn;
+    QPushButton* promoTypeBtn; // 新增：“促销类型”按钮
+    QPushButton* refreshPromosBtn; // 新增：刷新促销按钮
 
     // 订单 UI
     QTableWidget* orderTable;
