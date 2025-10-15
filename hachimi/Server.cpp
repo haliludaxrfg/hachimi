@@ -708,8 +708,27 @@ std::string Server::SERprocessRequest(const std::string& request) {
                 nlohmann::json e; e["error"] = "参数解析失败"; return e.dump();
             }
         }
+        // 在 SERprocessRequest() 内“----- 购物车相关 -----”区块，紧跟 UPDATE_CART_ITEM 分支之后新增：
+        if (cmd == "REMOVE_FROM_CART") {
+            try {
+                auto j = parseJson(rest);
+                if (!j.is_object()) { nlohmann::json e; e["error"] = "invalid_payload"; return e.dump(); }
+                std::string userPhone = j.value("userPhone", std::string(""));
+                int productId = j.value("productId", 0);
+                return SERremoveFromCart(userPhone, productId);
+            }
+            catch (...) {
+                nlohmann::json e; e["error"] = "参数解析失败"; return e.dump();
+            }
+        }
         if (cmd == "GET_CART") {
-            return SERgetCart(rest);
+            // rest: userPhone 或 json {"userPhone":"..."}
+            if (!rest.empty() && rest.front() == '{') {
+                auto j = parseJson(rest);
+                return SERgetCart(j.value("userPhone", std::string("")));
+            } else {
+                return SERgetCart(rest);
+            }
         }
         if (cmd == "SAVE_CART") {
             // rest: userPhone <jsonCart>  或 json {"userPhone":"..","cart":{...}}
@@ -777,7 +796,15 @@ std::string Server::SERprocessRequest(const std::string& request) {
             try { int pid = std::stoi(rest); return SERgetPromotionsByProductId(pid); }
             catch (...) { nlohmann::json e; e["error"] = "参数解析失败"; return e.dump(); }
         }
-        if (cmd == "UPDATE_CART_FOR_PROMOTIONS") return SERupdateCartForPromotions(rest);
+        if (cmd == "UPDATE_CART_FOR_PROMOTIONS") {
+            // rest: userPhone 或 json {"userPhone":"..."}
+            if (!rest.empty() && rest.front() == '{') {
+                auto j = parseJson(rest);
+                return SERupdateCartForPromotions(j.value("userPhone", std::string("")));
+            } else {
+                return SERupdateCartForPromotions(rest);
+            }
+        }
         // Promotion admin operations (管理员增删改查)
         if (cmd == "ADD_PROMOTION") {
             // rest: json { "name": "...", "policy": { ... } , "type": "...", "conditions": "..." }
@@ -1568,34 +1595,69 @@ std::string Server::SERaddToCart(const std::string& userPhone, int productId, co
     }
 }
 
+// 替换整个函数：使 quantity <= 0 时执行删除
 std::string Server::SERupdateCartItem(const std::string& userPhone, int productId, int quantity) {
     if (!dbManager) { Logger::instance().fail("Server SERupdateCartItem: dbManager is null"); json e; e["error"] = "服务器内部错误"; return e.dump(); }
     if (!dbManager->DTBisConnected() && !dbManager->DTBinitialize()) { Logger::instance().fail("Server SERupdateCartItem: 数据库未连接"); json e; e["error"] = "数据库未连接"; return e.dump(); }
     try {
         Logger::instance().info(std::string("Server SERupdateCartItem: request userPhone=") + userPhone + ", productId=" + std::to_string(productId) + ", quantity=" + std::to_string(quantity));
         if (quantity < 0) { json r; r["error"] = "quantity_invalid"; return r.dump(); }
+
+        TemporaryCart cart;
+        if (!dbManager->DTBloadTemporaryCartByUserPhone(userPhone, cart)) {
+            json r; r["error"] = "未找到购物车";
+            Logger::instance().warn("Server SERupdateCartItem: 未找到购物车 for userPhone=" + userPhone);
+            return r.dump();
+        }
+
+        // 处理：quantity <= 0 => 删除该条目
+        if (quantity == 0) {
+            auto it = std::remove_if(cart.items.begin(), cart.items.end(),
+                [productId](const CartItem& ci) { return ci.good_id == productId; });
+            if (it == cart.items.end()) {
+                json r; r["error"] = "未找到商品";
+                Logger::instance().warn("Server SERupdateCartItem: 未找到商品 productId=" + std::to_string(productId));
+                return r.dump();
+            }
+            cart.items.erase(it, cart.items.end());
+            recalcCartTotals(cart);
+            if (!dbManager->DTBupdateTemporaryCart(cart)) {
+                json r; r["error"] = "更新失败";
+                Logger::instance().fail("Server SERupdateCartItem: DTBupdateTemporaryCart 返回 false（删除路径）");
+                return r.dump();
+            }
+            json ok; ok["result"] = "removed"; ok["cart_id"] = cart.cart_id;
+            return ok.dump();
+        }
+
+        // quantity > 0 => 校验库存并更新数量
         Good g;
         if (!dbManager->DTBloadGood(productId, g)) { json r; r["error"] = "good_not_found"; return r.dump(); }
         if (quantity > g.getStock()) { json r; r["error"] = "stock_exceeded"; r["available"] = g.getStock(); r["requested"] = quantity; return r.dump(); }
-        TemporaryCart cart;
-        if (!dbManager->DTBloadTemporaryCartByUserPhone(userPhone, cart)) { json r; r["error"] = "未找到购物车"; Logger::instance().warn("Server SERupdateCartItem: 未找到购物车 for userPhone=" + userPhone); return r.dump(); }
+
         bool found = false;
         for (auto& it : cart.items) {
             if (it.good_id == productId) {
-                if (quantity <= 0) {
-                    found = true;
-                    break;
-                }
                 it.quantity = quantity;
                 it.subtotal = it.price * it.quantity;
                 found = true;
                 break;
             }
         }
-        if (!found) { json r; r["error"] = "未找到商品"; Logger::instance().warn("Server SERupdateCartItem: 未找到商品 productId=" + std::to_string(productId)); return r.dump(); }
+        if (!found) {
+            json r; r["error"] = "未找到商品";
+            Logger::instance().warn("Server SERupdateCartItem: 未找到商品 productId=" + std::to_string(productId));
+            return r.dump();
+        }
+
         recalcCartTotals(cart);
-        if (!dbManager->DTBupdateTemporaryCart(cart)) { json r; r["error"] = "更新失败"; Logger::instance().fail("Server SERupdateCartItem: DTBupdateTemporaryCart 返回 false"); return r.dump(); }
-        json ok; ok["result"] = "updated"; ok["cart_id"] = cart.cart_id; return ok.dump();
+        if (!dbManager->DTBupdateTemporaryCart(cart)) {
+            json r; r["error"] = "更新失败";
+            Logger::instance().fail("Server SERupdateCartItem: DTBupdateTemporaryCart 返回 false");
+            return r.dump();
+        }
+        json ok; ok["result"] = "updated"; ok["cart_id"] = cart.cart_id;
+        return ok.dump();
     }
     catch (const std::exception& ex) {
         Logger::instance().fail(std::string("Server SERupdateCartItem 异常: ") + ex.what());

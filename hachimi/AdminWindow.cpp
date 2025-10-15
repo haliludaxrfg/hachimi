@@ -501,7 +501,7 @@ void AdminWindow::onEditUser() {
     bool res = client_->CLTupdateUser(phone.toStdString(), newPwd.toStdString(), newAddr.toStdString());
     Logger::instance().info(std::string("AdminWindow::onEditUser CLTupdateUser returned ") + (res ? "true" : "false"));
     if (res) QMessageBox::information(this, "编辑用户", "更新成功");
-    else QMessageBox::warning(this, "编辑用户", "更新失败（请检查后台或日志）");
+    else QMessageBox::warning(this, "编辑用户", "更新失败（请检查后台或日志）（你是不是没有改？）");
     refreshUsers();
 }
 
@@ -956,9 +956,9 @@ void AdminWindow::onEditCartItem() {
 
     // 若 phone 为空且表格存储有 UserRole 则用之
     if (phone.isEmpty()) {
-        QTableWidgetItem* idItem = cartTable->item(row, productIdCol);
-        if (idItem && idItem->data(Qt::UserRole).isValid()) {
-            phone = idItem->data(Qt::UserRole).toString().trimmed();
+        QTableWidgetItem* idItemRole = cartTable->item(row, productIdCol);
+        if (idItemRole && idItemRole->data(Qt::UserRole).isValid()) {
+            phone = idItemRole->data(Qt::UserRole).toString().trimmed();
         }
     }
 
@@ -991,14 +991,65 @@ void AdminWindow::onEditCartItem() {
         bool removed = client_->CLTremoveFromCart(phone.toStdString(), productId);
         Logger::instance().info(std::string("AdminWindow::onEditCartItem -> remove CLTremoveFromCart returned ") + (removed ? "true" : "false"));
         if (removed) {
+            // 强制切换到 id:0 原价占位策略
+            auto toIdString = [](const nlohmann::json& j) -> QString {
+                try {
+                    if (j.contains("id")) {
+                        if (j["id"].is_string()) return QString::fromStdString(j["id"].get<std::string>());
+                        if (j["id"].is_number_integer()) return QString::number(j["id"].get<long long>());
+                        if (j["id"].is_number_unsigned()) return QString::number(j["id"].get<unsigned long long>());
+                        if (j["id"].is_number_float()) return QString::number(j["id"].get<double>(), 'f', 0);
+                    }
+                }
+                catch (...) {}
+                return QString();
+                };
+            try {
+                QString id0Display, id0PolicyStr;
+                auto raws = client_->CLTgetAllPromotionsRaw();
+                for (const auto& r : raws) {
+                    if (toIdString(r) == "0") {
+                        std::string n0 = r.value("name", std::string(""));
+                        std::string policyStr;
+                        try {
+                            if (r.contains("policy")) policyStr = r["policy"].dump();
+                            else policyStr = r.value("policy_detail", std::string(""));
+                        }
+                        catch (...) { policyStr = r.value("policy_detail", std::string("")); }
+                        id0Display = n0.empty() ? "原价(占位)" : QString::fromStdString(n0);
+                        id0PolicyStr = QString::fromStdString(policyStr);
+                        break;
+                    }
+                }
+
+                if (!id0PolicyStr.isEmpty()) {
+                    TemporaryCart cart = client_->CLTgetCartForUser(phone.toStdString());
+                    double original = 0.0;
+                    for (const auto& it : cart.items) original += it.price * it.quantity;
+
+                    cart.discount_policy = id0Display.toStdString();
+                    if (cart.total_amount <= 0.0) cart.total_amount = original;
+                    cart.final_amount = original;
+                    cart.discount_amount = 0.0;
+
+                    if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+                    bool saved = client_->CLTsaveCartForUserWithPolicy(cart, id0PolicyStr.toStdString());
+                    Logger::instance().info(std::string("AdminWindow::onEditCartItem(remove): enforce id:0 policy -> ") + (saved ? "ok" : "fail"));
+                }
+                else {
+                    Logger::instance().warn("AdminWindow::onEditCartItem(remove): id:0 promotion not found");
+                }
+            }
+            catch (...) {
+                Logger::instance().warn("AdminWindow::onEditCartItem(remove): exception enforcing id:0 policy");
+            }
+
             QMessageBox::information(this, "删除商品", QString("已从 %1 的购物车删除").arg(phone));
         }
         else {
-            QMessageBox::warning(this, "删除商品", "删除失败（查看日志）");
+            QMessageBox::warning(this, "删除商品", "删除失败（查看日志）（很有可能是超过库存了）");
         }
-        // 刷新：如果原先按手机号查看则刷新该用户购物车，否则刷新所有购物车视图
-        if (!cartPhoneEdit->text().trimmed().isEmpty()) onLoadCartForUser();
-        else onLoadCartForUser();
+        onLoadCartForUser();
         return;
     }
 
@@ -1019,13 +1070,64 @@ void AdminWindow::onEditCartItem() {
     }
 
     if (updated) {
+        // 强制切换到 id:0 原价占位策略
+        auto toIdString = [](const nlohmann::json& j) -> QString {
+            try {
+                if (j.contains("id")) {
+                    if (j["id"].is_string()) return QString::fromStdString(j["id"].get<std::string>());
+                    if (j["id"].is_number_integer()) return QString::number(j["id"].get<long long>());
+                    if (j["id"].is_number_unsigned()) return QString::number(j["id"].get<unsigned long long>());
+                    if (j["id"].is_number_float()) return QString::number(j["id"].get<double>(), 'f', 0);
+                }
+            }
+            catch (...) {}
+            return QString();
+            };
+        try {
+            TemporaryCart cart = client_->CLTgetCartForUser(phone.toStdString());
+            double original = 0.0;
+            for (const auto& it : cart.items) original += it.price * it.quantity;
+
+            QString id0Display, id0PolicyStr;
+            auto raws = client_->CLTgetAllPromotionsRaw();
+            for (const auto& r : raws) {
+                if (toIdString(r) == "0") {
+                    std::string name0 = r.value("name", std::string(""));
+                    std::string policyStr;
+                    try {
+                        if (r.contains("policy")) policyStr = r["policy"].dump();
+                        else policyStr = r.value("policy_detail", std::string(""));
+                    }
+                    catch (...) { policyStr = r.value("policy_detail", std::string("")); }
+                    id0Display = name0.empty() ? "原价(占位)" : QString::fromStdString(name0);
+                    id0PolicyStr = QString::fromStdString(policyStr);
+                    break;
+                }
+            }
+
+            if (!id0PolicyStr.isEmpty()) {
+                cart.discount_policy = id0Display.toStdString();
+                cart.total_amount = original;
+                cart.final_amount = original;
+                cart.discount_amount = 0.0;
+                if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+                bool saved = client_->CLTsaveCartForUserWithPolicy(cart, id0PolicyStr.toStdString());
+                Logger::instance().info(std::string("AdminWindow::onEditCartItem(update): enforce id:0 policy -> ") + (saved ? "ok" : "fail"));
+            }
+            else {
+                Logger::instance().warn("AdminWindow::onEditCartItem(update): id:0 promotion not found");
+            }
+        }
+        catch (...) {
+            Logger::instance().warn("AdminWindow::onEditCartItem(update): exception enforcing id:0 policy");
+        }
+
         QMessageBox::information(this, "修改数量", "已更新数量");
     }
     else {
-        QMessageBox::warning(this, "修改数量", "更新失败（查看日志）");
+        QMessageBox::warning(this, "修改数量", "更新失败（查看日志）(很有可能是超过库存了)");
     }
 
-    // 刷新视图（单用户或所有用户均调用 onLoadCartForUser）
     onLoadCartForUser();
 }
 
@@ -1050,16 +1152,13 @@ void AdminWindow::onRemoveCartItem() {
     int productIdCol = (colCount == 5) ? 0 : 1;
 
     if (phone.isEmpty()) {
-        QTableWidgetItem* idItem = cartTable->item(row, productIdCol);
-        if (idItem && idItem->data(Qt::UserRole).isValid()) {
-            phone = idItem->data(Qt::UserRole).toString().trimmed();
+        QTableWidgetItem* idItemRole = cartTable->item(row, productIdCol);
+        if (idItemRole && idItemRole->data(Qt::UserRole).isValid()) {
+            phone = idItemRole->data(Qt::UserRole).toString().trimmed();
         }
-        else {
-            // 若表格第一列即为手机号（多用户视图），也可以直接读取
-            if (colCount >= 6) {
-                QTableWidgetItem* userIt = cartTable->item(row, 0);
-                if (userIt) phone = userIt->text().trimmed();
-            }
+        else if (colCount >= 6) {
+            QTableWidgetItem* userIt = cartTable->item(row, 0);
+            if (userIt) phone = userIt->text().trimmed();
         }
     }
 
@@ -1082,10 +1181,66 @@ void AdminWindow::onRemoveCartItem() {
     if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
     bool res = client_->CLTremoveFromCart(phone.toStdString(), productId);
     Logger::instance().info(std::string("AdminWindow::onRemoveCartItem CLTremoveFromCart returned ") + (res ? "true" : "false"));
-    if (!res) { QMessageBox::warning(this, "删除条目", "删除失败（检查日志）"); return; }
-    QMessageBox::information(this, "删除条目", "删除成功，正在刷新购物车");
+    if (!res) {
+        QMessageBox::warning(this, "删除条目", "删除失败（检查日志）");
+        return;
+    }
 
-    // 刷新：若输入了手机号刷新单用户，否则刷新所有用户视图
+    // 强制切换到 id:0 原价占位策略
+    auto toIdString = [](const nlohmann::json& j) -> QString {
+        try {
+            if (j.contains("id")) {
+                if (j["id"].is_string()) return QString::fromStdString(j["id"].get<std::string>());
+                if (j["id"].is_number_integer()) return QString::number(j["id"].get<long long>());
+                if (j["id"].is_number_unsigned()) return QString::number(j["id"].get<unsigned long long>());
+                if (j["id"].is_number_float()) return QString::number(j["id"].get<double>(), 'f', 0);
+            }
+        }
+        catch (...) {}
+        return QString();
+        };
+
+    try {
+        QString id0Display, id0PolicyStr;
+        auto raws = client_->CLTgetAllPromotionsRaw();
+        for (const auto& r : raws) {
+            if (toIdString(r) == "0") {
+                std::string n0 = r.value("name", std::string(""));
+                std::string policyStr;
+                try {
+                    if (r.contains("policy")) policyStr = r["policy"].dump();
+                    else policyStr = r.value("policy_detail", std::string(""));
+                }
+                catch (...) { policyStr = r.value("policy_detail", std::string("")); }
+                id0Display = n0.empty() ? "原价(占位)" : QString::fromStdString(n0);
+                id0PolicyStr = QString::fromStdString(policyStr);
+                break;
+            }
+        }
+
+        if (!id0PolicyStr.isEmpty()) {
+            TemporaryCart cart = client_->CLTgetCartForUser(phone.toStdString());
+            double original = 0.0;
+            for (const auto& it : cart.items) original += it.price * it.quantity;
+
+            cart.discount_policy = id0Display.toStdString();
+            if (cart.total_amount <= 0.0) cart.total_amount = original;
+            cart.final_amount = original;
+            cart.discount_amount = 0.0;
+
+            if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
+            bool saved = client_->CLTsaveCartForUserWithPolicy(cart, id0PolicyStr.toStdString());
+            Logger::instance().info(std::string("AdminWindow::onRemoveCartItem: enforce id:0 policy -> ") + (saved ? "ok" : "fail"));
+        }
+        else {
+            Logger::instance().warn("AdminWindow::onRemoveCartItem: id:0 promotion not found");
+        }
+    }
+    catch (...) {
+        Logger::instance().warn("AdminWindow::onRemoveCartItem: exception enforcing id:0 policy");
+    }
+
+    QMessageBox::information(this, "删除条目", "删除成功，正在刷新购物车");
     onLoadCartForUser();
 }
 
@@ -1106,18 +1261,30 @@ void AdminWindow::createPromotionsTab() {
     promoTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
     promoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     promoTable->setSelectionMode(QAbstractItemView::SingleSelection);
-    // 新增：彻底禁止表格内联编辑
+    // 禁止表格内联编辑
     promoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     QHBoxLayout* btnRow = new QHBoxLayout;
+
+    // 新增：类型筛选
+    btnRow->addWidget(new QLabel("类型:"));
+    promosTypeFilter = new QComboBox(promoTab);
+    promosTypeFilter->addItem("全部", QVariant("ALL"));
+    promosTypeFilter->addItem("统一折扣(discount)", QVariant("discount"));
+    promosTypeFilter->addItem("阶梯折扣(tiered)", QVariant("tiered"));
+    promosTypeFilter->addItem("满减(full_reduction)", QVariant("full_reduction"));
+    promosTypeFilter->addItem("未知/其他", QVariant("UNKNOWN"));
+    promosTypeFilter->setCurrentIndex(0);
+    btnRow->addWidget(promosTypeFilter);
+
     refreshPromosBtn = new QPushButton("刷新", promoTab);
-
     addPromoBtn = new QPushButton("新增", promoTab);
-
+    QPushButton* viewPromoDetailBtn = new QPushButton("查看详情", promoTab); // 新增：查看详情
     deletePromoBtn = new QPushButton("删除", promoTab);
+
     btnRow->addWidget(refreshPromosBtn);
     btnRow->addWidget(addPromoBtn);
-
+    btnRow->addWidget(viewPromoDetailBtn); // 新增按钮
     btnRow->addWidget(deletePromoBtn);
     btnRow->addStretch();
 
@@ -1125,14 +1292,20 @@ void AdminWindow::createPromotionsTab() {
     v->addWidget(promoTable);
     tabWidget->addTab(promoTab, "促销");
 
-    // 连接信号：刷新、删除、以及新增
+    // 连接信号
     connect(refreshPromosBtn, &QPushButton::clicked, this, &AdminWindow::refreshPromotions);
     connect(deletePromoBtn, &QPushButton::clicked, this, &AdminWindow::onDeletePromotion);
     connect(addPromoBtn, &QPushButton::clicked, this, &AdminWindow::onAddPromotion);
+    connect(viewPromoDetailBtn, &QPushButton::clicked, this, &AdminWindow::onViewPromotionDetail);
 
-    // 修改：禁用双击进入编辑，改为提示
+    // 类型变化即刷新
+    connect(promosTypeFilter, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int) {
+        this->refreshPromotions();
+        });
+
+    // 双击查看详情（不进入编辑）
     connect(promoTable, &QTableWidget::cellDoubleClicked, this, [this](int /*row*/, int /*col*/) {
-        QMessageBox::information(this, "促销", "已禁用在窗口直接修改促销策略。");
+        this->onViewPromotionDetail();
         });
 }
 
@@ -1420,7 +1593,7 @@ void AdminWindow::onEditPromotion() {
     // 新增：管理员禁用在窗口直接修改促销
     QMessageBox::information(this, "编辑促销", "已禁用在窗口直接修改促销策略。");
     return;
-
+    //史山来咯
     // 保留原实现（不会被执行，仅为兼容编译与后续可能的策略调整）
     auto sel = promoTable->selectionModel()->selectedRows();
     if (sel.empty()) { QMessageBox::warning(this, "编辑促销", "请先选择一条促销"); return; }
@@ -1525,7 +1698,7 @@ void AdminWindow::refreshPromotions() {
         QTableWidgetItem* nameItem = new QTableWidgetItem(name);
         QTableWidgetItem* typeItem = new QTableWidgetItem(type);
         QTableWidgetItem* policyItem = new QTableWidgetItem(policyStr.left(200));
-        policyItem->setData(Qt::UserRole, policyStr);
+        policyItem->setData(Qt::UserRole, policyStr); // 保存完整 policy
 
         promoTable->setItem(outRow, 0, idItem);
         promoTable->setItem(outRow, 1, nameItem);
@@ -1550,8 +1723,48 @@ void AdminWindow::onDeletePromotion() {
         QMessageBox::warning(this, "删除促销", "所选行无有效名称列");
         return;
     }
-    QString nameQ = promoTable->item(row, 1)->text();
-    if (QMessageBox::question(this, "删除促销", QString("确定要删除促销 “%1” 吗？").arg(nameQ)) != QMessageBox::Yes) return;
+    QString nameQ = promoTable->item(row, 1)->text().trimmed();
+
+    // 提取本行的 id 文本（若列中为空，后续从服务端补查）
+    QString idText = promoTable->item(row, 0) ? promoTable->item(row, 0)->text().trimmed() : QString();
+
+    // 辅助：健壮读取 json 中的 id 为字符串
+    auto toIdString = [](const nlohmann::json& j) -> QString {
+        try {
+            if (j.contains("id")) {
+                if (j["id"].is_string()) return QString::fromStdString(j["id"].get<std::string>());
+                if (j["id"].is_number_integer()) return QString::number(j["id"].get<long long>());
+                if (j["id"].is_number_unsigned()) return QString::number(j["id"].get<unsigned long long>());
+                if (j["id"].is_number_float()) return QString::number(j["id"].get<double>(), 'f', 0);
+            }
+        }
+        catch (...) {}
+        return QString();
+        };
+
+    // 若表格 id 为空或不可靠，通过名称到服务端查一次，取权威 id
+    if (idText.isEmpty()) {
+        try {
+            auto raws = client_->CLTgetAllPromotionsRaw();
+            for (const auto& r : raws) {
+                QString nm = QString::fromStdString(r.value("name", std::string("")));
+                if (nm == nameQ) {
+                    idText = toIdString(r).trimmed();
+                    break;
+                }
+            }
+        }
+        catch (...) {}
+    }
+
+    // 保护：默认占位促销（id:0）禁止删除
+    if (idText == "0") {
+        QMessageBox::information(this, "删除促销", "已禁止删除默认促销（id:0）。");
+        return;
+    }
+
+    if (QMessageBox::question(this, "删除促销",
+        QString("确定要删除促销 “%1” 吗？").arg(nameQ)) != QMessageBox::Yes) return;
 
     if (!client_->CLTisConnectionActive()) {
         Logger::instance().warn("AdminWindow::onDeletePromotion: client not connected, attempting reconnect");
@@ -1575,4 +1788,89 @@ void AdminWindow::onClearOrdersFilter() {
     if (orderEndEdit) orderEndEdit->setDateTime(QDateTime::currentDateTime().addYears(10));
     if (ordersStatusFilter) ordersStatusFilter->setCurrentIndex(0);
     refreshOrders();
+}
+
+void AdminWindow::onViewPromotionDetail() {
+    auto sel = promoTable->selectionModel()->selectedRows();
+    if (sel.empty()) {
+        QMessageBox::information(this, "促销详情", "请先选择一条促销。");
+        return;
+    }
+    int row = sel.first().row();
+    QString id = promoTable->item(row, 0) ? promoTable->item(row, 0)->text() : "";
+    QString name = promoTable->item(row, 1) ? promoTable->item(row, 1)->text() : "";
+    QString type = promoTable->item(row, 2) ? promoTable->item(row, 2)->text() : "";
+    QString policyFull = promoTable->item(row, 3) ? promoTable->item(row, 3)->data(Qt::UserRole).toString() : "";
+
+    // 构造人类可读摘要
+    QString summary = "(未知策略)";
+    try {
+        nlohmann::json js = policyFull.isEmpty() ? nlohmann::json() : nlohmann::json::parse(policyFull.toStdString());
+        if (js.is_object()) {
+            std::string t = js.value("type", std::string(""));
+            if (t == "discount") {
+                double d = js.value("discount", 1.0);
+                summary = QString("类型: 统一折扣\n折扣率: %1 (约 %2 折)").arg(d, 0, 'f', 4).arg(d * 10.0, 0, 'f', 2);
+            }
+            else if (t == "full_reduction" || t == "fullReduction") {
+                double thr = js.value("threshold", 0.0);
+                double reduce = js.value("reduce", 0.0);
+                summary = QString("类型: 满减\n满: %1  减: %2").arg(thr, 0, 'f', 2).arg(reduce, 0, 'f', 2);
+            }
+            else if (t == "tiered") {
+                QString lines = "类型: 阶梯折扣\n档位:\n";
+                if (js.contains("tiers") && js["tiers"].is_array()) {
+                    for (const auto& tier : js["tiers"]) {
+                        int minq = tier.value("min_qty", 0);
+                        double disc = tier.value("discount", 1.0);
+                        lines += QString(" - min_qty=%1, discount=%2 (约 %3 折)\n")
+                            .arg(minq).arg(disc, 0, 'f', 4).arg(disc * 10.0, 0, 'f', 2);
+                    }
+                }
+                summary = lines.trimmed();
+            }
+            else {
+                summary = "类型: 未知/其他";
+            }
+        }
+        else if (!policyFull.isEmpty()) {
+            summary = "策略文本（policy_detail）";
+        }
+    }
+    catch (...) {
+        summary = "策略文本（policy_detail）";
+    }
+
+    // 生成 pretty JSON 文本
+    QString pretty;
+    try {
+        if (!policyFull.isEmpty()) {
+            nlohmann::json js = nlohmann::json::parse(policyFull.toStdString());
+            pretty = QString::fromStdString(js.dump(2));
+        }
+    }
+    catch (...) {
+        pretty = policyFull;
+    }
+
+    // 弹出详情对话框（可复制）
+    QDialog dlg(this);
+    dlg.setWindowTitle("促销详情");
+    dlg.resize(640, 480);
+    QVBoxLayout* lay = new QVBoxLayout(&dlg);
+    QLabel* header = new QLabel(QString("ID: %1    名称: %2\n类型: %3").arg(id, name, type));
+    header->setWordWrap(true);
+    lay->addWidget(header);
+    QLabel* sumLab = new QLabel(summary);
+    sumLab->setWordWrap(true);
+    lay->addWidget(sumLab);
+    QTextEdit* text = new QTextEdit(pretty);
+    text->setReadOnly(true);
+    lay->addWidget(text, 1);
+    QHBoxLayout* br = new QHBoxLayout;
+    QPushButton* closeBtn = new QPushButton("关闭");
+    br->addStretch(); br->addWidget(closeBtn);
+    lay->addLayout(br);
+    QObject::connect(closeBtn, &QPushButton::clicked, &dlg, &QDialog::accept);
+    dlg.exec();
 }

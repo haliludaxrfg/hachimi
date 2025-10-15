@@ -53,14 +53,13 @@ private slots:
     void onClearOrdersFilter();
     void onViewOrderDetail();
 
-
     // Promotions
     void refreshPromotions();
     void onAddPromotion();
     void onEditPromotion();
     void onDeletePromotion();
+    void onViewPromotionDetail(); // 新增：查看促销详情
 
-    // 订单筛选（时间范围：开始/结束；管理员额外按手机号）    
 private:
     // UI 主控件
     QTabWidget* tabWidget;
