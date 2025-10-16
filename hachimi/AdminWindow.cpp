@@ -30,6 +30,73 @@ static QString orderStatusToText(int status) {
     }
 }
 
+// 统一解析订单ID到 QDateTime（兼容 c*/o*，多种编码）
+static QDateTime parseOrderIdToDateTime(const QString& oid) {
+    QString s = oid.trimmed();
+    if (s.isEmpty()) return QDateTime();
+
+    // 去掉首字母前缀（c/o 等）
+    if (!s.isEmpty() && s.at(0).isLetter()) s = s.mid(1);
+
+    // 截到下划线前（若存在），通常 '_' 之后是随机串
+    int us = s.indexOf('_');
+    if (us > 0) s = s.left(us);
+
+    auto isAllDigits = [](const QString& t) {
+        for (QChar c : t) if (!c.isDigit()) return false;
+        return true;
+        };
+
+    // 提取前缀连续数字串
+    int digits = 0;
+    while (digits < s.size() && s.at(digits).isDigit()) ++digits;
+    QString head = s.left(digits);
+
+    // 1) 17位 yyyyMMddHHmmsszzz
+    if (head.size() >= 17 && isAllDigits(head.left(17))) {
+        QDateTime dt = QDateTime::fromString(head.left(17), "yyyyMMddHHmmsszzz");
+        if (dt.isValid()) return dt.toLocalTime();
+    }
+
+    // 2) 14位 yyyyMMddHHmmss + 可选毫秒
+    if (head.size() >= 14 && isAllDigits(head.left(14))) {
+        QDateTime dt = QDateTime::fromString(head.left(14), "yyyyMMddHHmmss");
+        if (dt.isValid()) {
+            int ms = 0;
+            if (head.size() >= 17 && isAllDigits(head.mid(14, 3))) {
+                bool ok = false;
+                int v = head.mid(14, 3).toInt(&ok);
+                if (ok) ms = v;
+            }
+            dt = dt.addMSecs(ms);
+            return dt.toLocalTime();
+        }
+    }
+
+    // 3) epoch 毫秒（13位）或秒（10位）
+    if (head.size() >= 13 && isAllDigits(head.left(13))) {
+        bool ok = false;
+        qint64 ms = head.left(13).toLongLong(&ok);
+        if (ok) {
+            QDateTime dt = QDateTime::fromMSecsSinceEpoch(ms);
+            if (dt.isValid()) return dt.toLocalTime();
+        }
+    }
+    if (head.size() >= 10 && isAllDigits(head.left(10))) {
+        bool ok = false;
+        qint64 sec = head.left(10).toLongLong(&ok);
+        if (ok) {
+            QDateTime dt = QDateTime::fromSecsSinceEpoch(sec);
+            if (dt.isValid()) return dt.toLocalTime();
+        }
+    }
+
+    // 4) 尝试 ISO 格式（若订单ID中直接内嵌了 ISO 字符串）
+    QDateTime iso = QDateTime::fromString(s, Qt::ISODate);
+    if (iso.isValid()) return iso.toLocalTime();
+
+    return QDateTime();
+}
 // 判断系统当前是否为深色主题（基于 QPalette::Window 的 lightness）
 static bool isSystemDarkTheme() {
     QColor bg = qApp->palette().color(QPalette::Window);
@@ -701,7 +768,7 @@ void AdminWindow::refreshOrders() {
         // 按状态过滤（若选中“全部”即 selStatus == -1 则不过滤）
         if (selStatus != -1 && o.getStatus() != selStatus) continue;
 
-        QDateTime dt = parseOid(o.getOrderId());
+        QDateTime dt = parseOrderIdToDateTime(QString::fromStdString(o.getOrderId()));
         if (dt.isValid()) {
             if (dt >= start && dt <= end) filtered.push_back(o);
         } else {

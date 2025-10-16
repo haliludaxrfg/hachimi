@@ -21,6 +21,47 @@
 #include <unordered_set>
 #include "Theme.h"
 #include <QStringList> // 添加所需头（用于 QStringList）
+// 统一解析订单ID到 QDateTime（兼容 c*/o*，多种编码）
+static QDateTime parseOrderIdToDateTime(const QString& oid) {
+    QString s = oid.trimmed();
+    if (s.isEmpty()) return QDateTime();
+    if (!s.isEmpty() && s.at(0).isLetter()) s = s.mid(1);
+    int us = s.indexOf('_');
+    if (us > 0) s = s.left(us);
+    auto isAllDigits = [](const QString& t) {
+        for (QChar c : t) if (!c.isDigit()) return false;
+        return true;
+        };
+    int digits = 0;
+    while (digits < s.size() && s.at(digits).isDigit()) ++digits;
+    QString head = s.left(digits);
+    if (head.size() >= 17 && isAllDigits(head.left(17))) {
+        QDateTime dt = QDateTime::fromString(head.left(17), "yyyyMMddHHmmsszzz");
+        if (dt.isValid()) return dt.toLocalTime();
+    }
+    if (head.size() >= 14 && isAllDigits(head.left(14))) {
+        QDateTime dt = QDateTime::fromString(head.left(14), "yyyyMMddHHmmss");
+        if (dt.isValid()) {
+            int ms = 0;
+            if (head.size() >= 17 && isAllDigits(head.mid(14, 3))) {
+                bool ok = false; int v = head.mid(14, 3).toInt(&ok); if (ok) ms = v;
+            }
+            dt = dt.addMSecs(ms);
+            return dt.toLocalTime();
+        }
+    }
+    if (head.size() >= 13 && isAllDigits(head.left(13))) {
+        bool ok = false; qint64 ms = head.left(13).toLongLong(&ok);
+        if (ok) { QDateTime dt = QDateTime::fromMSecsSinceEpoch(ms); if (dt.isValid()) return dt.toLocalTime(); }
+    }
+    if (head.size() >= 10 && isAllDigits(head.left(10))) {
+        bool ok = false; qint64 sec = head.left(10).toLongLong(&ok);
+        if (ok) { QDateTime dt = QDateTime::fromSecsSinceEpoch(sec); if (dt.isValid()) return dt.toLocalTime(); }
+    }
+    QDateTime iso = QDateTime::fromString(s, Qt::ISODate);
+    if (iso.isValid()) return iso.toLocalTime();
+    return QDateTime();
+}
 static constexpr double kCartOriginalLimit = 10000000.0; // 10,000,000
 static double calcOriginalTotal(const TemporaryCart& cart) {
     double s = 0.0;
@@ -1690,7 +1731,7 @@ void UserWindow::refreshOrdersInternal() {
     filtered.reserve(orders.size());
     for (const auto& o : orders) {
         if (selStatus != -1 && o.getStatus() != selStatus) continue;
-        QDateTime dt = parseOid(o.getOrderId());
+        QDateTime dt = parseOrderIdToDateTime(QString::fromStdString(o.getOrderId()));
         if (dt.isValid()) {
             if (dt >= start && dt <= end) filtered.push_back(o);
         }
