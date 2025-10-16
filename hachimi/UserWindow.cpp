@@ -1636,6 +1636,7 @@ void UserWindow::onCheckout() {
     QMessageBox::information(this, "结算成功", QString("订单已创建：%1\n实付金额：%2").arg(newOrderId).arg(payable, 0, 'f', 2));
 
     // 刷新购物车与订单
+    refreshGoodsInternal();
     refreshCartInternal();
     refreshOrdersInternal();
 }

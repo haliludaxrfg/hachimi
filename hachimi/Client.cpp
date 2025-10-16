@@ -935,14 +935,19 @@ bool Client::CLTaddPromotion(const nlohmann::json& promotion) {
 bool Client::CLTupdatePromotion(const std::string& name, const nlohmann::json& promotion) {
     try {
         nlohmann::json j = promotion;
-        j["name"] = name;
+        j["name"] = name; // 旧名，用于定位；可选地包含 new_name 以触发改名
         std::string req = std::string("UPDATE_PROMOTION ") + j.dump();
         std::string resp = CLTsendRequest(req);
         if (resp.empty()) return false;
         auto r = nlohmann::json::parse(resp);
-        if (r.is_object() && r.contains("result") && r["result"] == "updated") return true;
+        if (r.is_object() && r.contains("result")) {
+            std::string res = r.value("result", std::string(""));
+            // 接受 updated 或 renamed 为成功
+            return (res == "updated" || res == "renamed");
+        }
         return false;
-    } catch (...) {
+    }
+    catch (...) {
         Logger::instance().fail("CLTupdatePromotion 解析失败");
         return false;
     }

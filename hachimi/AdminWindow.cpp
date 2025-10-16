@@ -1261,12 +1261,10 @@ void AdminWindow::createPromotionsTab() {
     promoTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
     promoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     promoTable->setSelectionMode(QAbstractItemView::SingleSelection);
-    // 禁止表格内联编辑
     promoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     QHBoxLayout* btnRow = new QHBoxLayout;
 
-    // 新增：类型筛选
     btnRow->addWidget(new QLabel("类型:"));
     promosTypeFilter = new QComboBox(promoTab);
     promosTypeFilter->addItem("全部", QVariant("ALL"));
@@ -1279,12 +1277,14 @@ void AdminWindow::createPromotionsTab() {
 
     refreshPromosBtn = new QPushButton("刷新", promoTab);
     addPromoBtn = new QPushButton("新增", promoTab);
-    QPushButton* viewPromoDetailBtn = new QPushButton("查看详情", promoTab); // 新增：查看详情
+    QPushButton* editPromoBtn = new QPushButton("编辑", promoTab);           // 新增：编辑按钮
+    QPushButton* viewPromoDetailBtn = new QPushButton("查看详情", promoTab);
     deletePromoBtn = new QPushButton("删除", promoTab);
 
     btnRow->addWidget(refreshPromosBtn);
     btnRow->addWidget(addPromoBtn);
-    btnRow->addWidget(viewPromoDetailBtn); // 新增按钮
+    btnRow->addWidget(editPromoBtn);                                          // 新增：添加到工具行
+    btnRow->addWidget(viewPromoDetailBtn);
     btnRow->addWidget(deletePromoBtn);
     btnRow->addStretch();
 
@@ -1292,19 +1292,17 @@ void AdminWindow::createPromotionsTab() {
     v->addWidget(promoTable);
     tabWidget->addTab(promoTab, "促销");
 
-    // 连接信号
     connect(refreshPromosBtn, &QPushButton::clicked, this, &AdminWindow::refreshPromotions);
     connect(deletePromoBtn, &QPushButton::clicked, this, &AdminWindow::onDeletePromotion);
     connect(addPromoBtn, &QPushButton::clicked, this, &AdminWindow::onAddPromotion);
+    connect(editPromoBtn, &QPushButton::clicked, this, &AdminWindow::onEditPromotion);   // 新增：连接编辑槽
     connect(viewPromoDetailBtn, &QPushButton::clicked, this, &AdminWindow::onViewPromotionDetail);
 
-    // 类型变化即刷新
     connect(promosTypeFilter, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int) {
         this->refreshPromotions();
         });
 
-    // 双击查看详情（不进入编辑）
-    connect(promoTable, &QTableWidget::cellDoubleClicked, this, [this](int /*row*/, int /*col*/) {
+    connect(promoTable, &QTableWidget::cellDoubleClicked, this, [this](int, int) {
         this->onViewPromotionDetail();
         });
 }
@@ -1590,54 +1588,87 @@ void AdminWindow::onAddPromotion() {
 
 // 修改 onEditPromotion：读取现有 policy 试图推断类型并预填编辑器
 void AdminWindow::onEditPromotion() {
-    // 新增：管理员禁用在窗口直接修改促销
-    QMessageBox::information(this, "编辑促销", "已禁用在窗口直接修改促销策略。");
-    return;
-    //史山来咯
-    // 保留原实现（不会被执行，仅为兼容编译与后续可能的策略调整）
-    auto sel = promoTable->selectionModel()->selectedRows();
-    if (sel.empty()) { QMessageBox::warning(this, "编辑促销", "请先选择一条促销"); return; }
-    int row = sel.first().row();
-    QString nameQ = promoTable->item(row, 1)->text();
-    QString typeQ = promoTable->item(row, 2)->text();
-    QString policyFull = promoTable->item(row, 3)->data(Qt::UserRole).toString();
+    if (!tryThrottle(this)) return;
+    if (!client_) return;
+    if (!promoTable || !promoTable->selectionModel()) {
+        QMessageBox::information(this, "编辑促销", "无法获取选择。");
+        return;
+    }
 
-    // 解析现有 policy：尝试解析 JSON
+    auto sel = promoTable->selectionModel()->selectedRows();
+    if (sel.empty()) {
+        QMessageBox::warning(this, "编辑促销", "请先选择一条促销");
+        return;
+    }
+
+    int row = sel.first().row();
+    QString idText = promoTable->item(row, 0) ? promoTable->item(row, 0)->text().trimmed() : "";
+    QString nameQ = promoTable->item(row, 1) ? promoTable->item(row, 1)->text() : "";
+    QString typeQ = promoTable->item(row, 2) ? promoTable->item(row, 2)->text() : "";
+    QString policyFull = promoTable->item(row, 3) ? promoTable->item(row, 3)->data(Qt::UserRole).toString() : "";
+
+    // 保护：默认占位促销（id:0）禁止编辑
+    if (idText == "0") {
+        QMessageBox::information(this, "编辑促销", "已禁止编辑默认促销（id:0）。");
+        return;
+    }
+
+    // 解析现有 policy 尝试推断类型
     nlohmann::json parsed;
     std::string policyDetail;
     PromotionKind kind = PromotionKind::Unknown;
     try {
-        parsed = nlohmann::json::parse(policyFull.toStdString());
+        if (!policyFull.trimmed().isEmpty()) {
+            parsed = nlohmann::json::parse(policyFull.toStdString());
+        }
         if (parsed.is_object()) {
             std::string t = parsed.value("type", std::string(""));
             if (t == "discount") kind = PromotionKind::Discount;
             else if (t == "tiered") kind = PromotionKind::Tiered;
             else if (t == "full_reduction" || t == "fullReduction") kind = PromotionKind::FullReduction;
             else kind = PromotionKind::Unknown;
-        } else {
+        }
+        else {
             policyDetail = policyFull.toStdString();
         }
-    } catch (...) {
+    }
+    catch (...) {
         policyDetail = policyFull.toStdString();
     }
 
-    // 如果无法推断类型，先让管理员选
+    // 无法推断类型时让管理员选择
     if (kind == PromotionKind::Unknown) {
         if (!showPromotionTypeSelector(this, kind)) return;
     }
 
+    // 弹出类型化编辑器
     std::string newName;
     nlohmann::json newPolicyJson;
     std::string newPolicyDetail;
-    if (!showTypedPromotionEditor(this, kind, nameQ.toStdString(), parsed, policyDetail, newName, newPolicyJson, newPolicyDetail)) return;
+    if (!showTypedPromotionEditor(this, kind, nameQ.toStdString(), parsed, policyDetail, newName, newPolicyJson, newPolicyDetail)) {
+        return;
+    }
 
+    // 构造更新请求（保持与服务端协议一致）
     nlohmann::json req;
     req["type"] = newPolicyJson.is_null() ? typeQ.toStdString() : newPolicyJson.value("type", typeQ.toStdString());
-    if (!newPolicyJson.is_null() && !newPolicyJson.empty()) req["policy"] = newPolicyJson;
-    else if (!newPolicyDetail.empty()) req["policy_detail"] = newPolicyDetail;
+    if (!newPolicyJson.is_null() && !newPolicyJson.empty()) {
+        req["policy"] = newPolicyJson;
+    }
+    else if (!newPolicyDetail.empty()) {
+        req["policy_detail"] = newPolicyDetail;
+    }
 
+    // 如名称变更，则传递 new_name 以触发服务端改名流程
+    QString newNameQ = QString::fromStdString(newName).trimmed();
+    if (!newNameQ.isEmpty() && newNameQ != nameQ.trimmed()) {
+        req["new_name"] = newNameQ.toStdString();
+    }
+
+    if (!client_->CLTisConnectionActive()) client_->CLTreconnect();
     bool ok = client_->CLTupdatePromotion(nameQ.toStdString(), req);
-    QMessageBox::information(this, "编辑促销", ok ? "更新成功" : "更新失败（查看日志）");
+
+    QMessageBox::information(this, "编辑促销", ok ? "更新成功（如包含改名将已生效）" : "更新失败（查看日志）");
     refreshPromotions();
 }
 
